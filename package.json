@@ -1,0 +1,30 @@
+{
+  "name": "full-stack-skeleton-app",
+  "version": "1.0.0",
+  "description": "A starter for full-stack applications.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/server/index.js",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alfredo3232/full-stack-skeleton-app.git"
+  },
+  "author": "Alfredo3232",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alfredo3232/full-stack-skeleton-app/issues"
+  },
+  "homepage": "https://github.com/Alfredo3232/full-stack-skeleton-app#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "mongoose": "^6.9.2",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0"
+  }
+}
