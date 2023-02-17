@@ -1,7 +1,7 @@
 {
-  "name": "full-stack-skeleton-app",
+  "name": "codeFusion-backend",
   "version": "1.0.0",
-  "description": "A starter for full-stack applications.",
+  "description": "The backend to our school for full-stack web development.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -10,21 +10,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Alfredo3232/full-stack-skeleton-app.git"
+    "url": "git+https://github.com/CodeFusion508/codeFusion-backend"
   },
-  "author": "Alfredo3232",
+  "author": "CodeFusion508",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Alfredo3232/full-stack-skeleton-app/issues"
+    "url": "https://github.com/CodeFusion508/codeFusion-backend/issues"
   },
-  "homepage": "https://github.com/Alfredo3232/full-stack-skeleton-app#readme",
+  "homepage": "https://github.com/CodeFusion508/codeFusion-backend#readme",
   "dependencies": {
     "express": "^4.18.2",
     "helmet": "^6.0.1",
-    "mongoose": "^6.9.2",
-    "nodemon": "^2.0.20"
+    "neo4j-driver": "^5.5.0"
   },
   "devDependencies": {
-    "eslint": "^8.34.0"
+    "eslint": "^8.34.0",
+    "nodemon": "^2.0.20"
   }
 }
