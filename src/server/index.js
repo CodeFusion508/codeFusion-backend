@@ -2,10 +2,11 @@
 // disabled for development.
 import express from "express";
 import helmet from "helmet";
-
+import dotenv from "dotenv";
+dotenv.config();
 
 let app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(helmet());
 
@@ -26,4 +27,3 @@ app.listen(PORT, () => {
     at least for right now I am thinking of using the Neo4J Aura online service, since it will be more cost effective using different services
     to handle the work.
 */
-
