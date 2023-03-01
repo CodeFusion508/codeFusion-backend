@@ -1,7 +1,6 @@
 import express from "express";
 import helmet from "helmet";
 let app = express();
-app.use(helmet());
 
 // set up env when starting server
 import dotenv from "dotenv";
@@ -16,6 +15,7 @@ import routes from "./routes/index.js";
 
 
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use(helmet());
 app.use("/", routes);
 
 const PORT = process.env.PORT || 3000;
