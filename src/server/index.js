@@ -1,22 +1,24 @@
-/* eslint-disable no-console */
-// disabled for development.
 import express from "express";
 import helmet from "helmet";
+let app = express();
+app.use(helmet());
+
+// set up env when starting server
 import dotenv from "dotenv";
 dotenv.config();
 
-let app = express();
+// swagger imports
+import swaggerUI from "swagger-ui-express";
+import { specs } from "../docs/index.js";
+
+// our main routes
+import routes from "./routes/index.js";
+
+
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use("/", routes);
+
 const PORT = process.env.PORT || 3000;
-
-app.use(helmet());
-
-app.get("/", (req, res) => {
-    res.send("Testing a ec2 instance");
-});
-
-app.get("/api", (req, res) => {
-    res.send("this is another endpoint");
-});
 
 app.listen(PORT, () => {
     console.log(`Running at PORT: ${PORT}`);
