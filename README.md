@@ -1,7 +1,8 @@
 # CodeFusion 508 Backend API
 
 This is the project to our backend of our online school "Code Fusion 508", a school that help people learn about full-stack web development.
-Want to test it out? visit, http://54.183.222.133/
+
+Want to test it out? visit, <http://54.183.222.133/docs> for more information.
 
 ## Project Setup
 
