@@ -1,18 +1,15 @@
 import express from "express";
 import helmet from "helmet";
-let app = express();
-
-// set up env when starting server
 import dotenv from "dotenv";
-dotenv.config();
-
-// swagger imports
 import swaggerUI from "swagger-ui-express";
-import { specs } from "../docs/index.js";
 
-// our main routes
+// swagger docs
+import { specs } from "./docs/index.js";
+// route imports
 import routes from "./routes/index.js";
 
+let app = express();
+dotenv.config();
 
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(helmet());
