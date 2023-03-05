@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const App = require("./app.js");
 const Controllers = require("./controllers.js");
 
@@ -12,6 +14,8 @@ const start = async () => {
         services: {}
     };
 
+    dotenv.config();
+
     // Object.assign(dependencies.services, await Services(dependencies, something));
 
     // dependencies.services.neo4j = dependencies.services.neo4j.connections;
@@ -21,7 +25,7 @@ const start = async () => {
     Object.assign(dependencies.ctrls, Controllers(dependencies, crtlList));
     Object.assign(dependencies, dependencies.crtls);
 
-    let app = await App();
+    const app = await App(dependencies);
 
     dependencies.app = app;
 
