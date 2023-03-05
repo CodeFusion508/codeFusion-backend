@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 
 let router = express.Router();
 
@@ -10,4 +10,4 @@ router.get("/api", (req, res) => {
     res.send("you hit at /api");
 });
 
-export default router;
+module.exports = router;
