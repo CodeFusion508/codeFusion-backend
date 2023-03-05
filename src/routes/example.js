@@ -3,7 +3,8 @@ const express = require("express");
 module.exports = (deps) => {
     return express.Router()
         .get("/", (_, res) => res.send("you hit at /"))
-        .get("/api", (_, res) => res.send("you hit at /api"));
+        .get("/api", (_, res) => res.send("you hit at /api"))
+        .get("/deps", (_, res) => res.send(`you hit at /deps, here is deps -> ${deps}`));
 };
 
 
