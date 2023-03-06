@@ -1,0 +1,32 @@
+tags:
+  - name: exampleTag
+    description: an example of how to do a swagger doc using yaml
+paths:
+  /api:
+    get:
+      tags:
+        - exampleTag
+      summary: this return a string to your path
+      description: this is only for testing and seeing
+      operationId: testID
+      parameters:
+        - name: exampleParam
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: returns a string to your path
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/exampleSchema"
+
+components:
+  schemas:
+    exampleSchema:
+      allOf:
+        - type: object
+          properties:
+            example:
+              type: string

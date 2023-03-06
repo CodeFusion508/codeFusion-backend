@@ -9,7 +9,7 @@ module.exports = {
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "commonjs"
     },
     "rules": {
         // usually the var keyword has unexpected behavior, let and const are more consistent

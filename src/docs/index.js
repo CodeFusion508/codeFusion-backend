@@ -1,25 +1,28 @@
-import swaggerJSDoc from "swagger-jsdoc";
+const swaggerJSDoc = require("swagger-jsdoc");
+
+const package = require("../../package.json");
 
 const options = {
-    apis: ["./server/routes/*.js"],
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "CodeFusion API",
-            version: "0.0.0",
-            description: "The backend API to our CodeFusion frontend."
+            title: package.name,
+            version: package.version,
+            description: package.description
         }
     },
     servers: [
         {
             url: `${process.env.PORT || 3000}`
         }
-    ]
+    ],
+    apis: [
+        "./src/docs/*.yaml"
+    ],
 };
 
-const specs = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(options);
 
-export {
-    options,
-    specs
+module.exports = {
+    swaggerSpec
 };
