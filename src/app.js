@@ -3,7 +3,7 @@ const helmet = require("helmet");
 const swaggerUI = require("swagger-ui-express");
 
 // swagger docs
-const { specs } = require("./docs/index.js");
+const { swaggerSpec } = require("./docs/index.js");
 // route imports
 const Router = require("./router.js");
 
@@ -13,7 +13,7 @@ module.exports = (deps) => {
 
     const router = Router(deps);
 
-    app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
+    app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
     app.use(helmet());
     app.use(router);
 
