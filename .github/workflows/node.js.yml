@@ -25,5 +25,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npx kill-port 3000
-    - run: npm run start
+    - run: pm2 restart /home/ubuntu/.pm2/module_conf.json
