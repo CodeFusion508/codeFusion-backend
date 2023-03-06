@@ -25,5 +25,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: fuser -n tcp -k 3000
+    - run: npx kill-port 3000
     - run: npm run start
