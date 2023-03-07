@@ -2,9 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const swaggerUI = require("swagger-ui-express");
 
-// swagger docs
 const { swaggerSpec } = require("./docs/index.js");
-// route imports
 const Router = require("./router.js");
 
 module.exports = (deps) => {
@@ -19,7 +17,7 @@ module.exports = (deps) => {
 
 
     app.listen(PORT, () => {
-        process.stdout.write(`Running at PORT: ${PORT}`);
+        process.stdout.write("Running at PORT: " + `\x1b[3m\x1b[96m${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
     });
 
     return app;
