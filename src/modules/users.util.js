@@ -8,6 +8,6 @@ const endpointResponse = (res, next) => (promise) => promise.then((response) => 
 }).catch(next);
 
 module.exports = {
-    endpointWrapper,
-    endpointResponse
+    endpointResponse,
+    endpointWrapper
 };

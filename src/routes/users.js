@@ -8,12 +8,15 @@ module.exports = (deps) => {
     return express.Router()
         .get("/", endPoint(someUsers))
         .post("/signUp", endPoint(signUp))
-        .get("/login", (_, res) => res.send("you hit /users/login"))
-        .put("/:uuid/update", (_, res) => res.send("you hit /users/:uuid/update"))
-        .delete("/:uuid/delete", (_, res) => res.send("you hit /users/:uuid/delete"));
+        .get("/login", endPoint(login))
+        .put("/:uuid/update", endPoint(updateUser))
+        .delete("/:uuid/delete", endPoint(deleteUser));
 };
 
 
 
 const someUsers = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUsers(data));
 const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.putUser(data));
+const login = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.putUser(data));
+const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.putUser(data));
+const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.putUser(data));
