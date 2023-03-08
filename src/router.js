@@ -1,7 +1,7 @@
 const express = require("express");
 
 const routes = {
-    "/test": require("./routes/example.js")
+    "/users": require("./routes/users.js")
 };
 
 module.exports = (deps) => {

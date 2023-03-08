@@ -4,7 +4,7 @@ const App = require("./app.js");
 const Controllers = require("./controllers.js");
 
 const crtlList = {
-    exampleCtrl: require("./modules/example.ctrl.js")
+    usersCtrl: require("./modules/users.ctrl.js")
 };
 
 const start = async () => {
