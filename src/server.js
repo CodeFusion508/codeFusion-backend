@@ -5,12 +5,11 @@ const Controllers = require("./controllers.js");
 const Services = require("./services.js");
 
 const servicesList = {
-    cypher : require("./services/cypherQuery.js"),
-    neo4j  : require("./services/neo4j.js")
+    neo4j: require("./services/neo4j.js")
 };
 
 const ctrlList = {
-    usersCtrl: require("./modules/users.ctrl.js")
+    usersCtrl: require("./modules/users/users.ctrl.js")
 };
 
 const start = async () => {

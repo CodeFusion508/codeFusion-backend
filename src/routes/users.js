@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { endpointWrapper, endpointResponse } = require("../modules/users.util.js");
+const { endpointWrapper, endpointResponse } = require("../modules/users/users.util.js");
 
 module.exports = (deps) => {
     const endPoint = endpointWrapper(deps);
