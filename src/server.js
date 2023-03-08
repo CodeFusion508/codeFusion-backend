@@ -5,10 +5,11 @@ const Controllers = require("./controllers.js");
 const Services = require("./services.js");
 
 const servicesList = {
-    neo4j: require("./services/neo4j.js")
+    cypher : require("./services/cypherQuery.js"),
+    neo4j  : require("./services/neo4j.js")
 };
 
-const crtlList = {
+const ctrlList = {
     usersCtrl: require("./modules/users.ctrl.js")
 };
 
@@ -22,11 +23,10 @@ const start = async () => {
     dotenv.config();
 
     Object.assign(dependencies.services, await Services(dependencies, servicesList));
-    dependencies.services.neo4j = dependencies.services.neo4j.connections;
     Object.assign(dependencies, dependencies.services);
 
-    Object.assign(dependencies.ctrls, Controllers(dependencies, crtlList));
-    Object.assign(dependencies, dependencies.crtls);
+    Object.assign(dependencies.ctrls, Controllers(dependencies, ctrlList));
+    Object.assign(dependencies, dependencies.ctrls);
 
     const app = await App(dependencies);
     dependencies.app = app;
