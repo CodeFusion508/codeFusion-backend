@@ -22,10 +22,8 @@ const start = async () => {
     dotenv.config();
 
     Object.assign(dependencies.services, await Services(dependencies, servicesList));
-    Object.assign(dependencies, dependencies.services);
 
     Object.assign(dependencies.ctrls, Controllers(dependencies, ctrlList));
-    Object.assign(dependencies, dependencies.ctrls);
 
     const app = await App(dependencies);
     dependencies.app = app;
