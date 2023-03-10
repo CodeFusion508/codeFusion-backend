@@ -1,16 +1,20 @@
-const createUserQuery = `
-    CREATE (u: Student 
-        {
-            uuid: "${data.uuid}", 
-            totalExp: "0", 
-            weeklyExp: "0", 
-            email: "${data.email}", 
-            userName: "${data.userName}"
-        }
-    )
-`;
+const createUserQuery = (data) => {
+    const query = `
+        CREATE (u: Student 
+            {
+                uuid: "${data.uuid}", 
+                totalExp: "0", 
+                weeklyExp: "0", 
+                email: "${data.email}", 
+                userName: "${data.userName}"
+            }
+        )
+    `;
 
-const findUserQuery = `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
+    return query;
+}
+
+const findUserQuery = (data) => `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
 
 module.exports = {
     createUserQuery,

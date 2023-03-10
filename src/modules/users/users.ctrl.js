@@ -14,9 +14,17 @@ module.exports = (deps) =>
     }, {});
 
 
-const createUser = async ({ services }, data) => await services.neo4j.session.run(createUserQuery);
+const createUser = async ({ services }, data) => {
+  const query = createUserQuery(data);
 
-const getUser = async (deps, data) => await deps.services.neo4j.session.run(findUserQuery);
+  return await services.neo4j.session.run(query);
+};
+
+const getUser = async (deps, data) => {
+  const query = findUserQuery(data);
+
+  return await deps.services.neo4j.session.run(query);
+};
 
 
 Object.assign(module.exports, {
