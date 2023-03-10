@@ -1,36 +1,36 @@
-const { Query } = require("cypher-query-builder");
+// const { Query } = require("cypher-query-builder");
 
-const createUser = (data) => {
-    let query = new Query();
+// const createUser = (data) => {
+//     let query = new Query();
 
-    query
-        .createNode("user", "Student")
-        .set({
-            variables: {
-                user: {
-                    totalExp  : 0,
-                    userData  : null,
-                    uuid      : null,
-                    weeklyExp : 0
-                }
-            }
-        });
+//     query
+//         .createNode("user", "Student")
+//         .set({
+//             variables: {
+//                 user: {
+//                     totalExp  : 0,
+//                     userData  : null,
+//                     uuid      : null,
+//                     weeklyExp : 0
+//                 }
+//             }
+//         });
 
-    return query;
-};
+//     return query;
+// };
 
-const getUsers = (data) => {
-    let query = new Query();
+// const getUsers = (data) => {
+//     let query = new Query();
 
-    query
-        .matchNode()
-        .return();
+//     query
+//         .matchNode()
+//         .return();
 
-    return query;
-};
+//     return query;
+// };
 
 
-module.exports = {
-    createUser,
-    getUsers
-};
+// module.exports = {
+//     createUser,
+//     getUsers
+// };
