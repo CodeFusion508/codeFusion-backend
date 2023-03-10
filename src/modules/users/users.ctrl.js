@@ -1,3 +1,8 @@
+const {
+  createUserQuery,
+  findUserQuery
+} = require("./users.query.js");
+
 module.exports = (deps) =>
   Object
     .entries(module.exports)
@@ -9,17 +14,9 @@ module.exports = (deps) =>
     }, {});
 
 
-const createUser = async ({ services }, data) => {
-  const query = `CREATE (u: Student {uuid: "${data.uuid}", totalExp: "0", weeklyExp: "0", email: "${data.email}", userName: "${data.userName}"})`;
+const createUser = async ({ services }, data) => await services.neo4j.session.run(createUserQuery);
 
-  return await services.neo4j.session.run(query);
-};
-
-const getUser = async (deps, data) => {
-  const query = `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
-
-  return await deps.services.neo4j.session.run(query);
-};
+const getUser = async (deps, data) => await deps.services.neo4j.session.run(findUserQuery);
 
 
 Object.assign(module.exports, {

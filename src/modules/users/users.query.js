@@ -1,36 +1,19 @@
-// const { Query } = require("cypher-query-builder");
+/* eslint-disable no-undef */
+const createUserQuery = `
+    CREATE (u: Student 
+        {
+            uuid: "${data.uuid}", 
+            totalExp: "0", 
+            weeklyExp: "0", 
+            email: "${data.email}", 
+            userName: "${data.userName}"
+        }
+    )
+`;
 
-// const createUser = (data) => {
-//     let query = new Query();
+const findUserQuery = `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
 
-//     query
-//         .createNode("user", "Student")
-//         .set({
-//             variables: {
-//                 user: {
-//                     totalExp  : 0,
-//                     userData  : null,
-//                     uuid      : null,
-//                     weeklyExp : 0
-//                 }
-//             }
-//         });
-
-//     return query;
-// };
-
-// const getUsers = (data) => {
-//     let query = new Query();
-
-//     query
-//         .matchNode()
-//         .return();
-
-//     return query;
-// };
-
-
-// module.exports = {
-//     createUser,
-//     getUsers
-// };
+module.exports = {
+    createUserQuery,
+    findUserQuery
+};
