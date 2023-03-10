@@ -14,14 +14,14 @@ module.exports = (deps) =>
     }, {});
 
 
-const createUser = async ({ services }, data) => {
-  const query = createUserQuery(data);
+const createUser = async ({ services }, { body }) => {
+  const query = createUserQuery(body);
 
   return await services.neo4j.session.run(query);
 };
 
-const getUser = async ({ services }, data) => {
-  const query = findUserQuery(data);
+const getUser = async ({ services }, { params }) => {
+  const query = findUserQuery(params);
 
   return await services.neo4j.session.run(query);
 };

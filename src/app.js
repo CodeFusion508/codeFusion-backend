@@ -13,6 +13,7 @@ module.exports = (deps) => {
 
     app.use("/docs", serve, setup(swaggerSpec));
     app.use(helmet());
+    app.use(express.json());
     app.use(router);
 
 

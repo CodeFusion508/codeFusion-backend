@@ -1,12 +1,12 @@
-const createUserQuery = (data) => {
+const createUserQuery = ({body}) => {
     const query = `
         CREATE (u: Student 
             {
-                uuid: "${data.uuid}", 
+                uuid: "${body.uuid}", 
                 totalExp: "0", 
                 weeklyExp: "0", 
-                email: "${data.email}", 
-                userName: "${data.userName}"
+                email: "${body.email}", 
+                userName: "${body.userName}"
             }
         )
     `;
@@ -14,7 +14,7 @@ const createUserQuery = (data) => {
     return query;
 };
 
-const findUserQuery = (data) => `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
+const findUserQuery = (params) => `MATCH (u: User {uuid: "${params.uuid}"}) RETURN u`;
 
 module.exports = {
     createUserQuery,
