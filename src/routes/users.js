@@ -1,11 +1,11 @@
-const express = require("express");
+const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../modules/users/users.util.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
-    return express.Router()
+    return Router()
         .get("/:uuid", endPoint(getUser))
         .post("/signUp", endPoint(signUp));
 };

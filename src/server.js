@@ -1,4 +1,4 @@
-const dotenv = require("dotenv");
+const { config } = require("dotenv");
 
 const App = require("./app.js");
 const Controllers = require("./controllers.js");
@@ -19,7 +19,7 @@ const start = async () => {
         services : {}
     };
 
-    dotenv.config();
+    config();
 
     Object.assign(dependencies.services, await Services(dependencies, servicesList));
 

@@ -1,11 +1,11 @@
-const express = require("express");
+const { Router } = require("express");
 
 const routes = {
     "/users": require("./routes/users.js")
 };
 
 module.exports = (deps) => {
-    let router = express.Router();
+    let router = Router();
 
     for (const [route, routerMethod] of Object.entries(routes)) {
         router.use(route, routerMethod(deps));

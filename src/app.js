@@ -1,6 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
-const swaggerUI = require("swagger-ui-express");
+const {serve, setup} = require("swagger-ui-express");
 
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
@@ -11,7 +11,7 @@ module.exports = (deps) => {
 
     const router = Router(deps);
 
-    app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+    app.use("/docs", serve, setup(swaggerSpec));
     app.use(helmet());
     app.use(router);
 
