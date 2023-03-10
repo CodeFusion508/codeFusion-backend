@@ -12,7 +12,7 @@ const createUserQuery = (data) => {
     `;
 
     return query;
-}
+};
 
 const findUserQuery = (data) => `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
 
