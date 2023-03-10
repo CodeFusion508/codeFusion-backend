@@ -4,8 +4,9 @@ module.exports = {
         "es2021"  : true,
         "node"    : true
     },
-    "extends"       : "eslint:recommended",
-    "parserOptions" : {
+    "extends"        : "eslint:recommended",
+    "ignorePatterns" : ["*.query.js"],
+    "parserOptions"  : {
         "ecmaVersion" : "latest",
         "sourceType"  : "commonjs"
     },

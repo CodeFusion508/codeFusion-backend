@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const createUserQuery = `
     CREATE (u: Student 
         {
