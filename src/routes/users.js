@@ -6,10 +6,10 @@ module.exports = (deps) => {
     const endPoint = endpointWrapper(deps);
 
     return express.Router()
-        .get("/", endPoint(getUsers))
+        .get("/:uuid", endPoint(getUser))
         .post("/signUp", endPoint(signUp));
 };
 
 
-const getUsers = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUsers(data));
+const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(data));
 const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createUser(data));

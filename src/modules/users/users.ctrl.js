@@ -20,14 +20,14 @@ const createUser = async ({ services }, data) => {
   return await services.neo4j.session.run(query);
 };
 
-const getUsers = async (deps, data) => {
+const getUser = async (deps, data) => {
+  const query = `MATCH (u: User {uuid: "${data.uuid}"}) RETURN u`;
 
-
-  return await deps.services.neo4j.session.run();
+  return await deps.services.neo4j.session.run(query);
 };
 
 
 Object.assign(module.exports, {
   createUser,
-  getUsers
+  getUser
 });
