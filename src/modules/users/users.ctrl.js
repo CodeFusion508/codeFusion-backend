@@ -8,14 +8,7 @@ module.exports = (deps) =>
 
 
 const createUser = async ({ services }, data) => {
-  const user = {
-    email    : "asdsadsa@gmail.com",
-    password : "Xo9wgkL9jR485x",
-    userName : "tacky008x",
-    uuid     : "75eab8ef-51e3-49f2-b328-8bcc99ae83a0"
-  };
-
-  const query = `CREATE (u: User {uuid: "${user.uuid}", totalExp: "0", weeklyExp: "0", email: "${user.email}", userName: "${user.userName}"})`;
+  const query = `CREATE (u: User {uuid: "${data.uuid}", totalExp: "0", weeklyExp: "0", email: "${data.email}", userName: "${data.userName}"})`;
 
   return await services.neo4j.session.run(query);
 };
