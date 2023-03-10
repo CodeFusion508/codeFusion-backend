@@ -1,4 +1,4 @@
-const endpointWrapper = (deps) => (method) => [
+const endpointMethods = (deps) => (method) => [
     method(deps)
 ];
 
@@ -8,6 +8,6 @@ const endpointResponse = (res, next) => (promise) => promise.then((response) => 
 }).catch(next);
 
 module.exports = {
-    endpointResponse,
-    endpointWrapper
+    endpointMethods,
+    endpointResponse
 };

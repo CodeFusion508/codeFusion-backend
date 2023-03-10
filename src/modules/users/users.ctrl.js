@@ -20,10 +20,10 @@ const createUser = async ({ services }, data) => {
   return await services.neo4j.session.run(query);
 };
 
-const getUser = async (deps, data) => {
+const getUser = async ({ services }, data) => {
   const query = findUserQuery(data);
 
-  return await deps.services.neo4j.session.run(query);
+  return await services.neo4j.session.run(query);
 };
 
 

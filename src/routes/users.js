@@ -1,9 +1,9 @@
 const express = require("express");
 
-const { endpointWrapper, endpointResponse } = require("../modules/users/users.util.js");
+const { endpointMethods, endpointResponse } = require("../modules/users/users.util.js");
 
 module.exports = (deps) => {
-    const endPoint = endpointWrapper(deps);
+    const endPoint = endpointMethods(deps);
 
     return express.Router()
         .get("/:uuid", endPoint(getUser))
