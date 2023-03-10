@@ -1,3 +1,5 @@
+const neo4j = require("neo4j-driver");
+
 const usersQuery = require("./users.query.js");
 
 module.exports = (deps) =>
@@ -9,24 +11,22 @@ module.exports = (deps) =>
     }), {});
 
 
-const createUser = async(deps, data) => {
-  const query = await usersQuery.createUser().build();
+const createUser = async ({ services }, data) => {
+  const query = await usersQuery.createUser(data).build();
+
+
+  return await services.neo4j.session.run(query);
+};
+
+const getUsers = async (deps, data) => {
+  const query = await usersQuery.getUsers().build();
 
 
   return deps.services.neo4j.session.run(query);
 };
 
-const getUsers = (deps, data) => {
-
-};
-
-const putUser = (deps, data) => {
-
-};
-
 
 Object.assign(module.exports, {
   createUser,
-  getUsers,
-  putUser
+  getUsers
 });
