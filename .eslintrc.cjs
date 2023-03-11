@@ -1,46 +1,58 @@
 module.exports = {
     "env": {
-        "browser": true,
-        "es2021": true,
-        "node": true
+        "browser" : true,
+        "es2021"  : true,
+        "node"    : true
     },
-    "extends": "eslint:recommended",
-    "overrides": [
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "commonjs"
+    "extends"       : "eslint:recommended",
+    "parserOptions" : {
+        "ecmaVersion" : "latest",
+        "sourceType"  : "commonjs"
     },
     "rules": {
-        // usually the var keyword has unexpected behavior, let and const are more consistent
-        "no-var": "error",
-        // if a variable isn't used it will warn you, not an error because the var might be used somewhere else
-        "no-unused-vars": "warn",
-        // leaving console logs is a bad practice and should only be used during development
-        "no-console": "warn",
-        // having duplicates is unnecessary and degrades performance
-        "no-duplicate-imports": "error",
-        "no-dupe-keys": "error",
-        // the debugger is only a testing tool and could break your application
-        "no-debugger": "error",
-        // I think that adding semi-colons is a good practice because it might help solve some issues and
-        // the interpreter doesn't have to guess where your line ended
-        "semi": [
+        "arrow-body-style": [
             "error",
-            "always"
+            "as-needed",
+            { "requireReturnForObjectLiteral": true }
         ],
-        // this is personal choice, and for the sake of consistency I made it an error
+        "key-spacing": ["error", {
+            "align": {
+                "afterColon"  : true,
+                "beforeColon" : true,
+                "on"          : "colon"
+            }
+        }],
+        "no-console"           : "warn",
+        "no-debugger"          : "error",
+        "no-dupe-keys"         : "error",
+        "no-duplicate-imports" : "error",
+        "no-empty"             : "error",
+        "no-trailing-spaces"   : "error",
+        "no-unused-vars"       : "warn",
+        "no-var"               : "error",
+        "object-curly-newline" : ["error", {
+            "ExportDeclaration" : { "consistent": true, "minProperties": 3 },
+            "ImportDeclaration" : { "consistent": true, "minProperties": 3 },
+            "ObjectExpression"  : { "consistent": true, "minProperties": 3 },
+            "ObjectPattern"     : { "consistent": true, "minProperties": 3 }
+        }],
+        "prefer-destructuring": ["error", {
+            "array"  : true,
+            "object" : true
+        }],
         "quotes": [
             "error",
             "double",
             {
-                "avoidEscape": true,
-                "allowTemplateLiterals": true
+                "allowTemplateLiterals" : true,
+                "avoidEscape"           : true
             }
         ],
-        // leaving spaces is unnecessary, and for the sake of consistency I made it an error
-        "no-trailing-spaces": [
-            "error"
+        "semi"      : ["error", "always"],
+        "sort-keys" : [
+            "error",
+            "asc",
+            { "caseSensitive": true }
         ]
     }
 };

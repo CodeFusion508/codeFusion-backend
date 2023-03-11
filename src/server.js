@@ -1,32 +1,31 @@
-const dotenv = require("dotenv");
+const { config } = require("dotenv");
 
 const App = require("./app.js");
 const Controllers = require("./controllers.js");
+const Services = require("./services.js");
 
-const crtlList = {
-    exampleCtrl: require("./modules/example.ctrl.js")
+const servicesList = {
+    neo4j: require("./services/neo4j.js")
+};
+
+const ctrlList = {
+    usersCtrl: require("./modules/users/users.ctrl.js")
 };
 
 const start = async () => {
     let dependencies = {
-        config: {},
-        ctrls: {},
-        services: {}
+        config   : {},
+        ctrls    : {},
+        services : {}
     };
 
-    dotenv.config();
+    config();
 
-    // Object.assign(dependencies.services, await Services(dependencies, something));
+    Object.assign(dependencies.services, await Services(dependencies, servicesList));
 
-    // dependencies.services.neo4j = dependencies.services.neo4j.connections;
-
-    // Object.assign(dependencies, dependencies.services);
-
-    Object.assign(dependencies.ctrls, Controllers(dependencies, crtlList));
-    Object.assign(dependencies, dependencies.crtls);
+    Object.assign(dependencies.ctrls, Controllers(dependencies, ctrlList));
 
     const app = await App(dependencies);
-
     dependencies.app = app;
 
     return dependencies;
