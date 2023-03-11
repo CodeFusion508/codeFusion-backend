@@ -1,4 +1,4 @@
-const createUserQuery = ({body}) => {
+const createUserQuery = (body) => {
     const query = `
         CREATE (u: Student 
             {
