@@ -10,20 +10,20 @@ module.exports = async () => {
     const session = await driver.session();
 
 
-    const read = await driver.session({
-        defaultAccessMode: neo4jDriver.session.READ
-    });
+    // const read = await driver.session({
+    //     defaultAccessMode: neo4jDriver.session.READ
+    // });
 
-    const write = await driver.session({
-        database          : process.env.DBNAME,
-        defaultAccessMode : neo4jDriver.session.WRITE
-    });
+    // const write = await driver.session({
+    //     database          : process.env.DBNAME,
+    //     defaultAccessMode : neo4jDriver.session.WRITE
+    // });
 
     const neo4j = {
         driver,
-        read,
+        // read,
         session,
-        write
+        // write
     };
 
     return neo4j;
