@@ -3,8 +3,8 @@ const createUserQuery = (body) => {
         CREATE (u: Student 
             {
                 uuid: "${body.uuid}", 
-                totalExp: "0", 
-                weeklyExp: "0", 
+                totalExp: 0, 
+                weeklyExp: 0, 
                 email: "${body.email}", 
                 userName: "${body.userName}", 
                 password: "${body.password}"
@@ -16,6 +16,7 @@ const createUserQuery = (body) => {
 };
 
 const findUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) RETURN u`;
+const findRegisteredUser = (body) => `MATCH (u: Student {email: "${body.email}"}) RETURN u`;
 
 const updateUserQuery = (body) => {
     const query = `
@@ -29,6 +30,7 @@ const updateUserQuery = (body) => {
 
 module.exports = {
     createUserQuery,
+    findRegisteredUser,
     findUserQuery,
     updateUserQuery
 };

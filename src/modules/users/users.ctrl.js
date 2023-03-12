@@ -1,5 +1,6 @@
 const {
   createUserQuery,
+  findRegisteredUser,
   findUserQuery,
   updateUserQuery
 } = require("./users.query.js");
@@ -16,9 +17,19 @@ module.exports = (deps) =>
 
 
 const createUser = async ({ services }, { body }) => {
-  const query = createUserQuery(body);
+  // find if user is already registered by email
+  const findUser = findRegisteredUser(body);
 
-  return await services.neo4j.session.run(query);
+  const result = await services.neo4j.session.run(findUser);
+
+  // if no user, proceed creating new user
+  if (result.records.length === 0) {
+    const query = createUserQuery(body);
+
+    return await services.neo4j.session.run(query);
+  } else {
+    return new Error("That email has already been registered, please try again with another email.");
+  }
 };
 
 const getUser = async ({ services }, { params }) => {
