@@ -15,8 +15,9 @@ const createUserQuery = (body) => {
     return query;
 };
 
-const findUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) RETURN u`;
+const deleteUserQuery = (body) => `MATCH (u: Student {uuid: "${body.uuid}"}) DELETE u`;
 const findRegisteredUser = (body) => `MATCH (u: Student {email: "${body.email}"}) RETURN u`;
+const findUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) RETURN u`;
 
 const updateUserQuery = (body) => {
     const query = `
@@ -28,8 +29,10 @@ const updateUserQuery = (body) => {
     return query;
 };
 
+
 module.exports = {
     createUserQuery,
+    deleteUserQuery,
     findRegisteredUser,
     findUserQuery,
     updateUserQuery

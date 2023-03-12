@@ -9,7 +9,6 @@ module.exports = async () => {
 
     const session = await driver.session();
 
-
     // const read = await driver.session({
     //     defaultAccessMode: neo4jDriver.session.READ
     // });

@@ -1,5 +1,6 @@
 const {
   createUserQuery,
+  deleteUserQuery,
   findRegisteredUser,
   findUserQuery,
   updateUserQuery
@@ -32,6 +33,12 @@ const createUser = async ({ services }, { body }) => {
   }
 };
 
+const deleteUser = async ({ services }, { body }) => {
+  const query = deleteUserQuery(body);
+
+  return await services.neo4j.session.run(query);
+};
+
 const getUser = async ({ services }, { params }) => {
   const query = findUserQuery(params);
 
@@ -44,8 +51,10 @@ const updateUser = async ({ services }, { body }) => {
   return await services.neo4j.session.run(query);
 };
 
+
 Object.assign(module.exports, {
   createUser,
+  deleteUser,
   getUser,
-  updateUser
+  updateUser,
 });
