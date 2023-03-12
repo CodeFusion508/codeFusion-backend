@@ -6,7 +6,8 @@ const createUserQuery = (body) => {
                 totalExp: "0", 
                 weeklyExp: "0", 
                 email: "${body.email}", 
-                userName: "${body.userName}"
+                userName: "${body.userName}", 
+                password: "${body.password}"
             }
         )
     `;
