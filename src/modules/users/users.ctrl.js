@@ -29,7 +29,7 @@ const createUser = async ({ services }, { body }) => {
 
     return await services.neo4j.session.run(query);
   } else {
-    return new Error("That email has already been registered, please try again with another email.");
+    throw new Error("This email has already been registered, please try again with another email.");
   }
 };
 
