@@ -7,7 +7,7 @@ module.exports = (deps) => {
 
     return Router()
         .get("/:uuid", endPoint(getUser))
-        .put("/:uuid/update", endPoint(updateUser))
+        .put("/updateUser", endPoint(updateUser))
         .post("/signUp", endPoint(signUp));
 };
 
