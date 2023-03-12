@@ -6,6 +6,9 @@ const {
   updateUserQuery
 } = require("./users.query.js");
 
+const { v4 } = require("uuid");
+
+
 module.exports = (deps) =>
   Object
     .entries(module.exports)
@@ -25,7 +28,8 @@ const createUser = async ({ services }, { body }) => {
 
   // if no user, proceed creating new user
   if (result.records.length === 0) {
-    const query = createUserQuery(body);
+    const uuid = v4();
+    const query = createUserQuery(uuid, body);
 
     return await services.neo4j.session.run(query);
   } else {

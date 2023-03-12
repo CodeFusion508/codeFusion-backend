@@ -1,8 +1,8 @@
-const createUserQuery = (body) => {
+const createUserQuery = (uuid, body) => {
     const query = `
         CREATE (u: Student 
             {
-                uuid: "${body.uuid}", 
+                uuid: "${uuid}", 
                 totalExp: 0, 
                 weeklyExp: 0, 
                 email: "${body.email}", 
