@@ -21,20 +21,17 @@ module.exports = (deps) =>
 
 
 const createUser = async ({ services }, { body }) => {
-  // find if user is already registered by email
   const findUser = findRegisteredUser(body);
 
   const result = await services.neo4j.session.run(findUser);
 
-  // if no user, proceed creating new user
   if (result.records.length === 0) {
     const uuid = v4();
     const query = createUserQuery(uuid, body);
 
     return await services.neo4j.session.run(query);
-  } else {
-    throw new Error("This email has already been registered, please try again with another email.");
   }
+  else throw 403;
 };
 
 const deleteUser = async ({ services }, { body }) => {
