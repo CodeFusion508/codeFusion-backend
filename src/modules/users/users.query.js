@@ -15,13 +15,23 @@ const createUserQuery = (uuid, body) => {
     return query;
 };
 
-const deleteUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) DELETE u;`;
+const deleteUserQuery = (params) => `
+    MATCH (u: Student {uuid: "${params.uuid}"})
+    SET n:softDeleted;
+`;
+
 const findRegisteredUser = (body) => `MATCH (u: Student {email: "${body.email}"}) RETURN u;`;
-const findUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) RETURN u;`;
+
+const findUserQuery = (params) => `
+    MATCH (u: Student {uuid: "${params.uuid}"}) 
+    WHERE NOT u:softDeleted 
+    RETURN u;
+`;
 
 const updateUserQuery = (body) => {
     const query = `
         MATCH (u: Student {uuid: "${body.uuid}"})
+        WHERE NOT u:softDeleted
         SET u.totalExp = "${body.totalExp}", 
             u.weeklyExp = "${body.weeklyExp}", 
             u.userName = "${body.userName}", 
