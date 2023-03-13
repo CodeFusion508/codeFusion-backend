@@ -1,4 +1,7 @@
-const endpointMethods = (deps) => (method) => [
+const validate = require("./userValidate.js");
+
+const endpointMethods = (deps) => (reqData, joi, method) => [
+    validate(reqData, joi),
     method(deps)
 ];
 

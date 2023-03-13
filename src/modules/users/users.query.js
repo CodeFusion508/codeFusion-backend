@@ -15,7 +15,7 @@ const createUserQuery = (uuid, body) => {
     return query;
 };
 
-const deleteUserQuery = (body) => `MATCH (u: Student {uuid: "${body.uuid}"}) DELETE u;`;
+const deleteUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) DELETE u;`;
 const findRegisteredUser = (body) => `MATCH (u: Student {email: "${body.email}"}) RETURN u;`;
 const findUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) RETURN u;`;
 

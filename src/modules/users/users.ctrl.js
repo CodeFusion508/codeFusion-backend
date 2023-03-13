@@ -34,8 +34,8 @@ const createUser = async ({ services }, { body }) => {
   else throw 403;
 };
 
-const deleteUser = async ({ services }, { body }) => {
-  const query = deleteUserQuery(body);
+const deleteUser = async ({ services }, { params }) => {
+  const query = deleteUserQuery(params);
 
   return await services.neo4j.session.run(query);
 };
