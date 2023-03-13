@@ -1,15 +1,24 @@
 const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../modules/users/users.util.js");
+const {
+    params,
+    body,
+} = require("./reqData.js");
+const {
+    getUUID,
+    createUSER,
+    updateUSER
+} = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/:uuid", endPoint(getUser))
-        .post("/signUp", endPoint(signUp))
-        .put("/updateUser", endPoint(updateUser))
-        .delete("/deleteUser", endPoint(deleteUser));
+        .get("/:uuid", endPoint(params, getUUID, getUser))
+        .post("/signUp", endPoint(body, createUSER, signUp))
+        .put("/updateUser", endPoint(body, updateUSER, updateUser))
+        .delete("/:uuid/deleteUser", endPoint(params, getUUID, deleteUser));
 };
 
 

@@ -1,8 +1,8 @@
-const createUserQuery = (body) => {
+const createUserQuery = (uuid, body) => {
     const query = `
         CREATE (u: Student 
             {
-                uuid: "${body.uuid}", 
+                uuid: "${uuid}", 
                 totalExp: 0, 
                 weeklyExp: 0, 
                 email: "${body.email}", 
@@ -15,7 +15,7 @@ const createUserQuery = (body) => {
     return query;
 };
 
-const deleteUserQuery = (body) => `MATCH (u: Student {uuid: "${body.uuid}"}) DELETE u;`;
+const deleteUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) DELETE u;`;
 const findRegisteredUser = (body) => `MATCH (u: Student {email: "${body.email}"}) RETURN u;`;
 const findUserQuery = (params) => `MATCH (u: Student {uuid: "${params.uuid}"}) RETURN u;`;
 
