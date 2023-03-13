@@ -22,7 +22,7 @@ module.exports = (deps) => {
 };
 
 
-const getUser = ({ ctrls }) => (req, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(req));
-const signUp = ({ ctrls }) => (req, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createUser(req));
-const updateUser = ({ ctrls }) => (req, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updateUser(req));
-const deleteUser = ({ ctrls }) => (req, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(req));
+const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(data));
+const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createUser(data));
+const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updateUser(data));
+const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));

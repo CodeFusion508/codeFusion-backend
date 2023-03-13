@@ -20,7 +20,7 @@ module.exports = (deps) =>
     }, {});
 
 
-const createUser = async ({ services }, { body }) => {
+const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
 
   const result = await services.neo4j.session.run(findUser);
@@ -34,19 +34,19 @@ const createUser = async ({ services }, { body }) => {
   else throw 403;
 };
 
-const deleteUser = async ({ services }, { params }) => {
+const deleteUser = async ({ services }, params) => {
   const query = deleteUserQuery(params);
 
   return await services.neo4j.session.run(query);
 };
 
-const getUser = async ({ services }, { params }) => {
+const getUser = async ({ services }, params) => {
   const query = findUserQuery(params);
 
   return await services.neo4j.session.run(query);
 };
 
-const updateUser = async ({ services }, { body }) => {
+const updateUser = async ({ services }, body) => {
   const query = updateUserQuery(body);
 
   return await services.neo4j.session.run(query);
