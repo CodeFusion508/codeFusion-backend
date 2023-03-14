@@ -48,11 +48,6 @@ module.exports = {
                 "avoidEscape"           : true
             }
         ],
-        "semi"      : ["error", "always"],
-        "sort-keys" : [
-            "error",
-            "asc",
-            { "caseSensitive": true }
-        ]
+        "semi": ["error", "always"]
     }
 };
