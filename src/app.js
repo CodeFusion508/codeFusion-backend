@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
-const {serve, setup} = require("swagger-ui-express");
+const { serve, setup } = require("swagger-ui-express");
+const path = require("path");
 
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
@@ -8,12 +9,14 @@ const Router = require("./router.js");
 module.exports = (deps) => {
     let app = express();
     const PORT = process.env.PORT || 3000;
-
     const router = Router(deps);
 
     app.use("/docs", serve, setup(swaggerSpec));
+
     app.use(helmet());
     app.use(express.json());
+
+    app.use("/static", express.static(path.join(__dirname, "lessons")));
     app.use(router);
 
 
