@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/CodeFusion508/codeFusion-backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "cypher-query-builder": "^6.0.4",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
