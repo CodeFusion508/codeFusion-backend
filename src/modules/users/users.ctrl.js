@@ -21,7 +21,6 @@ module.exports = (deps) =>
 
 
 const createUser = async ({ services }, body) => {
-  console.log(body);
   const findUser = findRegisteredUser(body);
 
   const result = await services.neo4j.session.run(findUser);
