@@ -1,7 +1,9 @@
+const path = require("path");
+
 const express = require("express");
 const helmet = require("helmet");
 const { serve, setup } = require("swagger-ui-express");
-const path = require("path");
+const cors = require("cors");
 
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
@@ -14,6 +16,7 @@ module.exports = (deps) => {
     app.use("/docs", serve, setup(swaggerSpec));
 
     app.use(helmet());
+    app.use(cors());
     app.use(express.json());
 
     app.use("/static", express.static(path.join(__dirname, "lessons")));

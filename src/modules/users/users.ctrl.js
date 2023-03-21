@@ -30,8 +30,9 @@ const createUser = async ({ services }, body) => {
     const query = createUserQuery(uuid, body);
 
     return await services.neo4j.session.run(query);
+  } else {
+    throw 403;
   }
-  else throw 403;
 };
 
 const deleteUser = async ({ services }, params) => {
