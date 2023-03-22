@@ -1,3 +1,5 @@
+const { v4 } = require("uuid");
+
 const {
   createUserQuery,
   deleteUserQuery,
@@ -5,9 +7,9 @@ const {
   findUserQuery,
   updateUserQuery
 } = require("./users.query.js");
-
-const { v4 } = require("uuid");
-
+const {
+  cleanNeo4j
+} = require("./users.clean.js");
 
 module.exports = (deps) =>
   Object
@@ -29,7 +31,11 @@ const createUser = async ({ services }, body) => {
     const uuid = v4();
     const query = createUserQuery(uuid, body);
 
-    return await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query);
+    data = await cleanNeo4j(data);
+    data.uuid = uuid;
+
+    return data;
   } else {
     throw 403;
   }
@@ -38,19 +44,28 @@ const createUser = async ({ services }, body) => {
 const deleteUser = async ({ services }, params) => {
   const query = deleteUserQuery(params);
 
-  return await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query);
+  data = await cleanNeo4j(data);
+
+  return data;
 };
 
 const getUser = async ({ services }, params) => {
   const query = findUserQuery(params);
 
-  return await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query);
+  data = await cleanNeo4j(data);
+
+  return data;
 };
 
 const updateUser = async ({ services }, body) => {
   const query = updateUserQuery(body);
 
-  return await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query);
+  data = await cleanNeo4j(data);
+
+  return data;
 };
 
 
