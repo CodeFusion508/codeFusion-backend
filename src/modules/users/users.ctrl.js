@@ -38,7 +38,7 @@ const createUser = async ({ services }, body) => {
 
     return data;
   } else {
-    throw 403;
+    throw { err: 403, message: "This email has already been registered, please use another or log in." };
   }
 };
 
@@ -55,10 +55,15 @@ const getUser = async ({ services }, params) => {
   const query = findUserQuery(params);
 
   let data = await services.neo4j.session.run(query);
-  data = await cleanNeo4j(data);
-  await cleanRecords(data);
 
-  return data;
+  if (data.records.length !== 0) {
+    data = await cleanNeo4j(data);
+    await cleanRecords(data);
+
+    return data;
+  } else {
+    throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
+  }
 };
 
 const updateUser = async ({ services }, body) => {

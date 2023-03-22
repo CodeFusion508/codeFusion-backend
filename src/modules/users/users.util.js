@@ -8,27 +8,27 @@ const endpointMethods = (deps) => (reqData, joi, method) => [
 const endpointResponse = (res, next) => (promise) => promise.then((response) => {
     res.send(response);
 
-}).catch((err) => {
+}).catch(({err, message}) => {
     let error;
 
     switch (err) {
         case 400:
-            error = new Error("Unknown request, please check if you have the valid syntax.");
+            error = new Error(message);
             error.statusCode = 400;
 
             break;
         case 401:
-            error = new Error("You don't have the valid credentials.");
+            error = new Error(message);
             error.statusCode = 401;
 
             break;
         case 403:
-            error = new Error("You don't have the access rights to do this request.");
+            error = new Error(message);
             error.statusCode = 403;
 
             break;
         case 404:
-            error = new Error("Could not find your requested node, please check if you have the correct values.");
+            error = new Error(message);
             error.statusCode = 404;
 
             break;

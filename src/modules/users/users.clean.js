@@ -8,9 +8,10 @@ const cleanNeo4j = (data) => {
 
 const cleanRecords = (data) => {
     let arr = [];
+    let obj;
 
     for (let i = 0; i < data.records.length; i++) {
-        let obj = {
+        obj = {
             ...data.records[i]._fields[0]
         };
 
