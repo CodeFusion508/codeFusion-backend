@@ -6,6 +6,21 @@ const cleanNeo4j = (data) => {
     };
 };
 
+const cleanRecords = (data) => {
+    let arr = [];
+
+    for (let i = 0; i < data.records.length; i++) {
+        let obj = {
+            ...data.records[i]._fields[0]
+        };
+
+        arr.push(obj);
+    }
+
+    data.records = arr;
+};
+
 module.exports = {
-    cleanNeo4j
+    cleanNeo4j,
+    cleanRecords
 };

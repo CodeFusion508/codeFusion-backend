@@ -8,7 +8,8 @@ const {
   updateUserQuery
 } = require("./users.query.js");
 const {
-  cleanNeo4j
+  cleanNeo4j,
+  cleanRecords
 } = require("./users.clean.js");
 
 module.exports = (deps) =>
@@ -55,6 +56,7 @@ const getUser = async ({ services }, params) => {
 
   let data = await services.neo4j.session.run(query);
   data = await cleanNeo4j(data);
+  await cleanRecords(data);
 
   return data;
 };
