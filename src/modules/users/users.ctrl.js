@@ -25,7 +25,6 @@ module.exports = (deps) =>
 
 const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
-
   const result = await services.neo4j.session.run(findUser);
 
   if (result.records.length === 0) {
@@ -53,7 +52,6 @@ const deleteUser = async ({ services }, params) => {
 
 const getUser = async ({ services }, params) => {
   const query = findUserQuery(params);
-
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length !== 0) {
