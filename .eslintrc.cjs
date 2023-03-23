@@ -4,12 +4,13 @@ module.exports = {
         "es2021"  : true,
         "node"    : true
     },
-    "extends"       : "eslint:recommended",
+    "extends"       : ["eslint:recommended", "plugin:jest/recommended"],
     "parserOptions" : {
         "ecmaVersion" : "latest",
         "sourceType"  : "commonjs"
     },
-    "rules": {
+    "plugins" : ["jest"],
+    "rules"   : {
         "arrow-body-style": [
             "error",
             "as-needed",
@@ -48,6 +49,7 @@ module.exports = {
                 "avoidEscape"           : true
             }
         ],
-        "semi": ["error", "always"]
+        "semi"                    : ["error", "always"],
+        "jest/no-identical-title" : "error",
     }
 };
