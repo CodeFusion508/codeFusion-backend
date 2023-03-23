@@ -4,7 +4,7 @@ const neo4jDriver = require("neo4j-driver");
 module.exports = async () => {
     const driver = await neo4jDriver.driver(
         process.env.URI,
-        neo4jDriver.auth.basic(process.env.USER, process.env.PASSWORD)
+        neo4jDriver.auth.basic(process.env.BDUSER, process.env.PASSWORD)
     );
 
     const session = await driver.session();

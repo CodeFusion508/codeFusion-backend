@@ -1,0 +1,181 @@
+tags:
+  - name: Users
+    description: an example of how to do a swagger doc using yaml
+paths:
+  /users/{uuid}:
+    get:
+      tags:
+        - Users
+      summary: Get user by uuid
+      description: Get user by uuid
+      operationId: getUser
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: uuid of the user
+      responses:
+        200:
+          description: returns a user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resSchema"
+  /users/signUp:
+    post:
+      summary: Create new user
+      tags:
+        - Users
+      description: Create new user if email hasn't been registered.
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userSchema"
+      responses:
+        200:
+          description: The user has been created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resSchema"
+        403:
+          description: This Email has already been registered user another or log in.
+        500:
+          description: Unexpected Error, try again or contact us.
+  /users/updateUser:
+    put:
+      summary: Update user information
+      tags:
+        - Users
+      description: Update user information based on uuid given.
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateSchema"
+      responses:
+        200:
+          description: This user has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resSchema"
+        403:
+          description: This user does not existing please check if you have the valid uuid.
+        500:
+          description: Unexpected Error, try again or contact us.
+  /{uuid}/deleteUser:
+    delete:
+      summary: Delete a user.
+      tags:
+        - Users
+      description: Gives a softDelete label to a user.
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: uuid of the user
+      responses:
+        200:
+          description: This user has been deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resSchema"
+        403:
+          description: This user does not existing please check if you have the valid uuid.
+        500:
+          description: Unexpected Error, try again or contact us.
+
+components:
+  schemas:
+    userSchema:
+      allOf:
+        - type: object
+          properties:
+            userName:
+              type: string
+              example: "John"
+            email:
+              type: string
+              example: "JohnDoe@domain.com"
+            password:
+              type: string
+              example: "password"
+          required:
+            - userName
+            - email
+            - password
+    updateSchema:
+      allOf:
+        - type: object
+          properties:
+            uuid:
+              type: string
+              example: "uuid-here-numbers"
+            userName:
+              type: string
+              example: "John"
+            email:
+              type: string
+              example: "JohnDoe@domain.com"
+            password:
+              type: string
+              example: "password"
+            totalExp:
+              type: integer
+              example: 0
+            weeklyExp:
+              type: integer
+              example: 0
+          required:
+            - uuid
+    resSchema:
+      allOf:
+        - type: object
+          properties:
+            stats:
+              type: object
+              example:
+                {
+                  "nodesCreated": 0,
+                  "nodesDeleted": 0,
+                  "relationshipsCreated": 0,
+                  "relationshipsDeleted": 0,
+                  "propertiesSet": 0,
+                  "labelsAdded": 0,
+                  "labelsRemoved": 0,
+                  "indexesAdded": 0,
+                  "indexesRemoved": 0,
+                  "constraintsAdded": 0,
+                  "constraintsRemoved": 0,
+                }
+            records:
+              type: array
+              example:
+                [
+                  {
+                    "identity": { "low": 20, "high": 0 },
+                    "labels": ["Student", "User"],
+                    "properties":
+                      {
+                        "weeklyExp": { "low": 0, "high": 0 },
+                        "password": "1234",
+                        "userName": "testing800",
+                        "uuid": "7ab4c16a-cbb3-474b-9491-d43dab6f47d5",
+                        "email": "testing840@gmail.com",
+                        "totalExp": { "low": 0, "high": 0 },
+                      },
+                    "elementId": "4:2bbb6d7a-48d3-4bf1-8215-b2a0a72adc9c:20",
+                  },
+                ]
