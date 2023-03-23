@@ -2,31 +2,120 @@ tags:
   - name: exampleTag
     description: an example of how to do a swagger doc using yaml
 paths:
-  /api:
-    get:
+  /users/signUp1:
+    post:
       tags:
-        - exampleTag
-      summary: this return a string to your path
+        - Create new user
+      summary: Save a new user on DB given username, email and password
       description: this is only for testing and seeing
-      operationId: testID
-      parameters:
-        - name: exampleParam
+      operationId: signUp
+      requestBody:
+        - userName: userName
           in: query
           schema:
             type: string
+            required: true
+        - email: email
+          in: query
+          schema:
+            type: string
+            required: true
+        - password: password
+          in: query
+          schema:
+            type: string
+            required: true
       responses:
         200:
           description: returns a string to your path
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/exampleSchema"
+                $ref: "#/components/schemas/userSchema"
+
+  /users/{uuid}: 
+    get:
+      tags:
+        - Get existing user
+      summary: Get user by uuid 
+      description: Get user by uuid 
+      operationId: getUser
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+          description: uuid of the user
+      responses:
+        200:
+          description: returns a user
+          content:
+            application/json:
+              schema:
+                type: string
+
+  tags:
+    - name: userCreation
+      description: Create a new user
+  paths:
+  /users/signUp:
+    post:
+      summary: Crear un nuevo usuario
+      tags: [ Usuarios ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSchema'
+      responses:
+        200:
+          description: El usuario ha sido creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchema'
+        400:
+          description: Petición incorrecta
+        500:
+          description: Error interno del servidor
+
+
 
 components:
   schemas:
-    exampleSchema:
+    userSchema:
       allOf:
         - type: object
           properties:
-            example:
+            userName:
               type: string
+              example: "John"
+            email:
+              type: string
+              example: "mail@domain.com"
+            password:
+                type: string
+                example: "123456"
+          required:
+            - userName
+            - email
+            - password
+    getUUID:
+      allOf:
+        - type: object
+          properties:
+            userName:
+              type: string
+              example: "John"
+            email:
+              type: string
+              example: "mail@domain.com"
+            password:
+                type: string
+                example: "123456"
+          required:
+            - userName
+            - email
+            - password
