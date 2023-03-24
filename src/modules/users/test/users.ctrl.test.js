@@ -110,7 +110,7 @@ describe("users controller tests", () => {
             const body = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
-            const result = await deleteUser(deps, body)
+            const result = await updateUser(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
