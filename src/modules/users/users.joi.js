@@ -9,6 +9,10 @@ module.exports = {
         email    : Joi.string().required(),
         password : Joi.string().required()
     }),
+    logInUSER: Joi.object({
+        email    : Joi.string().required(),
+        password : Joi.string().required()
+    }),
     updateUSER: Joi.object({
         uuid      : Joi.string().required(),
         totalExp  : Joi.number().optional(),

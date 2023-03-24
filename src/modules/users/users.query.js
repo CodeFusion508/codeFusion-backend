@@ -43,11 +43,21 @@ const updateUserQuery = (body) => {
     return query;
 };
 
+const logInQuery = (body) => {
+    const query = `
+        MATCH (u: Student {email: "${body.email}", password: "${body.password}"})
+        WHERE NOT u:softDeleted
+        RETURN u;
+    `;
+
+    return query;
+};
 
 module.exports = {
     createUserQuery,
     deleteUserQuery,
     findRegisteredUser,
     findUserQuery,
-    updateUserQuery
+    updateUserQuery,
+    logInQuery,
 };

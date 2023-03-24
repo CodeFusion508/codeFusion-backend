@@ -8,7 +8,8 @@ const {
 const {
     getUUID,
     createUSER,
-    updateUSER
+    updateUSER,
+    logInUSER
 } = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
@@ -18,6 +19,7 @@ module.exports = (deps) => {
         .get("/:uuid", endPoint(params, getUUID, getUser))
         .post("/signUp", endPoint(body, createUSER, signUp))
         .put("/updateUser", endPoint(body, updateUSER, updateUser))
+        .post("/logIn", endPoint(body, logInUSER, logIn))
         .delete("/:uuid/deleteUser", endPoint(params, getUUID, deleteUser));
 };
 
@@ -26,3 +28,4 @@ const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, ne
 const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createUser(data));
 const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updateUser(data));
 const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));
+const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.logIn(data));

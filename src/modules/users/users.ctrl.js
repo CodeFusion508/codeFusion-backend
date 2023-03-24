@@ -1,11 +1,15 @@
+const jwt = require("../../config/jwt.txt");
+
 const { v4 } = require("uuid");
+
 
 const {
   createUserQuery,
   deleteUserQuery,
   findRegisteredUser,
   findUserQuery,
-  updateUserQuery
+  updateUserQuery,
+  logInQuery
 } = require("./users.query.js");
 const {
   cleanNeo4j,
@@ -73,10 +77,23 @@ const updateUser = async ({ services }, body) => {
   return data;
 };
 
+const logIn = async ({ services }, body) => {
+  const query = logInQuery(body);
+  let data = await services.neo4j.session.run(query);
+  if (data.records.length === 0) {
+    throw { err: 403, message: "This email or password is incorrect, please try again." };
+  } else {
+    data = await cleanNeo4j(data);
+    await cleanRecords(data);
+    return {data, token: jwt.createToken(data)};
+  }
+};
+
 
 Object.assign(module.exports, {
   createUser,
   deleteUser,
   getUser,
   updateUser,
+  logIn
 });
