@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore",
-    "test": "jest"
+    "test": "jest --colors",
+    "coverage": "jest --colors --coverage"
   },
   "repository": {
     "type": "git",
