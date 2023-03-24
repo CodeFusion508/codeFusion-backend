@@ -37,9 +37,10 @@ const createUser = async ({ services }, body) => {
 
     let data = await services.neo4j.session.run(query);
     data = await cleanNeo4j(data);
-    data.uuid = uuid;
+    await cleanRecords(data);
 
-    return data;
+    const { email, password } = data.records[0].properties;
+    return { data, token: jwt.createToken(email, password) };
   } else {
     throw { err: 403, message: "This email has already been registered, please use another or log in." };
   }
@@ -80,12 +81,15 @@ const updateUser = async ({ services }, body) => {
 const logIn = async ({ services }, body) => {
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
+
   if (data.records.length === 0) {
     throw { err: 403, message: "This email or password is incorrect, please try again." };
   } else {
     data = await cleanNeo4j(data);
     await cleanRecords(data);
-    return {data, token: jwt.createToken(data)};
+
+    const { email, password } = data.records[0].properties;
+    return { data, token: jwt.createToken(email, password) };
   }
 };
 

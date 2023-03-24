@@ -11,7 +11,8 @@ const createUserQuery = (uuid, body) => {
                 userName: "${body.userName}", 
                 password: "${body.password}"
             }
-        );
+        )
+        RETURN u;
     `;
 
     return query;
