@@ -85,12 +85,11 @@ const logIn = async ({ services }, body) => {
   if (data.records.length === 0) {
     throw { err: 403, message: "This email or password is incorrect, please try again." };
   } else {
-
     data = await cleanNeo4j(data);
     await cleanRecords(data);
-    const propertiesUser = data.records[0].properties
-    const { email, password } = propertiesUser;
-    return { data: propertiesUser, token: jwt.createToken(email, password) };
+
+    const { email, password } = data.records[0].properties;
+    return { data, token: jwt.createToken(email, password) };
   }
 };
 
