@@ -1,7 +1,9 @@
+const bcrypt = require("bcrypt");
+const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.txt");
 
-const { v4 } = require("uuid");
-
+const saltRounds = 10;
+const saltScript = bcrypt.genSaltSync(saltRounds);
 
 const {
   createUserQuery,
@@ -32,6 +34,7 @@ const createUser = async ({ services }, body) => {
   const result = await services.neo4j.session.run(findUser);
 
   if (result.records.length === 0) {
+    body.password = bcrypt.hashSync(body.password, saltScript);
     const uuid = v4();
     const query = createUserQuery(uuid, body);
 
@@ -89,6 +92,8 @@ const logIn = async ({ services }, body) => {
     await cleanRecords(data);
 
     const { email, password } = data.records[0].properties;
+
+    if (!bcrypt.compareSync(body.password, password)) throw { err: 403, message: "This email or password is incorrect, please try again." };
     return { data, token: jwt.createToken(email, password) };
   }
 };

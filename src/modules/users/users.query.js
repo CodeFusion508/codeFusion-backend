@@ -46,7 +46,7 @@ const updateUserQuery = (body) => {
 
 const logInQuery = (body) => {
     const query = `
-        MATCH (u: Student {email: "${body.email}", password: "${body.password}"})
+        MATCH (u: Student {email: "${body.email}"})
         WHERE NOT u:softDeleted
         RETURN u;
     `;
