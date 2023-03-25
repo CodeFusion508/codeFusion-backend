@@ -33,8 +33,8 @@ const updateUserQuery = (body) => {
     const query = `
         MATCH (u: Student {uuid: "${body.uuid}"})
         WHERE NOT u:softDeleted
-        SET u.totalExp = "${body.totalExp}", 
-            u.weeklyExp = "${body.weeklyExp}", 
+        SET u.totalExp = ${body.totalExp}, 
+            u.weeklyExp = ${body.weeklyExp}, 
             u.userName = "${body.userName}", 
             u.email = "${body.email}", 
             u.password = "${body.password}"
