@@ -8,9 +8,9 @@ const cors = require("cors");
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
 
-const errHandler = (err, req, res, next) => {
-    res.status(err.statusCode).json({ error: err.message })
-}
+const errHandler = (err, _, res) => {
+    res.status(err.statusCode).json({ error: err.message });
+};
 
 module.exports = (deps) => {
     let app = express();
