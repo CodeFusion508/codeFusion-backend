@@ -8,6 +8,10 @@ const cors = require("cors");
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
 
+const errHandler = (err, _, res) => {
+    res.status(err.statusCode).json({ error: err.message });
+};
+
 module.exports = (deps) => {
     let app = express();
     const PORT = process.env.PORT || 3000;
@@ -22,6 +26,7 @@ module.exports = (deps) => {
     app.use("/static", express.static(path.join(__dirname, "lessons")));
     app.use(router);
 
+    app.use(errHandler);
 
     app.listen(PORT, () => {
         process.stdout.write("Running at PORT: " + `\x1b[3m\x1b[96m${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");

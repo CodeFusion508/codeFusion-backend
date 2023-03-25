@@ -71,6 +71,30 @@ paths:
           description: This user does not existing please check if you have the valid uuid.
         500:
           description: Unexpected Error, try again or contact us.
+  /users/logIn:
+    put:
+      summary: LogIn User
+      tags:
+        - Users
+      description: Log in user if email and password are correct.
+      operationId: logInUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateSchema"
+      responses:
+        200:
+          description: This user has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resSchema"
+        403:
+          description: This user does not existing please check if you have the valid uuid.
+        500:
+          description: Unexpected Error, try again or contact us.
   /{uuid}/deleteUser:
     delete:
       summary: Delete a user.
@@ -140,6 +164,19 @@ components:
               example: 0
           required:
             - uuid
+    logInSchema:
+      allOf:
+        - type: object
+          properties:
+            email:
+              type: string
+              example: "JohnDoe@domain.com"
+            password:
+              type: string
+              example: "password"
+          required:
+            - email
+            - password
     resSchema:
       allOf:
         - type: object

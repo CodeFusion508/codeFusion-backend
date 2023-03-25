@@ -7,7 +7,6 @@ const endpointMethods = (deps) => (reqData, joi, method) => [
 
 const endpointResponse = (res, next) => (promise) => promise.then((response) => {
     res.send(response);
-
 }).catch(({ err, message }) => {
     let error;
 
