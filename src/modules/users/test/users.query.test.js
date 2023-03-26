@@ -3,7 +3,6 @@ const {
     deleteUserQuery,
     findRegisteredUser,
     findUserQuery,
-    // updateUserQuery,
     logInQuery
 } = require("../users.query.js");
 
@@ -56,17 +55,6 @@ describe("users query tests", () => {
         expect(query).toContain(`MATCH (u: Student {email: "${body.email}"})`);
         expect(query).toContain(`WHERE NOT u:softDeleted`);
     });
-
-    // it("updateUserQuery", () => {
-    //     const params = {
-    //         uuid: "1c12d3x-123d1232c13",
-    //     };
-
-    //     const query = updateUserQuery(params);
-
-    //     expect(query).toContain(`MATCH (u: User {uuid: "${params.uuid}"})`);
-    //     expect(query).toContain(`WHERE NOT u:softDeleted`);
-    // });
 
     it("findUserQuery", () => {
         const params = {

@@ -1,8 +1,8 @@
 const {
- createUSER, logInUSER, getUUID
+  createUSER, logInUSER, getUUID
 } = require("../users.joi");
 
-describe("user joi create", () => {
+describe("user joi tests", () => {
   describe("create user joi", () => {
     it("validate schema user when exist a error in password", () => {
       const body = {
@@ -28,27 +28,31 @@ describe("user joi create", () => {
       expect(error.details[0].message).toBe('"email" must be a string');
     });
   });
-});
 
-describe("user joi login", () => {
-  it("Email null", () => {
-    const body = {
-      email    : "",
-      password : "1234",
-    };
 
-    const { error } = logInUSER.validate(body);
+  describe("user joi login", () => {
+    it("Email null", () => {
+      const body = {
+        email    : "",
+        password : "1234",
+      };
 
-    expect(error.details[0].message).toBe('"email" is not allowed to be empty');
+      const { error } = logInUSER.validate(body);
+
+      expect(error.details[0].message).toBe('"email" is not allowed to be empty');
+    });
+  });
+
+  describe("user joi uuid", () => {
+    it("UUID null", () => {
+      const params = {};
+
+      const { error } = getUUID.validate(params);
+
+      expect(error.details[0].message).toBe('"uuid" is required');
+    });
   });
 });
 
-describe("user joi uuid", () => {
-  it("UUID null", () => {
-    const params = {};
 
-    const { error } = getUUID.validate(params);
 
-    expect(error.details[0].message).toBe('"uuid" is required');
-  });
-});
