@@ -5,6 +5,7 @@ const {
     params,
     body,
 } = require("./reqData.js");
+const auth = require('../services/Auth.js')
 
 const {
     getUUID,
@@ -17,12 +18,12 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/:uuid", endPoint(params, getUUID, getUser))
+        .get("/", auth.verifyToken, endPoint(params, getUUID, getUser))
         .post("/signUp", endPoint(body, createUSER, signUp))
-        .put("/updateUser", endPoint(body, updateUSER, updateUser))
-        .post("/logIn", endPoint(body, logInUSER, logIn))
-        .delete("/:uuid/deleteUser", endPoint(params, getUUID, deleteUser));
-};
+        .put("/updateUser", auth.verifyToken, endPoint( body, updateUSER, updateUser))
+        .post("/logIn", endPoint( body, logInUSER, logIn))
+        .delete("/:uuid/deleteUser", auth.verifyToken, endPoint( params, getUUID, deleteUser));
+}
 
 
 const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(data));
