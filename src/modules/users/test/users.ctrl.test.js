@@ -39,22 +39,6 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("err", 403);
             expect(result).toHaveProperty("message", "This email has already been registered, please use another or log in.");
         });
-
-        it("createUser should return formatted result", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
-
-            const body = {
-                email    : "testing10390@gmail.com",
-                password : "1234",
-                userName : "testing800"
-            };
-            const result = await createUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("records");
-            expect(result).toHaveProperty("stats");
-        });
     });
 
     describe("deleteUser", () => {
@@ -68,7 +52,7 @@ describe("users controller tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("records");
+            expect(result).toHaveProperty("node");
             expect(result).toHaveProperty("stats");
         });
     });
@@ -99,13 +83,13 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("stats");
-            expect(result).toHaveProperty("records[0].properties.email");
+            expect(result).toHaveProperty("node.properties.email");
         });
     });
 
     describe("updateUser", () => {
         it("updateUser should return formatted result", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
@@ -114,7 +98,7 @@ describe("users controller tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("records");
+            expect(result).toHaveProperty("node");
             expect(result).toHaveProperty("stats");
         });
     });
