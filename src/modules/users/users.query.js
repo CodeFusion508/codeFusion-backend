@@ -30,20 +30,33 @@ const findUserQuery = (params) => `
 `;
 
 const updateUserQuery = (body) => {
-    const query = `
-        MATCH (u: Student {uuid: "${body.uuid}"})
-        WHERE NOT u:softDeleted
-        SET u.totalExp = ${body.totalExp}, 
-            u.weeklyExp = ${body.weeklyExp}, 
-            u.userName = "${body.userName}", 
-            u.email = "${body.email}", 
-            u.password = "${body.password}"
-        RETURN u;
+    let propsToUpdate = [];
+
+    if (body.totalExp) {
+        propsToUpdate.push(`u.totalExp = ${body.totalExp}`);
+    }
+    if (body.weeklyExp) {
+        propsToUpdate.push(`u.weeklyExp = ${body.weeklyExp}`);
+    }
+    if (body.userName) {
+        propsToUpdate.push(`u.userName = "${body.userName}"`);
+    }
+    if (body.email) {
+        propsToUpdate.push(`u.email = "${body.email}"`);
+    }
+    if (body.password) {
+        propsToUpdate.push(`u.password = "${body.password}"`);
+    }
+
+    const updateQuery = `
+      MATCH (u: Student {uuid: "${body.uuid}"})
+      WHERE NOT u:softDeleted
+      SET ${propsToUpdate.join(", ")}
+      RETURN u;
     `;
 
-    return query;
+    return updateQuery;
 };
-
 const logInQuery = (body) => {
     const query = `
         MATCH (u: Student {email: "${body.email}"})
