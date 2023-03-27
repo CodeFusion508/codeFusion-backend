@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 module.exports = {
     getUUID: Joi.object({
-        uuid: Joi.required()
+        uuid: Joi.required(),
     }),
     createUSER: Joi.object({
         userName : Joi.string().required(),
