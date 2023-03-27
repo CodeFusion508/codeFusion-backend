@@ -1,26 +1,19 @@
 const cleanNeo4j = (data) => {
     return {
-        stats   : data.summary.counters._stats,
-        records : data.records,
+        stats : data.summary.counters._stats,
+        node  : data.records
     };
 };
 
-const cleanRecords = (data) => {
-    let arr = [];
-    let obj;
+const cleanRecord = (data) => {
+    const obj = {
+        ...data.node[0]._fields[0]
+    };
 
-    for (let i = 0; i < data.records.length; i++) {
-        obj = {
-            ...data.records[i]._fields[0]
-        };
-
-        arr.push(obj);
-    }
-
-    data.records = arr;
+    data.node = obj;
 };
 
 module.exports = {
     cleanNeo4j,
-    cleanRecords
+    cleanRecord
 };
