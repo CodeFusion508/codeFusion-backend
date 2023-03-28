@@ -9,7 +9,8 @@ const servicesList = {
 };
 
 const ctrlList = {
-    usersCtrl: require("./modules/users/users.ctrl.js")
+    usersCtrl  : require("./modules/users/users.ctrl.js"),
+    lessonCtrl : require("./modules/lessons/lessons.ctrl.js")
 };
 
 const start = async () => {
