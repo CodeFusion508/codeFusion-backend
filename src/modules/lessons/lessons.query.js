@@ -1,6 +1,3 @@
-
-
-
 const createLessonQuery = (uuid, body) => {
     const query = `
         CREATE (s: Section
@@ -28,6 +25,17 @@ const getLessonsQuery = () => {
     return query;
 };
 
+const findLessonQuery = (params) => `
+    MATCH (s: Section {uuid: "${params.uuid}"}) 
+    WHERE NOT s:softDeleted 
+    RETURN s;
+`;
+
+const deleteLessonQuery = (params) => `
+    MATCH (s: Section {uuid: "${params.uuid}"})
+    SET s:softDeleted;
+`;
+
 const updateLessonQuery = (body) => {
     let propsToUpdate = [];
 
@@ -54,4 +62,10 @@ const updateLessonQuery = (body) => {
     return updateQuery;
 };
 
-module.exports = {createLessonQuery, getLessonsQuery, updateLessonQuery};
+module.exports = {
+    createLessonQuery,
+    getLessonsQuery,
+    updateLessonQuery,
+    findLessonQuery,
+    deleteLessonQuery
+};

@@ -5,24 +5,26 @@ const {
     params,
     body,
 } = require("./reqData.js");
-const {createLESSON, updateLESSON} = require("../modules/lessons/lesson.joi");
+const {
+    createLESSON,
+    updateLESSON,
+    getUUID
+} = require("../modules/lessons/lesson.joi");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        //.get("/lesson", endPoint({}, getRelatedLessonsQuery, getRelatedLessons)
+        .get("/:uuid", endPoint(params, getUUID, getLesson))
         .get("/", endPoint(undefined, undefined, getLessons))
-        .post("/lesson", endPoint(body, createLESSON, createLesson))
-        .put("/lesson", endPoint(body, updateLESSON, updateLesson));
-        /*.post("/logIn", endPoint(body, logInUSER, logIn))
-        .delete("/:uuid/deleteUser", endPoint(params, getUUID, deleteUser));*/
+        .post("/", endPoint(body, createLESSON, createLesson))
+        .put("/", endPoint(body, updateLESSON, updateLesson))
+        .delete("/:uuid", endPoint(params, getUUID, deleteLesson));
 };
 
 
-//const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(data));
+const getLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.getLesson(data));
 const createLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.createLesson(data));
 const getLessons = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.getLessons(data));
 const updateLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.updateLesson(data));
-/*const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));
-const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.logIn(data));*/
+const deleteLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.deleteLesson(data));
