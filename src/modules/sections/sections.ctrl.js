@@ -1,11 +1,11 @@
 const { v4 } = require("uuid");
 
 const {
-    createLessonQuery,
-    getLessonsQuery,
-    findLessonQuery,
-    updateLessonQuery,
-    deleteLessonQuery
+    createSectionQuery,
+    getSectionsQuery,
+    findSectionQuery,
+    updateSectionQuery,
+    deleteSectionQuery
 } = require("./sections.query.js");
 
 const {
@@ -24,9 +24,9 @@ module.exports = (deps) =>
             };
         }, {});
 
-const createLesson = async ({ services }, body) => {
+const createSection = async ({ services }, body) => {
     const uuid = v4();
-    const query = createLessonQuery(uuid, body);
+    const query = createSectionQuery(uuid, body);
 
     let data = await services.neo4j.session.run(query);
     data = cleanNeo4j(data);
@@ -35,28 +35,28 @@ const createLesson = async ({ services }, body) => {
     return data;
 };
 
-const getLessons = async ({ services }) => {
-    const query = getLessonsQuery();
+const getSections = async ({ services }) => {
+    const query = getSectionsQuery();
 
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length == 0) {
-        throw { err: 404, message: "There are no lessons." };
+        throw { err: 404, message: "There are no Sections." };
     } else {
         data = cleanNeo4j(data);
         cleanRecords(data);
 
         return data;
     }
-}
+};
 
-const getLesson = async ({ services }, params) => {
-    const query = findLessonQuery(params);
+const getSection = async ({ services }, params) => {
+    const query = findSectionQuery(params);
 
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length == 0) {
-        throw { err: 404, message: "This lesson does not exist, please check if you have a valid uuid." };
+        throw { err: 404, message: "This Section does not exist, please check if you have a valid uuid." };
     } else {
         data = cleanNeo4j(data);
         cleanRecord(data);
@@ -66,13 +66,13 @@ const getLesson = async ({ services }, params) => {
 };
 
 
-const updateLesson = async ({ services }, body) => {
-    const query = updateLessonQuery(body);
+const updateSection = async ({ services }, body) => {
+    const query = updateSectionQuery(body);
 
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length === 0) {
-        throw { err: 404, message: "This lesson does not exist, please check if you have a valid uuid." };
+        throw { err: 404, message: "This Section does not exist, please check if you have a valid uuid." };
     } else {
         data = cleanNeo4j(data);
         cleanRecord(data);
@@ -81,8 +81,8 @@ const updateLesson = async ({ services }, body) => {
     }
 };
 
-const deleteLesson = async ({ services }, params) => {
-    const query = deleteLessonQuery(params);
+const deleteSection = async ({ services }, params) => {
+    const query = deleteSectionQuery(params);
 
     let data = await services.neo4j.session.run(query);
     data = cleanNeo4j(data);
@@ -91,9 +91,9 @@ const deleteLesson = async ({ services }, params) => {
 };
 
 Object.assign(module.exports, {
-    createLesson,
-    getLessons,
-    getLesson,
-    updateLesson,
-    deleteLesson
+    createSection,
+    getSections,
+    getSection,
+    updateSection,
+    deleteSection
 });

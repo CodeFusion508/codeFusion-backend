@@ -4,15 +4,15 @@ module.exports = {
     getUUID: Joi.object({
         uuid: Joi.required()
     }),
-    createLESSON: Joi.object({
+    createSECTION: Joi.object({
         path  : Joi.string().required(),
         title : Joi.string().required(),
         desc  : Joi.string().required()
     }),
-    getLESSONS: Joi.object({
+    getSECTIONS: Joi.object({
         //
     }),
-    updateLESSON: Joi.object({
+    updateSECTION: Joi.object({
         uuid     : Joi.string().required(),
         path     : Joi.string().optional(),
         title    : Joi.string().optional(),

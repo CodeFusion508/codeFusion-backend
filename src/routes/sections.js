@@ -6,8 +6,8 @@ const {
     body,
 } = require("./reqData.js");
 const {
-    createLESSON,
-    updateLESSON,
+    createSECTION,
+    updateSECTION,
     getUUID
 } = require("../modules/sections/sections.joi.js");
 
@@ -15,16 +15,16 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/:uuid", endPoint(params, getUUID, getLesson))
-        .get("/", endPoint(undefined, undefined, getLessons))
-        .post("/", endPoint(body, createLESSON, createLesson))
-        .put("/", endPoint(body, updateLESSON, updateLesson))
-        .delete("/:uuid", endPoint(params, getUUID, deleteLesson));
+        .get("/:uuid", endPoint(params, getUUID, getSection))
+        .get("/", endPoint(undefined, undefined, getSections))
+        .post("/", endPoint(body, createSECTION, createSection))
+        .put("/", endPoint(body, updateSECTION, updateSection))
+        .delete("/:uuid", endPoint(params, getUUID, deleteSection));
 };
 
 
-const getLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.getLesson(data));
-const createLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.createLesson(data));
-const getLessons = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.getLessons(data));
-const updateLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.updateLesson(data));
-const deleteLesson = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.deleteLesson(data));
+const getSection = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sectionsCtrl.getSection(data));
+const createSection = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sectionsCtrl.createSection(data));
+const getSections = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sectionsCtrl.getSections(data));
+const updateSection = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sectionsCtrl.updateSection(data));
+const deleteSection = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sectionsCtrl.deleteSection(data));
