@@ -9,7 +9,7 @@ const {
     createLESSON,
     updateLESSON,
     getUUID
-} = require("../modules/lessons/lesson.joi");
+} = require("../modules/sections/sections.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);

@@ -5,7 +5,6 @@ const {
     params,
     body,
 } = require("./reqData.js");
-const auth = require('../services/Auth.js')
 
 const auth = require("../modules/users/users.auth.js");
 

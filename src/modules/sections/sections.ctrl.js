@@ -6,7 +6,7 @@ const {
     findLessonQuery,
     updateLessonQuery,
     deleteLessonQuery
-} = require("./lessons.query.js");
+} = require("./sections.query.js");
 
 const {
     cleanNeo4j,

@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const routes = {
     "/users"   : require("./routes/users.js"),
-    "/lessons" : require("./routes/lessons.js")
+    "/sections" : require("./routes/sections.js")
 };
 
 module.exports = (deps) => {
