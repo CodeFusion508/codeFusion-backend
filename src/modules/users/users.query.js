@@ -19,12 +19,12 @@ const createUserQuery = (uuid, body) => {
 };
 
 const deleteUserQuery = (params) => `
-    MATCH (u: User {uuid: "${params.uuid}"})
+    MATCH (u: Student {uuid: "${params.uuid}"})
     SET u:softDeleted;
 `;
 
 const findUserQuery = (params) => `
-    MATCH (u: User {uuid: "${params.uuid}"}) 
+    MATCH (u: Student {uuid: "${params.uuid}"}) 
     WHERE NOT u:softDeleted 
     RETURN u;
 `;
