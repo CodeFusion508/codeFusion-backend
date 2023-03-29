@@ -9,7 +9,6 @@ const verifyToken = (req, _, next = Function) => {
 
     const [, token] = auth.split(" ");
 
-
     if (token === undefined) throw ({ message: "No tienes autorización", status: 401 });
 
     const infoToken = jwt.decode(token, SEED);

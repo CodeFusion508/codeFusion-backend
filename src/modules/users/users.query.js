@@ -73,5 +73,5 @@ module.exports = {
     findRegisteredUser,
     findUserQuery,
     updateUserQuery,
-    logInQuery,
+    logInQuery
 };

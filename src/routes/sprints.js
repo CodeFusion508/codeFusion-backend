@@ -1,11 +1,7 @@
 const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
-const {
-    params,
-    body,
-} = require("../utils/reqData.js");
-
+const { params, body } = require("../utils/reqData.js");
 const {
     GET_UUID,
     CREATE_SPRINT,
@@ -21,6 +17,7 @@ module.exports = (deps) => {
         .get("/:uuid", endPoint(params, GET_UUID, getSprintByUuid))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteSprintByUuid));
 };
+
 
 const getSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.getSprint(data));
 const createSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.createSprint(data));
