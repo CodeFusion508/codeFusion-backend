@@ -1,5 +1,5 @@
 const cleanNeo4j = (data) => {
-    if(!data.hasOwnProperty('summary') || !data.hasOwnProperty('records')) throw({ err: 500, message: "There is a problem with the query records" })
+    if(!data.hasOwnProperty('records')) throw({ err: 500, message: "There is a problem with the query records" })
     return {
         stats : data.summary.counters._stats,
         node  : data.records
@@ -13,6 +13,7 @@ const cleanRecord = (data) => {
     };
 
     data.node = obj;
+    return data
 };
 
 const cleanRecords = (data) => {
