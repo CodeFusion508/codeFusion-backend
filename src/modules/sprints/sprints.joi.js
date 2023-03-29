@@ -5,7 +5,6 @@ module.exports = {
         uuid: Joi.required()
     }),
     createSprint: Joi.object({
-        totalExp  : Joi.string().required(),
         path : Joi.string().required(),
         title  : Joi.string().required(),
         desc  : Joi.string().required()
