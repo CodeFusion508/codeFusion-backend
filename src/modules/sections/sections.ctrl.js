@@ -48,7 +48,7 @@ const getLessons = async ({ services }) => {
 
         return data;
     }
-};
+}
 
 const getLesson = async ({ services }, params) => {
     const query = findLessonQuery(params);
