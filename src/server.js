@@ -11,7 +11,7 @@ const servicesList = {
 const ctrlList = {
     usersCtrl    : require("./modules/users/users.ctrl.js"),
     sectionsCtrl : require("./modules/sections/sections.ctrl.js"),
-    sprintCtrl   : require('./modules/sprints/sprints.ctrl.js')
+    sprintsCtrl  : require("./modules/sprints/sprints.ctrl.js")
 };
 
 const start = async () => {

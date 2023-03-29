@@ -8,10 +8,10 @@ const {
 
 const {
     createSprint,
-    deleteSprint, 
-    getUUID, 
+    deleteSprint,
+    getUUID,
     updateSprint
-} = require("../modules/sprints/sprints.joi.js")
+} = require("../modules/sprints/sprints.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
@@ -21,11 +21,11 @@ module.exports = (deps) => {
         // .get("/", endPoint(undefined, undefined, getLessons))
         .post("/", endPoint(body, createSprint, createSprintCtrl))
         .put("/", endPoint(body, updateSprint, updateSprintCtrl))
-        .delete("/:uuid", endPoint(params, deleteSprint, deleteSprintByUuidCtrl))
-}
+        .delete("/:uuid", endPoint(params, deleteSprint, deleteSprintByUuidCtrl));
+};
 
-const getSprintByUuidCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.getSprint(data))
-const createSprintCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.createSprint(data))
+const getSprintByUuidCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.getSprint(data));
+const createSprintCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.createSprint(data));
 // const getSprints = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.getLessons(data));
-const updateSprintCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.updatedSprint(data))
-const deleteSprintByUuidCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.deleteSprint(data))
+const updateSprintCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.updatedSprint(data));
+const deleteSprintByUuidCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.deleteSprint(data));

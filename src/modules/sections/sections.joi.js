@@ -9,9 +9,6 @@ module.exports = {
         title : Joi.string().required(),
         desc  : Joi.string().required()
     }),
-    getSECTIONS: Joi.object({
-        //
-    }),
     updateSECTION: Joi.object({
         uuid     : Joi.string().required(),
         path     : Joi.string().optional(),
@@ -19,4 +16,4 @@ module.exports = {
         desc     : Joi.string().optional(),
         totalExp : Joi.number().optional()
     })
-}
+};

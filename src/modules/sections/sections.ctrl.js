@@ -40,14 +40,12 @@ const getSections = async ({ services }) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) {
-        throw { err: 404, message: "There are no Sections." };
-    } else {
-        data = cleanNeo4j(data);
-        cleanRecords(data);
+    if (data.records.length == 0) throw { err: 404, message: "There are no Sections." };
 
-        return data;
-    }
+    data = cleanNeo4j(data);
+    cleanRecords(data);
+
+    return data;
 };
 
 const getSection = async ({ services }, params) => {
@@ -55,14 +53,12 @@ const getSection = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) {
-        throw { err: 404, message: "This Section does not exist, please check if you have a valid uuid." };
-    } else {
-        data = cleanNeo4j(data);
-        cleanRecord(data);
+    if (data.records.length == 0) throw { err: 404, message: "This Section does not exist, please check if you have a valid uuid." };
 
-        return data;
-    }
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+
+    return data;
 };
 
 
@@ -71,14 +67,12 @@ const updateSection = async ({ services }, body) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) {
-        throw { err: 404, message: "This Section does not exist, please check if you have a valid uuid." };
-    } else {
-        data = cleanNeo4j(data);
-        cleanRecord(data);
+    if (data.records.length === 0) throw { err: 404, message: "This Section does not exist, please check if you have a valid uuid." };
 
-        return data;
-    }
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+
+    return data;
 };
 
 const deleteSection = async ({ services }, params) => {

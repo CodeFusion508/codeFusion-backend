@@ -1,30 +1,26 @@
 const cleanNeo4j = (data) => {
-    if(!data.hasOwnProperty('records')) throw({ err: 500, message: "There is a problem with the query records" })
-    if(data.records.length === 0) throw({ err: 404, message: "Nout found data" })
     return {
         stats : data.summary.counters._stats,
         node  : data.records
-    }
+    };
 };
 
 const cleanRecord = (data) => {
-    if(!data.hasOwnProperty('node')) throw({ err: 500, message: "There is a problem with the query nodes" })
     const obj = {
         ...data.node[0]._fields[0]
     };
 
     data.node = obj;
-    return data
+    return data;
 };
 
 const cleanRecords = (data) => {
-    if(!data.hasOwnProperty('node')) throw({ err: 500, message: "There is a problem with the query nodes" })
-    let arr = [];
-    if(data.node.length === 0) {
-        data.node = arr
-        return data
+    if (data.node.length === 0) {
+        data.node = arr;
+        return data;
     }
-    
+
+    let arr = [];
     let obj;
 
     for (let i = 0; i < data.node.length; i++) {
@@ -36,9 +32,7 @@ const cleanRecords = (data) => {
     }
 
     data.node = arr;
-
-    return data
-}
+};
 
 module.exports = {
     cleanNeo4j,

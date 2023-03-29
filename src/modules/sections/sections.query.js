@@ -15,15 +15,12 @@ const createSectionQuery = (uuid, body) => {
     return query;
 };
 
-const getSectionsQuery = () => {
-    const query = `
-        MATCH (s: Section) 
-        WHERE NOT s:softDeleted 
-        RETURN s;
-    `;
+const getSectionsQuery = () => `
+    MATCH (s: Section) 
+    WHERE NOT s:softDeleted 
+    RETURN s;
+`;
 
-    return query;
-};
 
 const findSectionQuery = (params) => `
     MATCH (s: Section {uuid: "${params.uuid}"}) 

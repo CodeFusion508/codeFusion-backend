@@ -96,11 +96,20 @@ const logIn = async ({ services }, body) => {
     data = cleanNeo4j(data);
     cleanRecord(data);
 
-    const { email, password, userName, uuid } = data.node.properties;
+    const {
+      email,
+      password,
+      userName,
+      uuid
+    } = data.node.properties;
 
     if (!bcrypt.compareSync(body.password, password)) throw { err: 403, message: "This email or password is incorrect, please try again." };
 
-    return { data, token: jwt.createToken({ userName , email , uuid }) };
+    return {
+      data, token: jwt.createToken({
+        userName, email, uuid
+      })
+    };
   } else {
     throw { err: 403, message: "This email or password is incorrect, please try again." };
   }
