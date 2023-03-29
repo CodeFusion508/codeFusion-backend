@@ -19,4 +19,4 @@ module.exports = {
         desc     : Joi.string().optional(),
         totalExp : Joi.number().optional()
     })
-};
+}

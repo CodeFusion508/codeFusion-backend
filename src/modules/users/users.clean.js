@@ -3,7 +3,7 @@ const cleanNeo4j = (data) => {
     return {
         stats : data.summary.counters._stats,
         node  : data.records
-    };
+    }
 };
 
 const cleanRecord = (data) => {
@@ -16,8 +16,13 @@ const cleanRecord = (data) => {
 };
 
 const cleanRecords = (data) => {
-    if(data.length === 0 ) return []
+    if(!data.hasOwnProperty('node')) throw({ err: 500, message: "There is a problem with the query nodes" })
     let arr = [];
+    if(data.node.length === 0) {
+        data.node = arr
+        return data
+    }
+    
     let obj;
 
     for (let i = 0; i < data.node.length; i++) {
@@ -29,7 +34,9 @@ const cleanRecords = (data) => {
     }
 
     data.node = arr;
-};
+
+    return data
+}
 
 module.exports = {
     cleanNeo4j,

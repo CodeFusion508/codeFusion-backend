@@ -13,7 +13,7 @@ const createSprintQuery = (uuid, body) => {
     `;
 
     return query;
-};
+}
 
 const getSprintQuery = (params) => {
     const query = `
@@ -54,7 +54,7 @@ const updateSprintQuery = (body) => {
     `;
 
     return updateQuery;
-};
+}
 
 
 module.exports = {

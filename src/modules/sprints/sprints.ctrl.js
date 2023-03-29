@@ -4,7 +4,9 @@ const {
     cleanNeo4j,
     cleanRecord,
     cleanRecords
-} = require("../users/users.clean.js");
+} = require("../users/users.clean.js")
+
+const { createSprintQuery, deleteSprintQuery, getSprintQuery, updateSprintQuery } = require('./sprints.query.js')
 
 module.exports = (deps) =>
     Object
@@ -24,7 +26,7 @@ module.exports = (deps) =>
 const createSprint = async ({ services }, body) => {
 
     const uuid = v4()
-    const query = "" //createSprintQuery(uuid, body)
+    const query = createSprintQuery(uuid, body)
 
     const data = cleanRecord(cleanNeo4j(await services.neo4j.session.run(query)))
 
@@ -36,12 +38,12 @@ const createSprint = async ({ services }, body) => {
 // With two params
 // services and body
 // return Object
-const getSprint = async ({ services }, body) => {
+const getSprint = async ({ services }, params) => {
 
-    const query = "" //getSprintQuery(services.uuid);
+    const query = getSprintQuery(params);
 
     const data = cleanRecord(cleanNeo4j(await services.neo4j.session.run(query)))
-    
+
     if(data.records.length === 0) throw { err: 404, message: "There are no sprint" }
 
     return data
@@ -53,7 +55,7 @@ const getSprint = async ({ services }, body) => {
 // return Object
 const updatedSprint = async ({ services }, body) => {
 
-    const query = "" //updateSprintQuery(services.uuid);
+    const query = updateSprintQuery(body);
 
     const data = cleanRecord(cleanNeo4j(await services.neo4j.session.run(query)))
     if(data.records.length === 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." }
@@ -67,10 +69,17 @@ const updatedSprint = async ({ services }, body) => {
 // return Object
 const deleteSprint = async ({ services }, body) => {
 
-    const query = "" //deleteSprintQuery(services.uuid);
+    const query = deleteSprintQuery(services.uuid);
 
     const data = cleanNeo4j(await services.neo4j.session.run(query))
     if(data.records.length === 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." }
 
     return data
 }
+
+Object.assign(module.exports, {
+    createSprint,
+    getSprint,
+    updatedSprint,
+    deleteSprint,
+})
