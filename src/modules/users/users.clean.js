@@ -1,6 +1,6 @@
 const cleanNeo4j = (data) => {
     if(!data.hasOwnProperty('records')) throw({ err: 500, message: "There is a problem with the query records" })
-    if(!data.records.length === 0) throw({ err: 404, message: "Nout found data" })
+    if(data.records.length === 0) throw({ err: 404, message: "Nout found data" })
     return {
         stats : data.summary.counters._stats,
         node  : data.records
