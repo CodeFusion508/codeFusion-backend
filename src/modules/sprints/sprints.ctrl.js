@@ -44,7 +44,7 @@ const getSprint = async ({ services }, params) => {
 
     const data = cleanRecord(cleanNeo4j(await services.neo4j.session.run(query)))
 
-    if(data.records.length === 0) throw { err: 404, message: "There are no sprint" }
+    if(data === undefined) throw { err: 404, message: "There are no sprint" }
 
     return data
 }
