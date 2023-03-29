@@ -6,20 +6,20 @@ const {
     body,
 } = require("../utils/reqData.js");
 const {
-    createSECTION,
-    updateSECTION,
-    getUUID
+    GET_UUID,
+    CREATE_SECTION,
+    UPDATE_SECTION
 } = require("../modules/sections/sections.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/:uuid", endPoint(params, getUUID, getSection))
         .get("/", endPoint(undefined, undefined, getSections))
-        .post("/", endPoint(body, createSECTION, createSection))
-        .put("/", endPoint(body, updateSECTION, updateSection))
-        .delete("/:uuid", endPoint(params, getUUID, deleteSection));
+        .post("/", endPoint(body, CREATE_SECTION, createSection))
+        .put("/", endPoint(body, UPDATE_SECTION, updateSection))
+        .get("/:uuid", endPoint(params, GET_UUID, getSection))
+        .delete("/:uuid", endPoint(params, GET_UUID, deleteSection));
 };
 
 

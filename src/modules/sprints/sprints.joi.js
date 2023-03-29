@@ -1,22 +1,19 @@
 const Joi = require("joi");
 
 module.exports = {
-    getUUID: Joi.object({
+    GET_UUID: Joi.object({
         uuid: Joi.required()
     }),
-    createSprint: Joi.object({
+    CREATE_SPRINT: Joi.object({
         path  : Joi.string().required(),
         title : Joi.string().required(),
         desc  : Joi.string().required()
     }),
-    updateSprint: Joi.object({
+    UPDATE_SPRINT: Joi.object({
         uuid     : Joi.string().required(),
         totalExp : Joi.string().optional(),
         title    : Joi.string().optional(),
         desc     : Joi.string().optional(),
         path     : Joi.number().optional()
-    }),
-    deleteSprint: Joi.object({
-        uuid: Joi.string().required(),
     })
 };

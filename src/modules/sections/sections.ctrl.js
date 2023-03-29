@@ -24,6 +24,7 @@ module.exports = (deps) =>
             };
         }, {});
 
+
 const createSection = async ({ services }, body) => {
     const uuid = v4();
     const query = createSectionQuery(uuid, body);

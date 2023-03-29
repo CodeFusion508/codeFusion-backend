@@ -7,25 +7,22 @@ const {
 } = require("../utils/reqData.js");
 
 const {
-    createSprint,
-    deleteSprint,
-    getUUID,
-    updateSprint
+    GET_UUID,
+    CREATE_SPRINT,
+    UPDATE_SPRINT
 } = require("../modules/sprints/sprints.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/:uuid", endPoint(params, getUUID, getSprintByUuidCtrl))
-        // .get("/", endPoint(undefined, undefined, getLessons))
-        .post("/", endPoint(body, createSprint, createSprintCtrl))
-        .put("/", endPoint(body, updateSprint, updateSprintCtrl))
-        .delete("/:uuid", endPoint(params, deleteSprint, deleteSprintByUuidCtrl));
+        .post("/", endPoint(body, CREATE_SPRINT, createSprint))
+        .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
+        .get("/:uuid", endPoint(params, GET_UUID, getSprintByUuid))
+        .delete("/:uuid", endPoint(params, GET_UUID, deleteSprintByUuid));
 };
 
-const getSprintByUuidCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.getSprint(data));
-const createSprintCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.createSprint(data));
-// const getSprints = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.lessonCtrl.getLessons(data));
-const updateSprintCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.updatedSprint(data));
-const deleteSprintByUuidCtrl = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.deleteSprint(data));
+const getSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.getSprint(data));
+const createSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.createSprint(data));
+const updateSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.updatedSprint(data));
+const deleteSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.deleteSprint(data));

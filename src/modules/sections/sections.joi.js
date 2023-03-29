@@ -1,15 +1,15 @@
 const Joi = require("joi");
 
 module.exports = {
-    getUUID: Joi.object({
+    GET_UUID: Joi.object({
         uuid: Joi.required()
     }),
-    createSECTION: Joi.object({
+    CREATE_SECTION: Joi.object({
         path  : Joi.string().required(),
         title : Joi.string().required(),
         desc  : Joi.string().required()
     }),
-    updateSECTION: Joi.object({
+    UPDATE_SECTION: Joi.object({
         uuid     : Joi.string().required(),
         path     : Joi.string().optional(),
         title    : Joi.string().optional(),
