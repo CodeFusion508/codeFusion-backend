@@ -13,7 +13,7 @@ const {
 const {
   cleanNeo4j,
   cleanRecord
-} = require("./users.clean.js");
+} = require("../../utils/cleanData.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);

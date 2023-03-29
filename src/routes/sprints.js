@@ -1,10 +1,10 @@
 const { Router } = require("express");
 
-const { endpointMethods, endpointResponse } = require("../modules/users/users.util.js");
+const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
 const {
     params,
     body,
-} = require("./reqData.js");
+} = require("../utils/reqData.js");
 
 const {
     createSprint,

@@ -4,7 +4,7 @@ const {
     cleanNeo4j,
     cleanRecord,
     cleanRecords
-} = require("../users/users.clean.js");
+} = require("../../utils/cleanData.js");
 
 const {
  createSprintQuery, deleteSprintQuery, getSprintQuery, updateSprintQuery

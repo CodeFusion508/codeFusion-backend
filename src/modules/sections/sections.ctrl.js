@@ -12,7 +12,7 @@ const {
     cleanNeo4j,
     cleanRecord,
     cleanRecords
-} = require("../users/users.clean.js");
+} = require("../../utils/cleanData.js");
 
 module.exports = (deps) =>
     Object
