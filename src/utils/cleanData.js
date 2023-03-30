@@ -11,15 +11,9 @@ const cleanRecord = (data) => {
     };
 
     data.node = obj;
-    return data;
 };
 
 const cleanRecords = (data) => {
-    if (data.node.length === 0) {
-        data.node = arr;
-        return data;
-    }
-
     let arr = [];
     let obj;
 
