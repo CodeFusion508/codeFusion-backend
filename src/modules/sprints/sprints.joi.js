@@ -11,9 +11,9 @@ module.exports = {
     }),
     UPDATE_SPRINT: Joi.object({
         uuid     : Joi.string().required(),
-        totalExp : Joi.string().optional(),
+        totalExp : Joi.number().optional(),
         title    : Joi.string().optional(),
         desc     : Joi.string().optional(),
-        path     : Joi.number().optional()
+        path     : Joi.string().optional()
     })
 };

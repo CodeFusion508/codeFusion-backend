@@ -19,7 +19,7 @@ module.exports = (deps) => {
 };
 
 
-const getSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.getSprint(data));
-const createSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.createSprint(data));
-const updateSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.updatedSprint(data));
-const deleteSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintCtrl.deleteSprint(data));
+const getSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprint(data));
+const createSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.createSprint(data));
+const updateSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.updatedSprint(data));
+const deleteSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.deleteSprint(data));

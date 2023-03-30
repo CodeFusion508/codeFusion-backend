@@ -39,7 +39,7 @@ const getSprint = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "There are no sprints." };
+    if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);
@@ -64,8 +64,6 @@ const deleteSprint = async ({ services }, params) => {
     const query = deleteSprintQuery(params);
 
     let data = await services.neo4j.session.run(query);
-
-    if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
 

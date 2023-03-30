@@ -14,11 +14,11 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/", auth.verifyToken, endPoint(params, GET_UUID, getUser))
         .post("/", endPoint(body, CREATE_USER, signUp))
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
+        .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
-        .post("/logIn", endPoint(body, LOGIN_USER, logIn));
+        .post("/login", endPoint(body, LOGIN_USER, logIn));
 };
 
 
