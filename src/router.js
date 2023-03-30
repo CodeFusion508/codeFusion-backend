@@ -3,7 +3,8 @@ const { Router } = require("express");
 const routes = {
     "/users"    : require("./routes/users.js"),
     "/sections" : require("./routes/sections.js"),
-    "/sprints"  : require("./routes/sprints.js")
+    "/sprints"  : require("./routes/sprints.js"),
+    "/days"     : require("./routes/days.js")
 };
 
 module.exports = (deps) => {
