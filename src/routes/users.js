@@ -1,29 +1,24 @@
 const { Router } = require("express");
 
-const { endpointMethods, endpointResponse } = require("../modules/users/users.util.js");
-const {
-    params,
-    body,
-} = require("./reqData.js");
-
+const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
+const { params, body } = require("../utils/reqData.js");
 const auth = require("../modules/users/users.auth.js");
-
 const {
-    getUUID,
-    createUSER,
-    updateUSER,
-    logInUSER
+    GET_UUID,
+    CREATE_USER,
+    LOGIN_USER,
+    UPDATE_USER
 } = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .get("/", auth.verifyToken, endPoint(params, getUUID, getUser))
-        .post("/signUp", endPoint(body, createUSER, signUp))
-        .put("/updateUser", auth.verifyToken, endPoint(body, updateUSER, updateUser))
-        .post("/logIn", endPoint(body, logInUSER, logIn))
-        .delete("/:uuid/deleteUser", auth.verifyToken, endPoint(params, getUUID, deleteUser));
+        .post("/", endPoint(body, CREATE_USER, signUp))
+        .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
+        .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
+        .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
+        .post("/login", endPoint(body, LOGIN_USER, logIn));
 };
 
 

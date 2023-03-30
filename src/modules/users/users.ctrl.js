@@ -13,7 +13,7 @@ const {
 const {
   cleanNeo4j,
   cleanRecord
-} = require("./users.clean.js");
+} = require("../../utils/cleanData.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
@@ -33,20 +33,18 @@ const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
   const result = await services.neo4j.session.run(findUser);
 
-  if (result.records.length === 0) {
-    body.password = bcrypt.hashSync(body.password, saltScript);
-    const uuid = v4();
-    const query = createUserQuery(uuid, body);
+  if (result.records.length !== 0) throw { err: 403, message: "This email has already been registered, please use another or log in." };
 
-    let data = await services.neo4j.session.run(query);
-    data = cleanNeo4j(data);
-    cleanRecord(data);
+  body.password = bcrypt.hashSync(body.password, saltScript);
+  const uuid = v4();
+  const query = createUserQuery(uuid, body);
 
-    const { email, password } = data.node.properties;
-    return { data, token: jwt.createToken(email, password) };
-  } else {
-    throw { err: 403, message: "This email has already been registered, please use another or log in." };
-  }
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  const { email, password } = data.node.properties;
+  return { data, token: jwt.createToken(email, password) };
 };
 
 const deleteUser = async ({ services }, params) => {
@@ -63,14 +61,12 @@ const getUser = async ({ services }, params) => {
 
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length !== 0) {
-    data = cleanNeo4j(data);
-    cleanRecord(data);
+  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
 
-    return data;
-  } else {
-    throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
-  }
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  return data;
 };
 
 const updateUser = async ({ services }, body) => {
@@ -78,32 +74,40 @@ const updateUser = async ({ services }, body) => {
 
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length !== 0) {
-    data = cleanNeo4j(data);
-    cleanRecord(data);
+  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
 
-    return data;
-  } else {
-    throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
-  }
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  return data;
 };
 
 const logIn = async ({ services }, body) => {
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length !== 0) {
-    data = cleanNeo4j(data);
-    cleanRecord(data);
+  if (data.records.length === 0) throw { err: 403, message: "This email or password is incorrect, please try again." };
 
-    const { email, password } = data.node.properties;
+  data = cleanNeo4j(data);
+  cleanRecord(data);
 
-    if (!bcrypt.compareSync(body.password, password)) throw { err: 403, message: "This email or password is incorrect, please try again." };
+  const {
+    email,
+    password,
+    userName,
+    uuid
+  } = data.node.properties;
 
-    return { data, token: jwt.createToken(email, password) };
-  } else {
-    throw { err: 403, message: "This email or password is incorrect, please try again." };
-  }
+  if (!bcrypt.compareSync(body.password, password)) throw { err: 403, message: "This email or password is incorrect, please try again." };
+
+  return {
+    data,
+    token: jwt.createToken({
+      userName,
+      email,
+      uuid
+    })
+  };
 };
 
 

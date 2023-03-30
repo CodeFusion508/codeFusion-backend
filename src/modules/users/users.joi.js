@@ -1,19 +1,19 @@
 const Joi = require("joi");
 
 module.exports = {
-    getUUID: Joi.object({
-        uuid: Joi.required()
+    GET_UUID: Joi.object({
+        uuid: Joi.required(),
     }),
-    createUSER: Joi.object({
+    CREATE_USER: Joi.object({
         userName : Joi.string().required(),
         email    : Joi.string().required(),
         password : Joi.string().required()
     }),
-    logInUSER: Joi.object({
+    LOGIN_USER: Joi.object({
         email    : Joi.string().required(),
         password : Joi.string().required()
     }),
-    updateUSER: Joi.object({
+    UPDATE_USER: Joi.object({
         uuid      : Joi.string().required(),
         totalExp  : Joi.number().optional(),
         weeklyExp : Joi.number().optional(),

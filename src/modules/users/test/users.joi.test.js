@@ -1,6 +1,8 @@
 const {
-  createUSER, logInUSER, getUUID
-} = require("../users.joi");
+  createUSER,
+  logInUSER,
+  getUUID
+} = require("../users.joi.js");
 
 describe("user joi tests", () => {
   describe("create user joi", () => {
