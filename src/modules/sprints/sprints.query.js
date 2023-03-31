@@ -1,6 +1,6 @@
-const createSectionQuery = (uuid, body) => {
+const createSprintQuery = (uuid, body) => {
     const query = `
-        CREATE (s: Section
+        CREATE (s: Sprint
             {
                 uuid: "${uuid}", 
                 totalExp: 0,
@@ -15,25 +15,22 @@ const createSectionQuery = (uuid, body) => {
     return query;
 };
 
-const getSectionsQuery = () => `
-    MATCH (s: Section) 
-    WHERE NOT s:softDeleted 
-    RETURN s;
-`;
+const getSprintQuery = (params) => {
+    const query = `
+        MATCH (s: Sprint {uuid: "${params.uuid}"}) 
+        WHERE NOT s:softDeleted 
+        RETURN s;
+    `;
 
+    return query;
+};
 
-const findSectionQuery = (params) => `
-    MATCH (s: Section {uuid: "${params.uuid}"}) 
-    WHERE NOT s:softDeleted 
-    RETURN s;
-`;
-
-const deleteSectionQuery = (params) => `
-    MATCH (s: Section {uuid: "${params.uuid}"})
+const deleteSprintQuery = (params) => `
+    MATCH (s: Sprint {uuid: "${params.uuid}"})
     SET s:softDeleted;
 `;
 
-const updateSectionQuery = (body) => {
+const updateSprintQuery = (body) => {
     let propsToUpdate = [];
 
     if (body.totalExp) {
@@ -50,7 +47,7 @@ const updateSectionQuery = (body) => {
     }
 
     const updateQuery = `
-      MATCH (s: Section {uuid: "${body.uuid}"})
+      MATCH (s: Sprint {uuid: "${body.uuid}"})
       WHERE NOT s:softDeleted
       SET ${propsToUpdate.join(", ")}
       RETURN s;
@@ -59,10 +56,10 @@ const updateSectionQuery = (body) => {
     return updateQuery;
 };
 
+
 module.exports = {
-    createSectionQuery,
-    getSectionsQuery,
-    updateSectionQuery,
-    findSectionQuery,
-    deleteSectionQuery
+    createSprintQuery,
+    getSprintQuery,
+    deleteSprintQuery,
+    updateSprintQuery
 };

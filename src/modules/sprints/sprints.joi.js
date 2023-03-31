@@ -4,16 +4,16 @@ module.exports = {
     GET_UUID: Joi.object({
         uuid: Joi.required()
     }),
-    CREATE_SECTION: Joi.object({
+    CREATE_SPRINT: Joi.object({
         path  : Joi.string().required(),
         title : Joi.string().required(),
         desc  : Joi.string().required()
     }),
-    UPDATE_SECTION: Joi.object({
+    UPDATE_SPRINT: Joi.object({
         uuid     : Joi.string().required(),
-        path     : Joi.string().optional(),
+        totalExp : Joi.number().optional(),
         title    : Joi.string().optional(),
         desc     : Joi.string().optional(),
-        totalExp : Joi.number().optional()
+        path     : Joi.string().optional()
     })
 };
