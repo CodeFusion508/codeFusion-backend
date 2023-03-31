@@ -11,7 +11,6 @@ const servicesList = {
 const ctrlList = {
     usersCtrl    : require("./modules/users/users.ctrl.js"),
     sectionsCtrl : require("./modules/sections/sections.ctrl.js"),
-    sprintsCtrl  : require("./modules/sprints/sprints.ctrl.js"),
     daysCtrl     : require("./modules/days/days.ctrl.js")
 };
 
