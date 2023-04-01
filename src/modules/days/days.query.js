@@ -4,7 +4,8 @@ const createDayQuery = (uuid, body) => {
             {
                 uuid: "${uuid}", 
                 exp: 0,
-                desc: "${body.desc}"
+                desc: "${body.desc}",
+                dayNo: ${body.dayNo}
             }
         )
         RETURN d;
@@ -22,7 +23,14 @@ const getDayQuery = (params) => {
 
     return query;
 };
-
+const getDaysQuery = (params) => {
+    const query = `
+        MATCH (d: Day) 
+        WHERE NOT d:softDeleted 
+        RETURN d;
+    `;
+    return query;
+};
 const deleteDayQuery = (params) => `
     MATCH (d: Day {uuid: "${params.uuid}"})
     SET d:softDeleted;
@@ -36,6 +44,9 @@ const updateDayQuery = (body) => {
     }
     if (body.desc) {
         propsToUpdate.push(`d.desc = "${body.desc}"`);
+    }
+    if (body.dayNo) {
+        propsToUpdate.push(`d.dayNo = ${body.dayNo}`);
     }
     const updateQuery = `
       MATCH (d: Day {uuid: "${body.uuid}"})
@@ -51,6 +62,7 @@ const updateDayQuery = (body) => {
 module.exports = {
     createDayQuery,
     getDayQuery,
+    getDaysQuery,
     deleteDayQuery,
     updateDayQuery
 };

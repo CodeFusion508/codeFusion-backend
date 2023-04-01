@@ -15,11 +15,13 @@ module.exports = (deps) => {
         .post("/", endPoint(body, CREATE_DAY, createDay))
         .put("/", endPoint(body, UPDATE_DAY, updateDay))
         .get("/:uuid", endPoint(params, GET_UUID, getDayByUuid))
+        .get("/", endPoint(undefined, undefined, getDays))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteDayByUuid));
 };
 
 
 const getDayByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDay(data));
 const createDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.createDay(data));
+const getDays = ({ ctrls }) => ({data}, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDays(data));
 const updateDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.updatedDay(data));
 const deleteDayByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.deleteDay(data));
