@@ -62,6 +62,15 @@ const getDays = async ({ services }, params) => {
     return data;
 };
 
+const deleteDay = async ({ services }, params) => {
+    const query = deleteDayQuery(params);
+
+    let data = await services.neo4j.session.run(query);
+    data = cleanNeo4j(data);
+
+    return data;
+};
+
 const updatedDay = async ({ services }, body) => {
     if (!body.desc && !body.exp) throw { err: 400, message: "You must provide a description or an experience value." };
     const query = updateDayQuery(body);
@@ -72,16 +81,6 @@ const updatedDay = async ({ services }, body) => {
 
     data = cleanNeo4j(data);
     cleanRecord(data);
-
-    return data;
-};
-
-const deleteDay = async ({ services }, params) => {
-    const query = deleteDayQuery(params);
-
-    let data = await services.neo4j.session.run(query);
-
-    data = cleanNeo4j(data);
 
     return data;
 };

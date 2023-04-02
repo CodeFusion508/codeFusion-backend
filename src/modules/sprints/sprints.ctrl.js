@@ -57,22 +57,22 @@ const getAllSprints = async ({ services }) => {
 
     if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
 
-    data = cleanNeo4j(data,  "before cleanRecords");
+    data = cleanNeo4j(data, "before cleanRecords");
     cleanRecords(data);
-    console.log(data, "after cleanRecords");
 
     return data;
 };
 
-const updatedSprint = async ({ services }, body) => {
-    const query = updateSprintQuery(body);
+
+const getSprintRelations = async ({ services }, params) => {
+    const query = getSprintsRelationsQuery(params);
 
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
-    cleanRecord(data);
+    cleanRecords(data);
 
     return data;
 };
@@ -87,17 +87,16 @@ const deleteSprint = async ({ services }, params) => {
     return data;
 };
 
-const getSprintRelations = async ({ services }, params) => {
-    const query = getSprintsRelationsQuery(params);
+const updatedSprint = async ({ services }, body) => {
+    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
+    const query = updateSprintQuery(body);
 
     let data = await services.neo4j.session.run(query);
-    console.log(data);
+
     if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
-    cleanRecords(data);
-    console.log(data);
-
+    cleanRecord(data);
 
     return data;
 };
