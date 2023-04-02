@@ -4,8 +4,7 @@ const createDayQuery = (uuid, body) => {
             {
                 uuid: "${uuid}", 
                 exp: 0,
-                desc: "${body.desc}",
-                dayNo: ${body.dayNo}
+                desc: "${body.desc}"
             }
         )
         RETURN d;
@@ -44,9 +43,6 @@ const updateDayQuery = (body) => {
     }
     if (body.desc) {
         propsToUpdate.push(`d.desc = "${body.desc}"`);
-    }
-    if (body.dayNo) {
-        propsToUpdate.push(`d.dayNo = ${body.dayNo}`);
     }
     const updateQuery = `
       MATCH (d: Day {uuid: "${body.uuid}"})

@@ -10,8 +10,8 @@ const {
     createDayQuery,
     deleteDayQuery,
     getDayQuery,
-    getDaysQuery,
-    updateDayQuery
+    updateDayQuery,
+    getDaysQuery
 } = require("./days.query.js");
 
 module.exports = (deps) =>
@@ -86,6 +86,12 @@ const deleteDay = async ({ services }, params) => {
     return data;
 };
 
+Object.assign(module.exports, {
+    createDay,
+    getDay,
+    updatedDay,
+    deleteDay,
+});
 Object.assign(module.exports, {
     createDay,
     getDay,
