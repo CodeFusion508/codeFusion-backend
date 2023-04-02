@@ -38,8 +38,10 @@ const getAllSprintsQuery = () => {
 const getSprintsRelationsQuery = (params) => {
     const query = `
         MATCH (s:Sprint {uuid: "${params.uuid}"})
+        WHERE NOT s:softDeleted
         WITH s
-        MATCH (d)-[r:BELONGS_TO]->(s) 
+        MATCH (d)-[r:BELONGS_TO]->(s)
+        WHERE NOT d:softDeleted
         RETURN d, r
     `;
 
