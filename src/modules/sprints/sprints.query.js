@@ -25,6 +25,27 @@ const getSprintQuery = (params) => {
     return query;
 };
 
+const getAllSprintsQuery = () => {
+    const query = `
+        MATCH (s: Sprint) 
+        WHERE NOT s:softDeleted 
+        RETURN s;
+    `;
+
+    return query;
+};
+
+const getSprintsRelationsQuery = (params) => {
+    const query = `
+        MATCH (s:Sprint {uuid: "${params.uuid}"})
+        WITH s
+        MATCH (d)-[r:BELONGS_TO]->(s) 
+        RETURN d, r
+    `;
+
+    return query;
+};
+
 const deleteSprintQuery = (params) => `
     MATCH (s: Sprint {uuid: "${params.uuid}"})
     SET s:softDeleted;
@@ -61,5 +82,7 @@ module.exports = {
     createSprintQuery,
     getSprintQuery,
     deleteSprintQuery,
-    updateSprintQuery
+    updateSprintQuery,
+    getAllSprintsQuery,
+    getSprintsRelationsQuery
 };

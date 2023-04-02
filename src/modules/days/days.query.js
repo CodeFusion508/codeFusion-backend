@@ -1,13 +1,15 @@
 const createDayQuery = (uuid, body) => {
     const query = `
-        CREATE (d: Day
-            {
-                uuid: "${uuid}", 
-                exp: 0,
-                desc: "${body.desc}"
-            }
-        )
-        RETURN d;
+        CREATE (d:Day {
+          uuid: "${uuid}",
+          exp: 0,
+          desc: "${body.desc}"
+        })
+        WITH d
+        MATCH (s:Sprint {uuid: "${body.sprintUuid}"})
+        WHERE NOT s:softDeleted 
+        CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)
+        RETURN d
     `;
 
     return query;
