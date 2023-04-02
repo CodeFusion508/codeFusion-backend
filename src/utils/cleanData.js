@@ -9,7 +9,7 @@ const cleanRecord = (data) => {
     const obj = {
         ...data.node[0]._fields[0]
     };
-    console.log(obj, "before cleaning");
+
     obj.identity = obj.identity.low;
     for (const objKey in obj.properties) {
         if (obj.properties[objKey].low === undefined) {
@@ -18,7 +18,7 @@ const cleanRecord = (data) => {
             obj.properties[objKey] = obj.properties[objKey].low;
         }
     }
-    console.log(obj, "after cleaning");
+
     data.node = obj;
 };
 
@@ -30,6 +30,7 @@ const cleanRecords = (data) => {
         obj = {
             ...data.node[i]._fields[0]
         };
+
         obj.identity = obj.identity.low;
         for (const objKey in obj.properties) {
             if (obj.properties[objKey].low === undefined) {
@@ -38,6 +39,7 @@ const cleanRecords = (data) => {
                 obj.properties[objKey] = obj.properties[objKey].low;
             }
         }
+
         arr.push(obj);
     }
 

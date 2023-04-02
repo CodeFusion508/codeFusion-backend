@@ -22,7 +22,8 @@ const getDayQuery = (params) => {
 
     return query;
 };
-const getDaysQuery = (params) => {
+
+const getDaysQuery = () => {
     const query = `
         MATCH (d: Day) 
         WHERE NOT d:softDeleted 
@@ -30,6 +31,7 @@ const getDaysQuery = (params) => {
     `;
     return query;
 };
+
 const deleteDayQuery = (params) => `
     MATCH (d: Day {uuid: "${params.uuid}"})
     SET d:softDeleted;
