@@ -1,16 +1,15 @@
 const createdContentDays = (uuid, body) => {
     const query = `
-        CREATE (d: content:${body.label}
+        CREATE (c: content:${body.label}
             {
-                uuid : "${uuid}", 
-                path : "${body.path}",
-                link : "${body.link}",
-                exp  : 0,
-                title: "${body.title}",
-                label: "${body.label}"
+                uuid: "${uuid}", 
+                path: "${body.path}",
+                link: "${body.link}",
+                exp: 0,
+                title: "${body.title}"
             }
         )
-        RETURN d;
+        RETURN c;
     `;
 
     return query;
