@@ -15,10 +15,12 @@ module.exports = (deps) => {
         .post("/", endPoint(body, CREATE_CONTENT_DAY, createContentDays))
         .put("/", endPoint(body, UPDATE_CONTENT_DAY, updateContentDays))
         .get("/:uuid", endPoint(params, GET_UUID, getContentDaysUuid))
-        .delete("/:uuid", endPoint(params, GET_UUID, deleteContentDaysByUuid));
+        .delete("/:uuid", endPoint(params, GET_UUID, deleteContentDaysByUuid))
+        .get("/relation/:uuid", endPoint(params, GET_UUID, getContentByDaysUuid));
 };
 
 const getContentDaysUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentDayCtrl.getContentDays(data));
 const createContentDays = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentDayCtrl.createContentDays(data));
 const updateContentDays = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentDayCtrl.updateContentDays(data));
 const deleteContentDaysByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentDayCtrl.deleteContentDays(data));
+const getContentByDaysUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentDayCtrl.getOneContentDayByUuid(data));

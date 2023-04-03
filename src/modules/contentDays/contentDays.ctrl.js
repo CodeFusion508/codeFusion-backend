@@ -2,14 +2,16 @@ const { v4 } = require("uuid");
 
 const {
     cleanNeo4j,
-    cleanRecord
+    cleanRecord,
+    cleanRecords
 } = require("../../utils/cleanData.js");
 
 const {
     createdContentDays,
     deletedContentDays,
     getContentDaysQuery,
-    updateDayQuery
+    updatedContentDays,
+    getContentDaysRelationsQuery
 } = require("./contentDays.query.js");
 
 module.exports = (deps) =>
@@ -48,8 +50,9 @@ const getContentDays = async ({ services }, params) => {
 };
 
 const updateContentDays = async ({ services }, body) => {
-    if (!body.desc && !body.exp) throw { err: 400, message: "You must provide a description or an experience value." };
-    const query = updateDayQuery(body);
+    
+    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
+    const query = updatedContentDays(body);
 
     let data = await services.neo4j.session.run(query);
 
@@ -59,6 +62,8 @@ const updateContentDays = async ({ services }, body) => {
     cleanRecord(data);
 
     return data;
+
+    
 };
 
 const deleteContentDays = async ({ services }, params) => {
@@ -71,9 +76,23 @@ const deleteContentDays = async ({ services }, params) => {
     return data;
 };
 
+const getOneContentDayByUuid = async ({ services }, params) => {
+        const query = getContentDaysRelationsQuery(params)
+    let data = await services.neo4j.session.run(query);
+
+    if (data.records.length == 0) throw { err: 404, message: "This content days does not exist, please check if you have a valid uuid." };
+
+    data = cleanNeo4j(data);
+    // cleanRecords(data);
+
+    return data;
+    
+}
+
 Object.assign(module.exports, {
     createContentDays,
     getContentDays,
     updateContentDays,
     deleteContentDays,
+    getOneContentDayByUuid
 });

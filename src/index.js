@@ -12,7 +12,7 @@ const ctrlList = {
     usersCtrl      : require("./modules/users/users.ctrl.js"),
     sprintsCtrl    : require("./modules/sprints/sprints.ctrl.js"),
     daysCtrl       : require("./modules/days/days.ctrl.js"),
-    contentDayCtrl : require("./modules/contentDays/contentDays.crtl.js")
+    contentDayCtrl : require("./modules/contentDays/contentDays.ctrl.js")
 };
 
 const start = async () => {
