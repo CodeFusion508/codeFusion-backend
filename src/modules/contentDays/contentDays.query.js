@@ -7,7 +7,8 @@ const createdContentDays = (uuid, body) => {
                 link : "${body.hasOwnProperty('link') ? body.link:""}",
                 exp  : 0,
                 title: "${body.title}",
-                label: "${body.label}"
+                label: "${body.label}",
+                dayUuid: "${body.dayUuid}"
             }
         )
         WITH c
@@ -63,12 +64,12 @@ const updatedContentDays = (body) => {
 
 const getContentDaysRelationsQuery = (params) => {
     const query = `
-        MATCH (c: content {uuid: "${params.uuid}"})
+        MATCH (c: content {dayUuid: "${params.uuid}"})
         WHERE NOT c:softDeleted
         WITH c
         MATCH (c)-[r:BELONGS_TO]->(d)
         WHERE NOT d:softDeleted
-        RETURN d, r
+        RETURN c, r
     `;
 
     return query;

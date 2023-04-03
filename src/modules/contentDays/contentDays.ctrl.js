@@ -77,7 +77,9 @@ const deleteContentDays = async ({ services }, params) => {
 };
 
 const getOneContentDayByUuid = async ({ services }, params) => {
-        const query = getContentDaysRelationsQuery(params)
+
+    console.log(params)
+    const query = getContentDaysRelationsQuery(params)
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length == 0) throw { err: 404, message: "This content days does not exist, please check if you have a valid uuid." };
