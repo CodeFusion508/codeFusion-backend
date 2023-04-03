@@ -2,14 +2,17 @@ const { v4 } = require("uuid");
 
 const {
     cleanNeo4j,
-    cleanRecord
+    cleanRecord,
+    cleanRecords
 } = require("../../utils/cleanData.js");
 
 const {
     createSprintQuery,
     deleteSprintQuery,
     getSprintQuery,
-    updateSprintQuery
+    updateSprintQuery,
+    getAllSprintsQuery,
+    getSprintsRelationsQuery
 } = require("./sprints.query.js");
 
 module.exports = (deps) =>
@@ -47,15 +50,29 @@ const getSprint = async ({ services }, params) => {
     return data;
 };
 
-const updatedSprint = async ({ services }, body) => {
-    const query = updateSprintQuery(body);
+const getAllSprints = async ({ services }) => {
+    const query = getAllSprintsQuery();
+
+    let data = await services.neo4j.session.run(query);
+
+    if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
+
+    data = cleanNeo4j(data, "before cleanRecords");
+    cleanRecords(data);
+
+    return data;
+};
+
+
+const getSprintRelations = async ({ services }, params) => {
+    const query = getSprintsRelationsQuery(params);
 
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
-    cleanRecord(data);
+    cleanRecords(data);
 
     return data;
 };
@@ -70,9 +87,25 @@ const deleteSprint = async ({ services }, params) => {
     return data;
 };
 
+const updatedSprint = async ({ services }, body) => {
+    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
+    const query = updateSprintQuery(body);
+
+    let data = await services.neo4j.session.run(query);
+
+    if (data.records.length == 0) throw { err: 404, message: "This sprint does not exist, please check if you have a valid uuid." };
+
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+
+    return data;
+};
+
 Object.assign(module.exports, {
     createSprint,
     getSprint,
     updatedSprint,
     deleteSprint,
+    getSprintRelations,
+    getAllSprints
 });

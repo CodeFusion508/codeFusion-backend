@@ -72,7 +72,7 @@ paths:
         500:
           description: Unexpected Error, try again or contact us.
   /users/logIn:
-    put:
+    post:
       summary: LogIn User
       tags:
         - Users
@@ -83,16 +83,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/updateSchema"
+              $ref: "#/components/schemas/logInSchema"
       responses:
         200:
-          description: This user has been updated.
+          description: This user has been authenticated.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/resSchema"
         403:
-          description: This user does not existing please check if you have the valid uuid.
+          description: This user does not existing please check if you have the valid email.
         500:
           description: Unexpected Error, try again or contact us.
   /{uuid}/deleteUser:

@@ -10,6 +10,15 @@ const cleanRecord = (data) => {
         ...data.node[0]._fields[0]
     };
 
+    obj.identity = obj.identity.low;
+    for (const objKey in obj.properties) {
+        if (obj.properties[objKey].low === undefined) {
+            continue;
+        } else {
+            obj.properties[objKey] = obj.properties[objKey].low;
+        }
+    }
+
     data.node = obj;
 };
 
@@ -21,6 +30,15 @@ const cleanRecords = (data) => {
         obj = {
             ...data.node[i]._fields[0]
         };
+
+        obj.identity = obj.identity.low;
+        for (const objKey in obj.properties) {
+            if (obj.properties[objKey].low === undefined) {
+                continue;
+            } else {
+                obj.properties[objKey] = obj.properties[objKey].low;
+            }
+        }
 
         arr.push(obj);
     }

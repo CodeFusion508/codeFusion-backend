@@ -2,14 +2,16 @@ const { v4 } = require("uuid");
 
 const {
     cleanNeo4j,
-    cleanRecord
+    cleanRecord,
+    cleanRecords
 } = require("../../utils/cleanData.js");
 
 const {
     createDayQuery,
     deleteDayQuery,
     getDayQuery,
-    updateDayQuery
+    updateDayQuery,
+    getDaysQuery
 } = require("./days.query.js");
 
 module.exports = (deps) =>
@@ -47,6 +49,28 @@ const getDay = async ({ services }, params) => {
     return data;
 };
 
+const getDays = async ({ services }, params) => {
+    const query = getDaysQuery(params);
+
+    let data = await services.neo4j.session.run(query);
+
+    if (data.records.length == 0) throw { err: 404, message: "There are no results for your search." };
+
+    data = cleanNeo4j(data);
+    cleanRecords(data);
+
+    return data;
+};
+
+const deleteDay = async ({ services }, params) => {
+    const query = deleteDayQuery(params);
+
+    let data = await services.neo4j.session.run(query);
+    data = cleanNeo4j(data);
+
+    return data;
+};
+
 const updatedDay = async ({ services }, body) => {
     if (!body.desc && !body.exp) throw { err: 400, message: "You must provide a description or an experience value." };
     const query = updateDayQuery(body);
@@ -61,19 +85,16 @@ const updatedDay = async ({ services }, body) => {
     return data;
 };
 
-const deleteDay = async ({ services }, params) => {
-    const query = deleteDayQuery(params);
-
-    let data = await services.neo4j.session.run(query);
-
-    data = cleanNeo4j(data);
-
-    return data;
-};
-
 Object.assign(module.exports, {
     createDay,
     getDay,
+    updatedDay,
+    deleteDay,
+});
+Object.assign(module.exports, {
+    createDay,
+    getDay,
+    getDays,
     updatedDay,
     deleteDay,
 });
