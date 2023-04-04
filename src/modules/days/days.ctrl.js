@@ -3,7 +3,8 @@ const { v4 } = require("uuid");
 const {
     cleanNeo4j,
     cleanRecord,
-    cleanRecords
+    cleanRecords,
+    cleanRels
 } = require("../../utils/cleanData.js");
 
 const {
@@ -11,7 +12,8 @@ const {
     deleteDayQuery,
     getDayQuery,
     updateDayQuery,
-    getAllDaysQuery
+    getAllDaysQuery,
+    getDaysRelsQuery
 } = require("./days.query.js");
 
 module.exports = (deps) =>
@@ -62,6 +64,19 @@ const getAllDays = async ({ services }, params) => {
     return data;
 };
 
+const getDaysRels = async ({ services }, params) => {
+    const query = getDaysRelsQuery(params);
+
+    let data = await services.neo4j.session.run(query);
+
+    if (data.records.length == 0) throw { err: 404, message: "This day does not exist, check if you have a valid uuid." };
+
+    data = cleanNeo4j(data);
+    cleanRels(data);
+
+    return data;
+};
+
 const deleteDay = async ({ services }, params) => {
     const query = deleteDayQuery(params);
 
@@ -89,6 +104,7 @@ Object.assign(module.exports, {
     createDay,
     getDay,
     getAllDays,
+    getDaysRels,
     updatedDay,
     deleteDay
 });

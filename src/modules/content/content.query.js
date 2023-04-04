@@ -4,15 +4,14 @@ const createContentQuery = (uuid, body) => {
             {
                 uuid : "${uuid}", 
                 path : "${body.path}",
-                link : "${body.link}",
-                exp  : 0,
-                title: "${body.title}",
+                exp  : ${body.exp},
+                title: "${body.title}"
             }
         )
         WITH c
         MATCH(d: Day { uuid: "${body.dayUuid}" })
         WHERE NOT d:softDeleted
-        CREATE (c)-[:BELONGS_TO]->(d)
+        CREATE (c)-[:BELONGS_TO  {dayNo: 1}]->(d)
         RETURN c;
     `;
 

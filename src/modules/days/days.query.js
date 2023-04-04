@@ -36,6 +36,19 @@ const getAllDaysQuery = () => {
     return query;
 };
 
+const getDaysRelsQuery = (params) => {
+    const query = `
+        MATCH (d: Day {uuid: "${params.uuid}"})
+        WHERE NOT d:softDeleted
+        WITH d
+        MATCH (c)-[r:BELONGS_TO]->(d)
+        WHERE NOT c:softDeleted
+        RETURN c, r;
+    `;
+
+    return query;
+};
+
 const deleteDayQuery = (params) => `
     MATCH (d: Day {uuid: "${params.uuid}"})
     SET d:softDeleted;
@@ -66,6 +79,7 @@ module.exports = {
     createDayQuery,
     getDayQuery,
     getAllDaysQuery,
+    getDaysRelsQuery,
     deleteDayQuery,
     updateDayQuery
 };
