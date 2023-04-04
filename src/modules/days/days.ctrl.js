@@ -11,7 +11,7 @@ const {
     deleteDayQuery,
     getDayQuery,
     updateDayQuery,
-    getDaysQuery
+    getAllDaysQuery
 } = require("./days.query.js");
 
 module.exports = (deps) =>
@@ -49,8 +49,8 @@ const getDay = async ({ services }, params) => {
     return data;
 };
 
-const getDays = async ({ services }, params) => {
-    const query = getDaysQuery(params);
+const getAllDays = async ({ services }, params) => {
+    const query = getAllDaysQuery(params);
 
     let data = await services.neo4j.session.run(query);
 
@@ -88,13 +88,7 @@ const updatedDay = async ({ services }, body) => {
 Object.assign(module.exports, {
     createDay,
     getDay,
+    getAllDays,
     updatedDay,
-    deleteDay,
-});
-Object.assign(module.exports, {
-    createDay,
-    getDay,
-    getDays,
-    updatedDay,
-    deleteDay,
+    deleteDay
 });

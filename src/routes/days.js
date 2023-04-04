@@ -14,7 +14,7 @@ module.exports = (deps) => {
     return Router()
         .post("/", endPoint(body, CREATE_DAY, createDay))
         .put("/", endPoint(body, UPDATE_DAY, updateDay))
-        .get("/", endPoint(undefined, undefined, getDays))
+        .get("/", endPoint(undefined, undefined, getAllDays))
         .get("/:uuid", endPoint(params, GET_UUID, getDayByUuid))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteDayByUuid));
 };
@@ -22,6 +22,6 @@ module.exports = (deps) => {
 
 const getDayByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDay(data));
 const createDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.createDay(data));
-const getDays = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDays(data));
+const getAllDays = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getAllDays(data));
 const updateDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.updatedDay(data));
 const deleteDayByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.deleteDay(data));

@@ -1,15 +1,17 @@
 const createDayQuery = (uuid, body) => {
     const query = `
-        CREATE (d:Day {
-          uuid: "${uuid}",
-          exp: 0,
-          desc: "${body.desc}"
-        })
+        CREATE (d: Day 
+            {
+                uuid: "${uuid}",
+                exp: 0,
+                desc: "${body.desc}"
+            }
+        )
         WITH d
-        MATCH (s:Sprint {uuid: "${body.sprintUuid}"})
+        MATCH (s: Sprint {uuid: "${body.sprintUuid}"})
         WHERE NOT s:softDeleted 
         CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)
-        RETURN d
+        RETURN d;
     `;
 
     return query;
@@ -25,7 +27,7 @@ const getDayQuery = (params) => {
     return query;
 };
 
-const getDaysQuery = () => {
+const getAllDaysQuery = () => {
     const query = `
         MATCH (d: Day) 
         WHERE NOT d:softDeleted 
@@ -48,21 +50,22 @@ const updateDayQuery = (body) => {
     if (body.desc) {
         propsToUpdate.push(`d.desc = "${body.desc}"`);
     }
-    const updateQuery = `
-      MATCH (d: Day {uuid: "${body.uuid}"})
-      WHERE NOT d:softDeleted
-      SET ${propsToUpdate.join(", ")}
-      RETURN d;
+
+    const query = `
+        MATCH (d: Day {uuid: "${body.uuid}"})
+        WHERE NOT d:softDeleted
+        SET ${propsToUpdate.join(", ")}
+        RETURN d;
     `;
 
-    return updateQuery;
+    return query;
 };
 
 
 module.exports = {
     createDayQuery,
     getDayQuery,
-    getDaysQuery,
+    getAllDaysQuery,
     deleteDayQuery,
     updateDayQuery
 };

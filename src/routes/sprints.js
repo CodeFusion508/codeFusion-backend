@@ -12,18 +12,18 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
+        .get("/", endPoint(undefined, undefined, getAllSprints))
         .post("/", endPoint(body, CREATE_SPRINT, createSprint))
         .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
         .get("/:uuid", endPoint(params, GET_UUID, getSprintByUuid))
-        .delete("/:uuid", endPoint(params, GET_UUID, deleteSprintByUuid))
-        .get("/", endPoint(undefined, undefined, getAllSprints))
-        .get("/rel/:uuid", endPoint(params, GET_UUID, getSprintRelations));
+        .get("/:uuid/rel", endPoint(params, GET_UUID, getSprintRels))
+        .delete("/:uuid", endPoint(params, GET_UUID, deleteSprintByUuid));
 };
 
 
 const getSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprint(data));
 const createSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.createSprint(data));
-const updateSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.updatedSprint(data));
+const updateSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.updateSprint(data));
 const deleteSprintByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.deleteSprint(data));
-const getAllSprints = ({ ctrls }) => (req, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getAllSprints());
-const getSprintRelations = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprintRelations(data));
+const getAllSprints = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getAllSprints(data));
+const getSprintRels = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprintRels(data));

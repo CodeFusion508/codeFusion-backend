@@ -10,10 +10,7 @@ const {
   updateUserQuery,
   logInQuery
 } = require("./users.query.js");
-const {
-  cleanNeo4j,
-  cleanRecord
-} = require("../../utils/cleanData.js");
+const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
