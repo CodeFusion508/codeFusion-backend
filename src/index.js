@@ -9,10 +9,10 @@ const servicesList = {
 };
 
 const ctrlList = {
-    usersCtrl      : require("./modules/users/users.ctrl.js"),
-    sprintsCtrl    : require("./modules/sprints/sprints.ctrl.js"),
-    daysCtrl       : require("./modules/days/days.ctrl.js"),
-    contentDayCtrl : require("./modules/contentDays/contentDays.ctrl.js")
+    usersCtrl    : require("./modules/users/users.ctrl.js"),
+    sprintsCtrl  : require("./modules/sprints/sprints.ctrl.js"),
+    daysCtrl     : require("./modules/days/days.ctrl.js"),
+    contentsCtrl : require("./modules/content/content.ctrl.js")
 };
 
 const start = async () => {

@@ -15,10 +15,10 @@ module.exports = (deps) => {
 
     return Router()
         .post("/", endPoint(body, CREATE_USER, signUp))
+        .post("/login", endPoint(body, LOGIN_USER, logIn))
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
-        .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
-        .post("/login", endPoint(body, LOGIN_USER, logIn));
+        .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser));
 };
 
 

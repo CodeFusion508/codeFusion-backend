@@ -35,14 +35,14 @@ const getAllSprintsQuery = () => {
     return query;
 };
 
-const getSprintsRelationsQuery = (params) => {
+const getSprintsRelsQuery = (params) => {
     const query = `
-        MATCH (s:Sprint {uuid: "${params.uuid}"})
+        MATCH (s: Sprint {uuid: "${params.uuid}"})
         WHERE NOT s:softDeleted
         WITH s
         MATCH (d)-[r:BELONGS_TO]->(s)
         WHERE NOT d:softDeleted
-        RETURN d, r
+        RETURN d, r;
     `;
 
     return query;
@@ -86,5 +86,5 @@ module.exports = {
     deleteSprintQuery,
     updateSprintQuery,
     getAllSprintsQuery,
-    getSprintsRelationsQuery
+    getSprintsRelsQuery
 };

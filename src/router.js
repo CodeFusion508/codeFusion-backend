@@ -1,10 +1,10 @@
 const { Router } = require("express");
 
 const routes = {
-    "/users"        : require("./routes/users.js"),
-    "/sprints"      : require("./routes/sprints.js"),
-    "/days"         : require("./routes/days.js"),
-    "/content-days" : require("./routes/contentDays.js")
+    "/users"    : require("./routes/users.js"),
+    "/sprints"  : require("./routes/sprints.js"),
+    "/days"     : require("./routes/days.js"),
+    "/contents" : require("./routes/content.js")
 };
 
 module.exports = (deps) => {
