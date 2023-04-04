@@ -10,8 +10,7 @@ module.exports = {
         link  : Joi.string().optional(),
         exp   : Joi.number().required(),
         title : Joi.string().required(),
-        label : Joi.string().required(),
-        dayUuid: Joi.string().required()
+        label : Joi.string().required()
     }),
     UPDATE_CONTENT_DAY: Joi.object({
         uuid  : Joi.string().required(),
@@ -19,6 +18,5 @@ module.exports = {
         link  : Joi.string().optional(),
         exp   : Joi.number().optional(),
         title : Joi.string().optional(),
-        // label: Joi.string().optional()
     })
 };

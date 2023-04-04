@@ -16,7 +16,7 @@ module.exports = (deps) => {
         .put("/", endPoint(body, UPDATE_CONTENT_DAY, updateContentDays))
         .get("/:uuid", endPoint(params, GET_UUID, getContentDaysUuid))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteContentDaysByUuid))
-        .get("/relation/:uuid", endPoint(params, GET_UUID, getContentByDaysUuid));
+        .get("/rel/:uuid", endPoint(params, GET_UUID, getContentByDaysUuid));
 };
 
 const getContentDaysUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentDayCtrl.getContentDays(data));

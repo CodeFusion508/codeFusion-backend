@@ -50,7 +50,6 @@ const getContentDays = async ({ services }, params) => {
 };
 
 const updateContentDays = async ({ services }, body) => {
-    
     if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
     const query = updatedContentDays(body);
 
@@ -62,37 +61,20 @@ const updateContentDays = async ({ services }, body) => {
     cleanRecord(data);
 
     return data;
-
-    
 };
 
 const deleteContentDays = async ({ services }, params) => {
     const query = deletedContentDays(params);
 
     let data = await services.neo4j.session.run(query);
-
     data = cleanNeo4j(data);
 
     return data;
 };
 
-const getOneContentDayByUuid = async ({ services }, params) => {
-
-    const query = getContentDaysRelationsQuery(params)
-    let data = await services.neo4j.session.run(query);
-
-    if (data.records.length == 0) throw { err: 404, message: "This content days does not exist, please check if you have a valid uuid." };
-
-    data = cleanNeo4j(data);
-
-    return cleanRecords(data);
-    
-}
-
 Object.assign(module.exports, {
     createContentDays,
     getContentDays,
     updateContentDays,
-    deleteContentDays,
-    getOneContentDayByUuid
+    deleteContentDays
 });

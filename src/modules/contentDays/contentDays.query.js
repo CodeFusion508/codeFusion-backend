@@ -4,16 +4,15 @@ const createdContentDays = (uuid, body) => {
             {
                 uuid : "${uuid}", 
                 path : "${body.path}",
-                link : "${body.hasOwnProperty('link') ? body.link:""}",
+                link : "${body.link}",
                 exp  : 0,
                 title: "${body.title}",
-                label: "${body.label}",
-                dayUuid: "${body.dayUuid}"
+                label: "${body.label}"
             }
         )
         WITH c
         MATCH(d:Day { uuid: "${body.dayUuid}" })
-        WHERE NOT c:sotfDeleted
+        WHERE NOT d:softDeleted
         CREATE (c)-[:BELONGS_TO]->(d)
         RETURN c;
     `;
@@ -62,18 +61,9 @@ const updatedContentDays = (body) => {
     return updateQuery;
 };
 
-const getContentDaysRelationsQuery = (params) => {
-    const query = `
-        MATCH (c: content {dayUuid: "${params.uuid}"})
-        WHERE NOT c:softDeleted
-        WITH c
-        MATCH (c)-[r:BELONGS_TO]->(d)
-        WHERE NOT d:softDeleted
-        RETURN c, r
-    `;
-
-    return query;
+module.exports = {
+    createdContentDays,
+    getContentDaysQuery,
+    deletedContentDays,
+    updatedContentDays
 };
-
-
-module.exports = { createdContentDays, getContentDaysQuery, deletedContentDays, updatedContentDays, getContentDaysRelationsQuery };
