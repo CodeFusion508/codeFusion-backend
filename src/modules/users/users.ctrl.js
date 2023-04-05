@@ -88,7 +88,6 @@ const logIn = async ({ services }, body) => {
 
   data = cleanNeo4j(data);
   cleanRecord(data);
-  console.log(data, "data inside logIn ctrl");
 
   if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "This email or password is incorrect, please try again." };
 

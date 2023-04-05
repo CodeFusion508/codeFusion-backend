@@ -40,9 +40,6 @@ const updatedContentQuery = (body) => {
     if (body.path) {
         propsToUpdate.push(`c.path = "${body.path}"`);
     }
-    /*if (body.link) {
-        propsToUpdate.push(`c.desc = "${body.link}"`);
-    }*/
     if (body.exp) {
         propsToUpdate.push(`c.exp = ${body.exp}`);
     }
@@ -52,6 +49,7 @@ const updatedContentQuery = (body) => {
     if (body.desc) {
         propsToUpdate.push(`c.desc = "${body.desc}"`);
     }
+
     const query = `
       MATCH (c: Content {uuid: "${body.uuid}"})
       WHERE NOT c:softDeleted
