@@ -69,7 +69,7 @@ const getDaysRels = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "This day does not exist, check if you have a valid uuid." };
+    if (data.records.length == 0) throw { err: 404, message: "There are no relations for this node" };
 
     data = cleanNeo4j(data);
     cleanRels(data);
