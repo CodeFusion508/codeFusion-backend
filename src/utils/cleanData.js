@@ -11,13 +11,12 @@ const cleanRecord = (data) => {
     };
 
     for (const key in obj) {
-        if (obj[key].low === undefined) {
+        if (obj[key].low === undefined || obj[key].low === null) {
             continue;
         } else {
             obj[key] = obj[key].low;
         }
     }
-
     data.node = obj;
 };
 

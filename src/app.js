@@ -8,12 +8,6 @@ const cors = require("cors");
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
 
-const errHandler = (err, res) => {
-    //console.log(err, "puro error aquí");
-    //console.log(err.statusCode + " " + err.message + "hitting app.js error handler");
-    //res.status(err.statusCode).json({ error: err.message });
-};
-
 module.exports = (deps) => {
     let app = express();
     const PORT = process.env.PORT || 3000;
@@ -24,7 +18,6 @@ module.exports = (deps) => {
     app.use(helmet());
     app.use(cors());
     app.use(express.json());
-    //app.use(errHandler);
     app.use("/static", express.static(path.join(__dirname, "lessons")));
     app.use(router);
 

@@ -7,9 +7,8 @@ const endpointMethods = (deps) => (reqData, joi, method) => [
 
 const endpointResponse = (res, next) => (promise) => promise.then((response) => {
     res.send(response);
-}).catch(({ err, message }) => {
+}).catch(({err, message }) => {
     let error;
-    console.log(message, "inside endPointUtil.js messaje");
     if (err) {
         error = new Error(message);
         error.statusCode = err;
@@ -18,8 +17,7 @@ const endpointResponse = (res, next) => (promise) => promise.then((response) => 
         error = new Error("An unexpected error occurred while processing your request. Please try again later, or contact us at our github.");
         error.statusCode = 500;
     }
-
-    next(error);
+    res.status(error.statusCode).send(error.message);
 });
 
 module.exports = {
