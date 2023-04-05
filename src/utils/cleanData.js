@@ -68,8 +68,6 @@ const cleanRels = (data) => {
                 obj.rels.properties[key] = obj.rels.properties[key].low;
             }
         }
-
-
         arr.push(obj);
     }
 
