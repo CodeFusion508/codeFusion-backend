@@ -4,9 +4,9 @@ const createContentQuery = (uuid, body) => {
             {
                 uuid : "${uuid}", 
                 path : "${body.path}",
-                link : "${body.link}",
-                exp  : 0,
-                title: "${body.title}",
+                desc : "${body.desc}",
+                exp  : ${body.exp},
+                title: "${body.title}"
             }
         )
         WITH c
@@ -40,14 +40,14 @@ const updatedContentQuery = (body) => {
     if (body.path) {
         propsToUpdate.push(`c.path = "${body.path}"`);
     }
-    if (body.link) {
-        propsToUpdate.push(`c.desc = "${body.link}"`);
-    }
     if (body.exp) {
         propsToUpdate.push(`c.exp = ${body.exp}`);
     }
     if (body.title) {
         propsToUpdate.push(`c.desc = "${body.title}"`);
+    }
+    if (body.desc) {
+        propsToUpdate.push(`c.desc = "${body.desc}"`);
     }
 
     const query = `

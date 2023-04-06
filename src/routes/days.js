@@ -16,6 +16,7 @@ module.exports = (deps) => {
         .put("/", endPoint(body, UPDATE_DAY, updateDay))
         .get("/", endPoint(undefined, undefined, getAllDays))
         .get("/:uuid", endPoint(params, GET_UUID, getDayByUuid))
+        .get("/:uuid/rel", endPoint(params, GET_UUID, getDaysRels))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteDayByUuid));
 };
 
@@ -25,3 +26,4 @@ const createDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, 
 const getAllDays = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getAllDays(data));
 const updateDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.updatedDay(data));
 const deleteDayByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.deleteDay(data));
+const getDaysRels = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDaysRels(data));

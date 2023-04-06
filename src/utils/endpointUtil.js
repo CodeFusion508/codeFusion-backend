@@ -5,9 +5,9 @@ const endpointMethods = (deps) => (reqData, joi, method) => [
     method(deps)
 ];
 
-const endpointResponse = (res, next) => (promise) => promise.then((response) => {
+const endpointResponse = (res) => (promise) => promise.then((response) => {
     res.send(response);
-}).catch(({ err, message }) => {
+}).catch(({err, message }) => {
     let error;
 
     if (err) {
@@ -18,7 +18,7 @@ const endpointResponse = (res, next) => (promise) => promise.then((response) => 
         error.statusCode = 500;
     }
 
-    next(error);
+    res.status(error.statusCode).send(error.message);
 });
 
 module.exports = {
