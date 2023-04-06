@@ -19,7 +19,7 @@ module.exports = (deps) => {
     app.use(cors());
     app.use(express.json());
 
-    app.use("/static", express.static(path.join(__dirname, "lessons")));
+    app.use("/static", express.static(path.join(__dirname, "mdContent")));
     app.use(router);
 
 
