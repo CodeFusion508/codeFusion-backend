@@ -43,7 +43,7 @@ const getDay = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "This day does not exist, please check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "This day does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);
@@ -56,7 +56,7 @@ const getAllDays = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "There are no results for your search." };
+    if (data.records.length === 0) throw { err: 404, message: "There are no results for your search." };
 
     data = cleanNeo4j(data);
     cleanRecords(data);
@@ -69,7 +69,7 @@ const getDaysRels = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "There are no relations for this node" };
+    if (data.records.length === 0) throw { err: 404, message: "There are no relations for this node" };
 
     data = cleanNeo4j(data);
     cleanRels(data);
@@ -92,7 +92,7 @@ const updatedDay = async ({ services }, body) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "This day does not exist, please check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "This day does not exist, please check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);
