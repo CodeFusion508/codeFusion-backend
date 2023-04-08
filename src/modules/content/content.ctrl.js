@@ -36,7 +36,7 @@ const getContent = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "This content does not exist, check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "This content does not exist, check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);
@@ -50,7 +50,7 @@ const updateContent = async ({ services }, body) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length == 0) throw { err: 404, message: "This content does not exist, check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "This content does not exist, check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);

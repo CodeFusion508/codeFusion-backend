@@ -2,17 +2,17 @@ const createContentQuery = (uuid, body) => {
     const query = `
         CREATE (c: Content:${body.label}
             {
-                uuid : "${uuid}", 
-                path : "${body.path}",
-                desc : "${body.desc}",
-                exp  : ${body.exp},
-                title: "${body.title}"
+                uuid  : "${uuid}", 
+                path  : "${body.path}",
+                desc  : "${body.desc}",
+                exp   : ${body.exp},
+                title : "${body.title}"
             }
         )
         WITH c
         MATCH(d: Day { uuid: "${body.dayUuid}" })
         WHERE NOT d:softDeleted
-        CREATE (c)-[:BELONGS_TO]->(d)
+        CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)
         RETURN c;
     `;
 

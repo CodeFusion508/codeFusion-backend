@@ -4,12 +4,12 @@ const createUserQuery = (uuid, body) => {
     const query = `
         CREATE (u: Student:User 
             {
-                uuid: "${uuid}", 
-                totalExp: 0, 
-                weeklyExp: 0, 
-                email: "${body.email}", 
-                userName: "${body.userName}", 
-                password: "${body.password}"
+                uuid      : "${uuid}", 
+                totalExp  : 0, 
+                weeklyExp : 0, 
+                email     : "${body.email}", 
+                userName  : "${body.userName}", 
+                password  : "${body.password}"
             }
         )
         RETURN u;

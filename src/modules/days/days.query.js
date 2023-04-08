@@ -2,9 +2,9 @@ const createDayQuery = (uuid, body) => {
     const query = `
         CREATE (d: Day 
             {
-                uuid: "${uuid}",
-                exp: 0,
-                desc: "${body.desc}"
+                uuid : "${uuid}",
+                exp  : 0,
+                desc : "${body.desc}"
             }
         )
         WITH d

@@ -2,11 +2,10 @@ const createSprintQuery = (uuid, body) => {
     const query = `
         CREATE (s: Sprint
             {
-                uuid: "${uuid}", 
-                totalExp: 0,
-                path: "${body.path}",
-                title: "${body.title}",
-                desc: "${body.desc}"
+                uuid     : "${uuid}", 
+                totalExp : 0,
+                title    : "${body.title}",
+                desc     : "${body.desc}"
             }
         )
         RETURN s;

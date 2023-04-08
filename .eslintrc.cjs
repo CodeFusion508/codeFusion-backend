@@ -50,6 +50,8 @@ module.exports = {
             }
         ],
         "semi"                    : ["error", "always"],
+        "eqeqeq"                  : ["error", "smart"],
+        "no-else-return"          : "error",
         "jest/no-identical-title" : "error",
     }
 };
