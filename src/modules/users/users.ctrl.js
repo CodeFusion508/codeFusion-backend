@@ -9,9 +9,13 @@ const {
   findUserQuery,
   updateUserQuery,
   logInQuery,
-    createRelationQuery
+  createRelationQuery
 } = require("./users.query.js");
-const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
+const {
+  cleanNeo4j,
+  cleanRecord,
+  cleanRel
+} = require("../../utils/cleanData.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
@@ -103,7 +107,6 @@ const logIn = async ({ services }, body) => {
 };
 
 const createRelation = async ({ services }, body) => {
-  console.log("just cheching if it reaches user ctrl");
   const query = createRelationQuery(body);
 
   let data = await services.neo4j.session.run(query);
@@ -111,7 +114,7 @@ const createRelation = async ({ services }, body) => {
   if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
 
   data = cleanNeo4j(data);
-  //cleanRecord(data);
+  cleanRel(data);
 
   return data;
 };
