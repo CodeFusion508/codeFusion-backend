@@ -18,7 +18,7 @@ module.exports = (deps) => {
         .get("/:uuid", endPoint(params, GET_UUID, getDayByUuid))
         .get("/:uuid/rel", endPoint(params, GET_UUID, getDaysRels))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteDayByUuid));
-};
+}
 
 
 const getDayByUuid = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDay(data));
