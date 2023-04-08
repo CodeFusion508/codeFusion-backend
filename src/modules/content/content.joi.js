@@ -9,8 +9,8 @@ module.exports = {
         path      : Joi.string().required(),
         exp       : Joi.number().required(),
         title     : Joi.string().required(),
-        dayUuid   : Joi.string().required(),
         desc      : Joi.string().required(),
+        dayUuid   : Joi.string().required(),
         contentNo : Joi.number().required()
     }),
     UPDATE_CONTENT: Joi.object({
@@ -18,6 +18,6 @@ module.exports = {
         desc  : Joi.string().optional(),
         path  : Joi.string().optional(),
         exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
+        title : Joi.string().optional()
     })
 };
