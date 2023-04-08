@@ -20,5 +20,10 @@ module.exports = {
         userName  : Joi.string().optional(),
         email     : Joi.string().optional(),
         password  : Joi.string().optional()
+    }),
+    CREATE_RELATION: Joi.object({
+        uuid        : Joi.string().required(),
+        contentUuid : Joi.string().required(),
+        eval        : Joi.string().optional()
     })
 };
