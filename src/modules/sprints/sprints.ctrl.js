@@ -3,7 +3,8 @@ const { v4 } = require("uuid");
 const {
     cleanNeo4j,
     cleanRecord,
-    cleanRecords
+    cleanRecords,
+    cleanRels
 } = require("../../utils/cleanData.js");
 
 const {
@@ -72,7 +73,7 @@ const getSprintRels = async ({ services }, params) => {
     if (data.records.length === 0) throw { err: 404, message: "This sprint does not exist, check if you have a valid uuid." };
 
     data = cleanNeo4j(data);
-    cleanRecords(data);
+    cleanRels(data);
 
     return data;
 };
