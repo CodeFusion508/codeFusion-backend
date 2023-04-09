@@ -11,13 +11,17 @@ module.exports = {
         title     : Joi.string().required(),
         desc      : Joi.string().required(),
         dayUuid   : Joi.string().required(),
-        contentNo : Joi.number().required()
+        contentNo : Joi.number().required(),
+        time      : Joi.number().required(),
+        link      : Joi.string().optional()
     }),
     UPDATE_CONTENT: Joi.object({
         uuid  : Joi.string().required(),
         desc  : Joi.string().optional(),
         path  : Joi.string().optional(),
         exp   : Joi.number().optional(),
-        title : Joi.string().optional()
+        title : Joi.string().optional(),
+        time  : Joi.number().optional(),
+        link  : Joi.string().optional()
     })
 };

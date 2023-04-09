@@ -57,6 +57,31 @@ const updateUserQuery = (body) => {
 
     return updateQuery;
 };
+
+const createRelationQuery = (body) => {
+    if (!body.eval) {
+        const query = `
+        MATCH (u: Student {uuid: "${body.uuid}"})
+        WHERE NOT u:softDeleted
+        MATCH (c: Content {uuid: "${body.contentUuid}"})
+        WHERE NOT c:softDeleted
+        WITH u, c
+        CREATE (u)-[r:COMPLETED]->(c)
+        RETURN r;
+    `;
+        return query;
+    }
+        const query = `
+        MATCH (u: Student {uuid: "${body.uuid}"})
+        WHERE NOT u:softDeleted
+        MATCH (c: Content {uuid: "${body.contentUuid}"})
+        WHERE NOT c:softDeleted
+        WITH u, c
+        CREATE (u)-[r:COMPLETED {eval: "${body.eval}"}]->(c)
+        RETURN r;
+    `;
+        return query;
+};
 const logInQuery = (body) => {
     const query = `
         MATCH (u: Student {email: "${body.email}"})
@@ -73,5 +98,6 @@ module.exports = {
     findRegisteredUser,
     findUserQuery,
     updateUserQuery,
-    logInQuery
+    logInQuery,
+    createRelationQuery
 };
