@@ -1,6 +1,6 @@
 const createSprintQuery = (uuid, body) => {
     const query = `
-        CREATE (s: Sprint
+        CREATE (s: Sprint:${body.label}
             {
                 uuid     : "${uuid}", 
                 totalExp : 0,
