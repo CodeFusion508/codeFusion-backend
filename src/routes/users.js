@@ -8,7 +8,8 @@ const {
     CREATE_USER,
     LOGIN_USER,
     UPDATE_USER,
-    CREATE_RELATION
+    CREATE_RELATION,
+    DELETE_RELATION
 } = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
@@ -20,7 +21,8 @@ module.exports = (deps) => {
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
-        .post("/rel", /*auth.verifyToken,*/ endPoint(body, CREATE_RELATION, createRelation));
+        .post("/rel", /*auth.verifyToken,*/ endPoint(body, CREATE_RELATION, createRelation))
+        .delete('/rel', endPoint(body, DELETE_RELATION, deleteRelation ))
 };
 
 
@@ -30,3 +32,4 @@ const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res,
 const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));
 const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.logIn(data));
 const createRelation = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRelation(data));
+const deleteRelation = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deletedRelation(data));
