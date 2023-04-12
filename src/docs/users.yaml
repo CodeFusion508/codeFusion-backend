@@ -23,7 +23,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/resSchema"
-  /users/signUp:
+  /users/:
     post:
       summary: Create new user
       tags:

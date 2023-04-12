@@ -103,7 +103,7 @@ const deleteRelation = (body) => {
         DELETE (u)-[r:${body.relation}]->(c)
         RETURN r;
     `;
-    return query
+    return query;
 };
 
 module.exports = {

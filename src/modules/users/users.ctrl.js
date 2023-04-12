@@ -43,10 +43,14 @@ const createUser = async ({ services }, body) => {
   const query = createUserQuery(uuid, body);
 
   let data = await services.neo4j.session.run(query);
-  data = cleanNeo4j(data);
-  cleanRecord(data);
+  try {
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+  } catch (err) {
+    console.log(err);
+  }
 
-  const { email, password } = data.node.properties;
+  const { email, password } = data.node;
   return { data, token: jwt.createToken(email, password) };
 };
 
