@@ -31,7 +31,7 @@ module.exports = (deps) => {
     }, app);
 
     server.listen(PORT, () => {
-        process.stdout.write("Running at PORT: " + `\x1b[3m\x1b[96m${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
+        process.stdout.write("Running at -> " + `\x1b[3m\x1b[96mhttps://localhost:${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
     });
 
     return app;
