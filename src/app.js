@@ -26,8 +26,8 @@ module.exports = (deps) => {
 
     app.set("PORT", PORT);
     const server = https.createServer({
-        key  : fs.readFileSync("server.key"),
-        cert : fs.readFileSync("server.cert"),
+        key  : fs.readFileSync("host.key"),
+        cert : fs.readFileSync("host.cert"),
     }, app);
 
     server.listen(PORT, () => {
