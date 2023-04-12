@@ -23,24 +23,16 @@ module.exports = (deps) => {
 
     app.use("/static", express.static(path.join(__dirname, "mdContent")));
     app.use(router);
-    const port = PORT || "8080";
-    app.set("port", port);
 
-    const server = https
-        .createServer(
-            // Provide the private and public key to the server by reading each
-            // file's content with the readFileSync() method.
-            {
-                key  : fs.readFileSync("server.key"),
-                cert : fs.readFileSync("server.cert"),
-            },
-            app
-        );
-    /*app.listen(PORT, () => {
+    app.set("PORT", PORT);
+    const server = https.createServer({
+        key  : fs.readFileSync("server.key"),
+        cert : fs.readFileSync("server.cert"),
+    }, app);
+
+    server.listen(PORT, () => {
         process.stdout.write("Running at PORT: " + `\x1b[3m\x1b[96m${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
-    });*/
-    server.listen(port);
-    console.log("Corriendo en https://localhost:" + port);
+    });
 
     return app;
 };

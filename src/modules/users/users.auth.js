@@ -30,8 +30,8 @@ const verifyToken = (req, _, next = Function) => {
         throw error;
     }
 
-    if(req.method !=  "GET") {
-        req["body"]["uuid"] = infoToken.sub
+    if (req.method !== "GET") {
+        req["body"]["uuid"] = infoToken.sub;
     }
 
     next();

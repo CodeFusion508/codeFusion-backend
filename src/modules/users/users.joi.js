@@ -21,14 +21,14 @@ module.exports = {
         email     : Joi.string().optional(),
         password  : Joi.string().optional()
     }),
-    CREATE_RELATION : Joi.object({
+    CREATE_RELATION: Joi.object({
         uuid        : Joi.string().required(),
         contentUuid : Joi.string().required(),
         eval        : Joi.string().optional(),
         op          : Joi.string().required(),
         relation    : Joi.string().required()
     }),
-    DELETE_RELATION : Joi.object({
+    DELETE_RELATION: Joi.object({
         uuid        : Joi.string().required(),
         contentUuid : Joi.string().required(),
         op          : Joi.string().required(),
