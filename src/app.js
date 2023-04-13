@@ -1,6 +1,4 @@
 const path = require("path");
-const https = require("https");
-const fs = require("fs");
 
 const express = require("express");
 const helmet = require("helmet");
@@ -24,14 +22,8 @@ module.exports = (deps) => {
     app.use("/static", express.static(path.join(__dirname, "mdContent")));
     app.use(router);
 
-    app.set("PORT", PORT);
-    const server = https.createServer({
-        key  : fs.readFileSync("host.key"),
-        cert : fs.readFileSync("host.cert"),
-    }, app);
-
-    server.listen(PORT, () => {
-        process.stdout.write("Running at -> " + `\x1b[3m\x1b[96mhttps://localhost:${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
+    app.listen(PORT, () => {
+        process.stdout.write("Running at -> " + `\x1b[3m\x1b[96mhttp://localhost:${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
     });
 
     return app;
