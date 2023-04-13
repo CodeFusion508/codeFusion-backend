@@ -22,7 +22,7 @@ module.exports = (deps) => {
         .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
         .post("/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRelation))
-        .delete("/rel", endPoint(body, DELETE_RELATION, deleteRelation ));
+        .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRelation ));
 };
 
 
