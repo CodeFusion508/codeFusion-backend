@@ -9,7 +9,8 @@ const {
   findUserQuery,
   updateUserQuery,
   logInQuery,
-  createRelationQuery
+  createRelationQuery,
+  deleteRelationQuery
 } = require("./users.query.js");
 const {
   cleanNeo4j,
@@ -45,7 +46,7 @@ const createUser = async ({ services }, body) => {
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  const { email, password } = data.node.properties;
+  const { email, password } = data.node;
   return { data, token: jwt.createToken(email, password) };
 };
 
@@ -106,7 +107,7 @@ const logIn = async ({ services }, body) => {
   };
 };
 
-const createRelation = async ({ services }, body) => {
+const createRel = async ({ services }, body) => {
   const query = createRelationQuery(body);
 
   let data = await services.neo4j.session.run(query);
@@ -119,11 +120,21 @@ const createRelation = async ({ services }, body) => {
   return data;
 };
 
+const deleteRel = async ({ services }, body) => {
+  const query = deleteRelationQuery(body);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+
+  return data;
+};
+
 Object.assign(module.exports, {
   createUser,
   deleteUser,
-  getUser,
   updateUser,
+  getUser,
   logIn,
-  createRelation
+  createRel,
+  deleteRel
 });

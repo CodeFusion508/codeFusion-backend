@@ -7,7 +7,8 @@ module.exports = {
     CREATE_SPRINT: Joi.object({
         path  : Joi.string().required(),
         title : Joi.string().required(),
-        desc  : Joi.string().required()
+        desc  : Joi.string().required(),
+        label : Joi.string().required()
     }),
     UPDATE_SPRINT: Joi.object({
         uuid     : Joi.string().required(),

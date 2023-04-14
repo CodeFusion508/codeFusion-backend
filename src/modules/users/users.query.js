@@ -61,32 +61,43 @@ const updateUserQuery = (body) => {
 const createRelationQuery = (body) => {
     if (!body.eval) {
         const query = `
-        MATCH (u: Student {uuid: "${body.uuid}"})
-        WHERE NOT u:softDeleted
-        MATCH (c: Content {uuid: "${body.contentUuid}"})
-        WHERE NOT c:softDeleted
-        WITH u, c
-        CREATE (u)-[r:COMPLETED]->(c)
-        RETURN r;
-    `;
+            MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+            WHERE NOT u:softDeleted AND NOT c:softDeleted
+            WITH u, c
+            CREATE (u)-[r:${body.relation}]->(c)
+            RETURN r;
+        `;
+
         return query;
     }
-        const query = `
-        MATCH (u: Student {uuid: "${body.uuid}"})
-        WHERE NOT u:softDeleted
-        MATCH (c: Content {uuid: "${body.contentUuid}"})
-        WHERE NOT c:softDeleted
+    const query = `
+        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+        WHERE NOT u:softDeleted AND NOT c:softDeleted
         WITH u, c
-        CREATE (u)-[r:COMPLETED {eval: "${body.eval}"}]->(c)
+        CREATE (u)-[r:${body.relation} {eval: "${body.eval}"}]->(c)
         RETURN r;
     `;
-        return query;
+
+    return query;
 };
+
 const logInQuery = (body) => {
     const query = `
-        MATCH (u: Student {email: "${body.email}"})
+        MATCH (u:Student {email: "${body.email}"})
         WHERE NOT u:softDeleted
         RETURN u;
+    `;
+
+    return query;
+};
+
+const deleteRelationQuery = (body) => {
+    const query = `
+        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+        WHERE NOT u:softDeleted AND NOT c:softDeleted
+        WITH u, c
+        MATCH (u)-[r:${body.relation}]->(c)
+        DELETE r;
     `;
 
     return query;
@@ -99,5 +110,6 @@ module.exports = {
     findUserQuery,
     updateUserQuery,
     logInQuery,
-    createRelationQuery
+    createRelationQuery,
+    deleteRelationQuery
 };
