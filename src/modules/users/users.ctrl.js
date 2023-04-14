@@ -3,12 +3,13 @@ const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.txt");
 
 const {
-  signUpQuery,
-  deleteUserQuery,
   findRegisteredUser,
+  signUpQuery,
+  logInQuery,
   getUserQuery,
   updateUserQuery,
-  logInQuery,
+  deleteUserQuery,
+
   createRelQuery,
   deleteRelQuery
 } = require("./users.query.js");

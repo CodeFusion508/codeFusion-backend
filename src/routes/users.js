@@ -4,10 +4,10 @@ const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js"
 const { params, body } = require("../utils/reqData.js");
 const auth = require("../modules/users/users.auth.js");
 const {
-    GET_UUID,
     CREATE_USER,
     LOGIN_USER,
     UPDATE_USER,
+    GET_UUID,
     CREATE_RELATION,
     DELETE_RELATION
 } = require("../modules/users/users.joi.js");
