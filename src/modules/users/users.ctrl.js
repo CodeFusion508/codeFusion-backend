@@ -10,7 +10,7 @@ const {
   updateUserQuery,
   logInQuery,
   createRelationQuery,
-  deleteRelation
+  deleteRelationQuery
 } = require("./users.query.js");
 const {
   cleanNeo4j,
@@ -107,7 +107,7 @@ const logIn = async ({ services }, body) => {
   };
 };
 
-const createRelation = async ({ services }, body) => {
+const createRel = async ({ services }, body) => {
   const query = createRelationQuery(body);
 
   let data = await services.neo4j.session.run(query);
@@ -120,13 +120,10 @@ const createRelation = async ({ services }, body) => {
   return data;
 };
 
-const deletedRelation = async ({ services }, body) => {
-  const query = deleteRelation(body);
+const deleteRel = async ({ services }, body) => {
+  const query = deleteRelationQuery(body);
 
   let data = await services.neo4j.session.run(query);
-
-  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
-
   data = cleanNeo4j(data);
 
   return data;
@@ -135,9 +132,9 @@ const deletedRelation = async ({ services }, body) => {
 Object.assign(module.exports, {
   createUser,
   deleteUser,
-  getUser,
   updateUser,
+  getUser,
   logIn,
-  createRelation,
-  deletedRelation
+  createRel,
+  deleteRel
 });

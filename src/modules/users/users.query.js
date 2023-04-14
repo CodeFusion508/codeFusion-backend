@@ -91,7 +91,7 @@ const logInQuery = (body) => {
     return query;
 };
 
-const deleteRelation = (body) => {
+const deleteRelationQuery = (body) => {
     const query = `
         MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
         WHERE NOT u:softDeleted AND NOT c:softDeleted
@@ -111,5 +111,5 @@ module.exports = {
     updateUserQuery,
     logInQuery,
     createRelationQuery,
-    deleteRelation
+    deleteRelationQuery
 };

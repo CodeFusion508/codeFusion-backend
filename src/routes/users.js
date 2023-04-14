@@ -18,11 +18,11 @@ module.exports = (deps) => {
     return Router()
         .post("/", endPoint(body, CREATE_USER, signUp))
         .post("/login", endPoint(body, LOGIN_USER, logIn))
-        .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
+        .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
         .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
+        .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
-        .post("/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRelation))
-        .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRelation ));
+        .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel));
 };
 
 
@@ -31,5 +31,5 @@ const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, nex
 const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updateUser(data));
 const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));
 const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.logIn(data));
-const createRelation = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRelation(data));
-const deleteRelation = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deletedRelation(data));
+const createRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRel(data));
+const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteRel(data));
