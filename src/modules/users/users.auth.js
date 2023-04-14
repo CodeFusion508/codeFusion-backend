@@ -12,7 +12,7 @@ const verifyToken = (req, _, next = Function) => {
         throw error;
     }
 
-    const [, token] = auth.split(" ");
+    const token = auth.split(" ")[1];
 
     if (token === undefined) {
         error = new Error("No tienes autorización");

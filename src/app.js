@@ -13,12 +13,15 @@ module.exports = (deps) => {
     const PORT = process.env.PORT || 3000;
     const router = Router(deps);
 
+    // Documentation Route
     app.use("/docs", serve, setup(swaggerSpec));
 
+    // Middleware
     app.use(helmet());
     app.use(cors());
     app.use(express.json());
 
+    // Route Paths
     app.use("/static", express.static(path.join(__dirname, "mdContent")));
     app.use(router);
 
