@@ -9,10 +9,10 @@ const {
 
 const {
     createSprintQuery,
-    deleteSprintQuery,
-    getSprintQuery,
-    updateSprintQuery,
     getAllSprintsQuery,
+    updateSprintQuery,
+    getSprintQuery,
+    deleteSprintQuery,
     getSprintsRelsQuery
 } = require("./sprints.query.js");
 
