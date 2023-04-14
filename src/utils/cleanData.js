@@ -18,6 +18,7 @@ const cleanRecord = (data) => {
             obj[key] = obj[key].low;
         }
     }
+
     data.node = obj;
 };
 
