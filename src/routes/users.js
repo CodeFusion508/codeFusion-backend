@@ -23,8 +23,8 @@ module.exports = (deps) => {
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
         // Student Relationships
-        .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
-        .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel));
+        .post("/create/rel", endPoint(body, CREATE_RELATION, createRel))
+        .delete("/delete/rel",  endPoint(body, DELETE_RELATION, deleteRel));
 };
 
 

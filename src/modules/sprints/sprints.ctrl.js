@@ -52,7 +52,7 @@ const getAllSprints = async ({ services }) => {
 };
 
 const updateSprint = async ({ services }, body) => {
-    if (Object.keys(body).length === 0) throw { err: 400, message: "You must provide at least one change." };
+    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
     const query = updateSprintQuery(body);
 
     let data = await services.neo4j.session.run(query);
