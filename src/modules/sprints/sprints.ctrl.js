@@ -43,7 +43,7 @@ const getAllSprints = async ({ services }) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) throw { err: 404, message: "This sprint does not exist, check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "No Sprints Exist" };
 
     data = cleanNeo4j(data);
     cleanRecords(data);

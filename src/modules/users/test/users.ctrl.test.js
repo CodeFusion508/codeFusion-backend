@@ -76,7 +76,7 @@ describe("users controller tests", () => {
 
             expect(result).toHaveProperty("data");
             expect(result.data).toHaveProperty("stats");
-            expect(result.data).toHaveProperty("node");
+            expect(result.data.node).toHaveProperty("userName");
 
             expect(result).toHaveProperty("token");
         });
@@ -154,8 +154,8 @@ describe("users controller tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("node");
             expect(result).toHaveProperty("stats");
+            expect(result.node).toHaveProperty("uuid");
         });
     });
 
@@ -190,8 +190,9 @@ describe("users controller tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("node");
             expect(result).toHaveProperty("stats");
+            expect(result.node).toHaveProperty("type");
+            expect(result.node).toHaveProperty("properties");
         });
     });
 
