@@ -116,7 +116,54 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err");
-            expect(result.node).toHaveProperty("message");
+            expect(result).toHaveProperty("message");
+        });
+    });
+
+    describe("deleteSprint", () => {
+        it("deleteSprint should return data", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const body = {
+                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
+            };
+            const result = await deleteSprint(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("stats");
+            expect(result).toHaveProperty("node");
+        });
+    });
+
+    describe("getSprintRels", () => {
+        it("getSprintRels should return data", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockSprinRels);
+
+            const params = {
+                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
+            };
+            const result = await getSprintRels(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("stats");
+            expect(result.node[1]).toHaveProperty("node");
+            expect(result.node[1]).toHaveProperty("rels");
+        });
+
+        it("getSprintRels should throw an error", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const params = {
+                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
+            };
+            const result = await getSprintRels(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err", 404);
+            expect(result).toHaveProperty("message", "This sprint does not exist, check if you have a valid uuid.");
         });
     });
 });
@@ -615,6 +662,289 @@ let mockAllSprints = {
         },
         "resultAvailableAfter": {
             "low"  : 2,
+            "high" : 0
+        },
+        "database": {
+            "name": "neo4j"
+        }
+    }
+};
+
+let mockSprinRels = {
+    "records": [
+        {
+            "keys": [
+                "d",
+                "r"
+            ],
+            "length"  : 2,
+            "_fields" : [
+                {
+                    "identity": {
+                        "low"  : 46,
+                        "high" : 0
+                    },
+                    "labels": [
+                        "Day"
+                    ],
+                    "properties": {
+                        "exp": {
+                            "low"  : 0,
+                            "high" : 0
+                        },
+                        "uuid" : "e7206d40-6745-4450-baec-1e9beca02102",
+                        "desc" : "mas advancado como CDNs, las reglas y esctructura recommendada"
+                    },
+                    "elementId": "4:fa284c45-c13e-4980-8dbe-982377fdef6e:46"
+                },
+                {
+                    "identity": {
+                        "low"  : 38,
+                        "high" : 0
+                    },
+                    "start": {
+                        "low"  : 46,
+                        "high" : 0
+                    },
+                    "end": {
+                        "low"  : 31,
+                        "high" : 0
+                    },
+                    "type"       : "BELONGS_TO",
+                    "properties" : {
+                        "dayNo": {
+                            "low"  : 3,
+                            "high" : 0
+                        }
+                    },
+                    "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:38",
+                    "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:46",
+                    "endNodeElementId"   : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:31"
+                }
+            ],
+            "_fieldLookup": {
+                "d" : 0,
+                "r" : 1
+            }
+        },
+        {
+            "keys": [
+                "d",
+                "r"
+            ],
+            "length"  : 2,
+            "_fields" : [
+                {
+                    "identity": {
+                        "low"  : 44,
+                        "high" : 0
+                    },
+                    "labels": [
+                        "Day"
+                    ],
+                    "properties": {
+                        "exp": {
+                            "low"  : 0,
+                            "high" : 0
+                        },
+                        "uuid" : "0bde912c-38e9-4608-b2e7-c19ec595afc1",
+                        "desc" : "mas advancado como CDNs, las reglas y esctructura recommendada"
+                    },
+                    "elementId": "4:fa284c45-c13e-4980-8dbe-982377fdef6e:44"
+                },
+                {
+                    "identity": {
+                        "low"  : 8,
+                        "high" : 0
+                    },
+                    "start": {
+                        "low"  : 44,
+                        "high" : 0
+                    },
+                    "end": {
+                        "low"  : 31,
+                        "high" : 0
+                    },
+                    "type"       : "BELONGS_TO",
+                    "properties" : {
+                        "dayNo": {
+                            "low"  : 3,
+                            "high" : 0
+                        }
+                    },
+                    "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:8",
+                    "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:44",
+                    "endNodeElementId"   : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:31"
+                }
+            ],
+            "_fieldLookup": {
+                "d" : 0,
+                "r" : 1
+            }
+        },
+        {
+            "keys": [
+                "d",
+                "r"
+            ],
+            "length"  : 2,
+            "_fields" : [
+                {
+                    "identity": {
+                        "low"  : 43,
+                        "high" : 0
+                    },
+                    "labels": [
+                        "Day"
+                    ],
+                    "properties": {
+                        "exp": {
+                            "low"  : 0,
+                            "high" : 0
+                        },
+                        "uuid" : "2f57e4ce-7d82-4f6c-a041-f79ae3753c91",
+                        "desc" : "como crear imagenes, div, footer y much mas de la esctructura"
+                    },
+                    "elementId": "4:fa284c45-c13e-4980-8dbe-982377fdef6e:43"
+                },
+                {
+                    "identity": {
+                        "low"  : 7,
+                        "high" : 0
+                    },
+                    "start": {
+                        "low"  : 43,
+                        "high" : 0
+                    },
+                    "end": {
+                        "low"  : 31,
+                        "high" : 0
+                    },
+                    "type"       : "BELONGS_TO",
+                    "properties" : {
+                        "dayNo": {
+                            "low"  : 2,
+                            "high" : 0
+                        }
+                    },
+                    "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:7",
+                    "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:43",
+                    "endNodeElementId"   : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:31"
+                }
+            ],
+            "_fieldLookup": {
+                "d" : 0,
+                "r" : 1
+            }
+        },
+        {
+            "keys": [
+                "d",
+                "r"
+            ],
+            "length"  : 2,
+            "_fields" : [
+                {
+                    "identity": {
+                        "low"  : 42,
+                        "high" : 0
+                    },
+                    "labels": [
+                        "Day"
+                    ],
+                    "properties": {
+                        "exp": {
+                            "low"  : 0,
+                            "high" : 0
+                        },
+                        "uuid" : "a3a030a5-8d4b-404d-9d97-0ef39c16a57c",
+                        "desc" : "el comienzo de HTML, y cosas muy basicas de HTML"
+                    },
+                    "elementId": "4:fa284c45-c13e-4980-8dbe-982377fdef6e:42"
+                },
+                {
+                    "identity": {
+                        "low"  : 6,
+                        "high" : 0
+                    },
+                    "start": {
+                        "low"  : 42,
+                        "high" : 0
+                    },
+                    "end": {
+                        "low"  : 31,
+                        "high" : 0
+                    },
+                    "type"       : "BELONGS_TO",
+                    "properties" : {
+                        "dayNo": {
+                            "low"  : 1,
+                            "high" : 0
+                        }
+                    },
+                    "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:6",
+                    "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:42",
+                    "endNodeElementId"   : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:31"
+                }
+            ],
+            "_fieldLookup": {
+                "d" : 0,
+                "r" : 1
+            }
+        }
+    ],
+    "summary": {
+        "query": {
+            "text"       : "\n        MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: \"4d7a64eb-2e65-4164-aa76-181e5d5d2dca\"})\n        WHERE NOT s:softDeleted AND NOT d:softDeleted\n        RETURN d, r;\n    ",
+            "parameters" : {}
+        },
+        "queryType" : "r",
+        "counters"  : {
+            "_stats": {
+                "nodesCreated"         : 0,
+                "nodesDeleted"         : 0,
+                "relationshipsCreated" : 0,
+                "relationshipsDeleted" : 0,
+                "propertiesSet"        : 0,
+                "labelsAdded"          : 0,
+                "labelsRemoved"        : 0,
+                "indexesAdded"         : 0,
+                "indexesRemoved"       : 0,
+                "constraintsAdded"     : 0,
+                "constraintsRemoved"   : 0
+            },
+            "_systemUpdates": 0
+        },
+        "updateStatistics": {
+            "_stats": {
+                "nodesCreated"         : 0,
+                "nodesDeleted"         : 0,
+                "relationshipsCreated" : 0,
+                "relationshipsDeleted" : 0,
+                "propertiesSet"        : 0,
+                "labelsAdded"          : 0,
+                "labelsRemoved"        : 0,
+                "indexesAdded"         : 0,
+                "indexesRemoved"       : 0,
+                "constraintsAdded"     : 0,
+                "constraintsRemoved"   : 0
+            },
+            "_systemUpdates": 0
+        },
+        "plan"          : false,
+        "profile"       : false,
+        "notifications" : [],
+        "server"        : {
+            "address"         : "470f45fb.databases.neo4j.io:7687",
+            "agent"           : "Neo4j/5.6-aura",
+            "protocolVersion" : 5.1
+        },
+        "resultConsumedAfter": {
+            "low"  : 6,
+            "high" : 0
+        },
+        "resultAvailableAfter": {
+            "low"  : 170,
             "high" : 0
         },
         "database": {
