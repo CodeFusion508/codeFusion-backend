@@ -35,7 +35,7 @@ describe("content joi tests", () => {
       expect(value).toHaveProperty("dayUuid");
     });
 
-    it("give error when no sprintUuid given", () => {
+    it("give error when no dayUuid given", () => {
       const body = {
         label     : "d0,e",
         path      : "/3d3d3/",
@@ -63,26 +63,21 @@ describe("content joi tests", () => {
         time  : 1000
       };
 
-      const { value } = UPDATE_CONTENT.validate(body);
+      const { error } = UPDATE_CONTENT.validate(body);
 
-      expect(value).toHaveProperty("label");
-      expect(value).toHaveProperty("path");
-      expect(value).toHaveProperty("dayUuid");
+      expect(error.details[0].message).toBe('"uuid" is required');
     });
 
     it("give error when no sprintUuid given", () => {
       const body = {
         uuid  : "",
-        desc  : "",
-        path  : "",
-        exp   : 0,
-        title : "",
-        time  : 0
+        title : "sakdlsakld",
+        time  : 39324932
       };
 
       const { error } = UPDATE_CONTENT.validate(body);
 
-      expect(error.details[0].message).toBe('"dayUuid" is not allowed to be empty');
+      expect(error.details[0].message).toBe('"uuid" is not allowed to be empty');
     });
   });
 });
