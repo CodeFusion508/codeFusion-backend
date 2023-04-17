@@ -16,7 +16,7 @@ describe("content joi tests", () => {
   });
 
   describe("joi create CONTENT", () => {
-    it("give error when desc is number", () => {
+    it("give back value when body is correct", () => {
       const body = {
         label     : "d0,e",
         path      : "/3d3d3/",
@@ -68,7 +68,7 @@ describe("content joi tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when no sprintUuid given", () => {
+    it("give error when uuid is empty", () => {
       const body = {
         uuid  : "",
         title : "sakdlsakld",
