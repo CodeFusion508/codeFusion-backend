@@ -13,7 +13,6 @@ const createContentQuery = (uuid, body) => {
             )
             WITH c
             CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d:Day { uuid: "${body.dayUuid}" })
-            WHERE NOT d:softDeleted
             RETURN c;
         `;
 
@@ -34,7 +33,6 @@ const createContentQuery = (uuid, body) => {
         )
         WITH c
         CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d:Day { uuid: "${body.dayUuid}" })
-        WHERE NOT d:softDeleted
         RETURN c;
     `;
 
