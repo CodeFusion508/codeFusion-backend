@@ -43,7 +43,7 @@ const getAllSprints = async ({ services }) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) throw { err: 404, message: "This sprint does not exist, check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "No Sprints Exist" };
 
     data = cleanNeo4j(data);
     cleanRecords(data);
@@ -52,7 +52,7 @@ const getAllSprints = async ({ services }) => {
 };
 
 const updateSprint = async ({ services }, body) => {
-    if (Object.keys(body).length === 0) throw { err: 400, message: "You must provide at least one change." };
+    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
     const query = updateSprintQuery(body);
 
     let data = await services.neo4j.session.run(query);

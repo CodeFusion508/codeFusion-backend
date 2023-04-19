@@ -38,8 +38,8 @@ const createDay = async ({ services }, body) => {
     return data;
 };
 
-const getAllDays = async ({ services }, params) => {
-    const query = getAllDaysQuery(params);
+const getAllDays = async ({ services }) => {
+    const query = getAllDaysQuery();
 
     let data = await services.neo4j.session.run(query);
 

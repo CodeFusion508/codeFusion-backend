@@ -9,7 +9,6 @@ const createDayQuery = (uuid, body) => {
         )
         WITH d
         CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s:Sprint {uuid: "${body.sprintUuid}"})
-        WHERE NOT s:softDeleted 
         RETURN d;
     `;
 
@@ -19,9 +18,10 @@ const createDayQuery = (uuid, body) => {
 const getAllDaysQuery = () => {
     const query = `
         MATCH (d:Day) 
-        WHERE NOT d:softDeleted 
+        WHERE NOT d:softDeleted
         RETURN d;
     `;
+
     return query;
 };
 

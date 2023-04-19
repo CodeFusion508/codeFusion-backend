@@ -24,9 +24,9 @@ module.exports = {
     CREATE_RELATION: Joi.object({
         uuid        : Joi.string().required(),
         contentUuid : Joi.string().required(),
-        eval        : Joi.string().optional(),
         op          : Joi.string().required(),
-        relation    : Joi.string().required()
+        relation    : Joi.string().required(),
+        eval        : Joi.string().optional()
     }),
     DELETE_RELATION: Joi.object({
         uuid        : Joi.string().required(),
