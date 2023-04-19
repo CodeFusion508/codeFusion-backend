@@ -83,7 +83,6 @@ const deleteDay = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
     data = cleanNeo4j(data);
-    cleanRecord(data);
 
     return data;
 };

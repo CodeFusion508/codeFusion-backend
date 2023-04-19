@@ -85,7 +85,7 @@ describe("users controller tests", () => {
 
     describe("deleteContent", () => {
         it("deleteContent should return data", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {
                 uuid: "d54jd3-d58k543-83k45d8-9dd84"
@@ -194,6 +194,70 @@ let mockCreate = {
         },
         "resultAvailableAfter": {
             "low"  : 159,
+            "high" : 0
+        },
+        "database": {
+            "name": "neo4j"
+        }
+    }
+};
+
+let mockEmpty = {
+    "records" : [],
+    "summary" : {
+        "query": {
+            "text"       : "\n    MATCH (c:Content {uuid: \"7bf98218-0b1d-4981-b6b7-3ab060f51b66\"})\n    SET c:softDeleted;\n",
+            "parameters" : {}
+        },
+        "queryType" : "w",
+        "counters"  : {
+            "_stats": {
+                "nodesCreated"         : 0,
+                "nodesDeleted"         : 0,
+                "relationshipsCreated" : 0,
+                "relationshipsDeleted" : 0,
+                "propertiesSet"        : 0,
+                "labelsAdded"          : 1,
+                "labelsRemoved"        : 0,
+                "indexesAdded"         : 0,
+                "indexesRemoved"       : 0,
+                "constraintsAdded"     : 0,
+                "constraintsRemoved"   : 0
+            },
+            "_systemUpdates"   : 0,
+            "_containsUpdates" : true
+        },
+        "updateStatistics": {
+            "_stats": {
+                "nodesCreated"         : 0,
+                "nodesDeleted"         : 0,
+                "relationshipsCreated" : 0,
+                "relationshipsDeleted" : 0,
+                "propertiesSet"        : 0,
+                "labelsAdded"          : 1,
+                "labelsRemoved"        : 0,
+                "indexesAdded"         : 0,
+                "indexesRemoved"       : 0,
+                "constraintsAdded"     : 0,
+                "constraintsRemoved"   : 0
+            },
+            "_systemUpdates"   : 0,
+            "_containsUpdates" : true
+        },
+        "plan"          : false,
+        "profile"       : false,
+        "notifications" : [],
+        "server"        : {
+            "address"         : "470f45fb.databases.neo4j.io:7687",
+            "agent"           : "Neo4j/5.7-aura",
+            "protocolVersion" : 5.2
+        },
+        "resultConsumedAfter": {
+            "low"  : 0,
+            "high" : 0
+        },
+        "resultAvailableAfter": {
+            "low"  : 18,
             "high" : 0
         },
         "database": {
