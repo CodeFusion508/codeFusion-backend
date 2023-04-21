@@ -21,11 +21,11 @@ describe("content queries tests", () => {
 
         const query = createContentQuery(uuid, body);
 
-        expect(query).toContain(`CREATE (c: Content:${body.label}`);
+        expect(query).toContain(`CREATE (c:Content:${body.label}`);
         expect(query).toContain(`"${uuid}"`);
         expect(query).toContain(`"${body.title}"`);
         expect(query).toContain(`"${body.path}"`);
-        expect(query).toContain(`CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d:Day { uuid: "${body.dayUuid}" })`);
+        expect(query).toContain(`CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)`);
     });
 
     it("getContentQuery", () => {
