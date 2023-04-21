@@ -1,18 +1,24 @@
 const neo4jDriver = require("neo4j-driver");
 
-
 module.exports = async () => {
-    const driver = await neo4jDriver.driver(
-        process.env.URI,
-        neo4jDriver.auth.basic(process.env.DB_USER, process.env.PASSWORD)
-    );
+    try {
+        const driver = await neo4jDriver.driver(
+            process.env.URI,
+            neo4jDriver.auth.basic(process.env.DB_USER, process.env.PASSWORD), {
+            maxConnectionLifetime        : 30 * 60 * 1000,
+            maxConnectionPoolSize        : 50,
+            connectionAcquisitionTimeout : 2 * 60 * 1000
+        }
+        );
+        const session = await driver.session();
 
-    const session = await driver.session();
+        const neo4j = {
+            driver,
+            session,
+        };
 
-    const neo4j = {
-        driver,
-        session,
-    };
-
-    return neo4j;
+        return neo4j;
+    } catch (err) {
+        throw new Error("Failed to establish connection to Neo4j: " + err.message);
+    }
 };
