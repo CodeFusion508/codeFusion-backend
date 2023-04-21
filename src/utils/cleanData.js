@@ -6,29 +6,21 @@ const cleanNeo4j = (data) => {
 };
 
 const cleanRecord = (data) => {
-    let obj = {
-        labels: data.node[0]._fields[0].labels,
-        ...data.node[0]._fields[0].properties
-    };
+    const { labels, properties } = data.node[0]._fields[0];
 
-    for (const key in obj) {
-        if (obj[key].low === undefined || obj[key].low === null) {
-            continue;
-        } else {
-            obj[key] = obj[key].low;
-        }
+    for (const key in properties) {
+        const value = properties[key];
+        properties[key] = value.low !== undefined ? value.low : value;
     }
 
-    data.node = obj;
+    data.node = { labels, ...properties };
 };
 
 const cleanRecords = (data) => {
-    let arr = [];
-
-    for (let i = 0; i < data.node.length; i++) {
-        let obj = {
-            labels: data.node[i]._fields[0].labels,
-            ...data.node[i]._fields[0].properties
+    data.node = data.node.map((record) => {
+        const obj = {
+            labels: record._fields[0].labels,
+            ...record._fields[0].properties
         };
 
         for (const key in obj) {
@@ -39,10 +31,8 @@ const cleanRecords = (data) => {
             }
         }
 
-        arr.push(obj);
-    }
-
-    data.node = arr;
+        return obj;
+    });
 };
 
 const cleanRel = (data) => {
