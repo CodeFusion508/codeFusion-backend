@@ -1,12 +1,10 @@
-"use strict";
-
-/* Users tokens */
-
 const jwt = require("jwt-simple");
 const moment = require("moment");
 const { SEED } = require("./config.js");
 
 exports.createToken = function (user) {
+    console.log(SEED);
+
     const payload = {
         sub   : user.uuid,
         name  : user.userName,

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { SEED } = require("../../config/config.js");
+const { SEED } = require("./config.js");
 
 const verifyToken = (req, res, next) => {
     const { authorization } = req.headers;
