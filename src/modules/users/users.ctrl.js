@@ -9,7 +9,7 @@ const {
   getUserQuery,
   updateUserQuery,
   deleteUserQuery,
-
+  googleSignUpQuery,
   createRelQuery,
   deleteRelQuery
 } = require("./users.query.js");
@@ -52,6 +52,23 @@ const createUser = async ({ services }, body) => {
   return { data, token: jwt.createToken(email, password) };
 };
 
+const createGoogleUser = async ({ services }, body) => {
+  const findUser = findRegisteredUser(body);
+  const result = await services.neo4j.session.run(findUser);
+
+  if (result.records.length !== 0) throw { err: 403, message: "This email has already been registered, please use another or log in." };
+
+  body.password = bcrypt.hashSync(body.password, saltScript);
+  const uuid = v4();
+  const query = googleSignUpQuery(uuid, body);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  const { email, password } = data.node;
+  return { data, token: jwt.createToken(email) };
+};
 const logIn = async ({ services }, body) => {
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
@@ -85,7 +102,6 @@ const getUser = async ({ services }, params) => {
 
   return data;
 };
-
 const updateUser = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
 
@@ -143,7 +159,7 @@ Object.assign(module.exports, {
   getUser,
   updateUser,
   deleteUser,
-
+  createGoogleUser,
   createRel,
   deleteRel
 });

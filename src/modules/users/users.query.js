@@ -18,6 +18,23 @@ const signUpQuery = (uuid, body) => {
     return query;
 };
 
+const googleSignUpQuery = (uuid, body) => {
+    const query = `
+        CREATE (u:Student:User 
+            {
+                uuid      : "${uuid}", 
+                totalExp  : 0, 
+                weeklyExp : 0, 
+                email     : "${body.email}", 
+                userName  : "${body.userName}"
+            }
+        )
+        RETURN u;
+    `;
+
+    return query;
+};
+
 const logInQuery = (body) => {
     const query = `
         MATCH (u:Student {email: "${body.email}"})
@@ -110,7 +127,7 @@ module.exports = {
     getUserQuery,
     updateUserQuery,
     deleteUserQuery,
-
+    googleSignUpQuery,
     createRelQuery,
     deleteRelQuery
 };
