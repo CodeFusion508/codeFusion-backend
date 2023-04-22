@@ -4,9 +4,9 @@ const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
 
 const {
     createContentQuery,
+    updatedContentQuery,
     getContentQuery,
-    deletedContentQuery,
-    updatedContentQuery
+    deletedContentQuery
 } = require("./content.query.js");
 
 module.exports = (deps) =>
@@ -31,8 +31,9 @@ const createContent = async ({ services }, body) => {
     return data;
 };
 
-const getContent = async ({ services }, params) => {
-    const query = getContentQuery(params);
+const updateContent = async ({ services }, body) => {
+    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
+    const query = updatedContentQuery(body);
 
     let data = await services.neo4j.session.run(query);
 
@@ -44,9 +45,8 @@ const getContent = async ({ services }, params) => {
     return data;
 };
 
-const updateContent = async ({ services }, body) => {
-    if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
-    const query = updatedContentQuery(body);
+const getContent = async ({ services }, params) => {
+    const query = getContentQuery(params);
 
     let data = await services.neo4j.session.run(query);
 
@@ -69,7 +69,7 @@ const deleteContent = async ({ services }, params) => {
 
 Object.assign(module.exports, {
     createContent,
-    getContent,
     updateContent,
+    getContent,
     deleteContent
 });

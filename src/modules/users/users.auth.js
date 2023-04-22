@@ -5,7 +5,6 @@ const { SEED } = require("../../config/config.txt");
 const verifyToken = (req, _, next = Function) => {
     let error;
     const auth = req.headers.authorization;
-
     if (auth === undefined) {
         error = new Error("No tienes autorización");
         error.statusCode = 401;
@@ -13,7 +12,7 @@ const verifyToken = (req, _, next = Function) => {
         throw error;
     }
 
-    const [, token] = auth.split(" ");
+    const token = auth.split(" ")[1];
 
     if (token === undefined) {
         error = new Error("No tienes autorización");
@@ -29,6 +28,10 @@ const verifyToken = (req, _, next = Function) => {
         error.statusCode = 401;
 
         throw error;
+    }
+
+    if (req.method !== "GET") {
+        req["body"]["uuid"] = infoToken.sub;
     }
 
     next();

@@ -3,15 +3,21 @@ const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.txt");
 
 const {
-  createUserQuery,
-  deleteUserQuery,
   findRegisteredUser,
-  findUserQuery,
-  updateUserQuery,
+  signUpQuery,
   logInQuery,
-    createRelationQuery
+  getUserQuery,
+  updateUserQuery,
+  deleteUserQuery,
+
+  createRelQuery,
+  deleteRelQuery
 } = require("./users.query.js");
-const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
+const {
+  cleanNeo4j,
+  cleanRecord,
+  cleanRel
+} = require("../../utils/cleanData.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
@@ -26,6 +32,7 @@ module.exports = (deps) =>
       };
     }, {});
 
+// Student CRUD
 
 const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
@@ -35,50 +42,14 @@ const createUser = async ({ services }, body) => {
 
   body.password = bcrypt.hashSync(body.password, saltScript);
   const uuid = v4();
-  const query = createUserQuery(uuid, body);
+  const query = signUpQuery(uuid, body);
 
   let data = await services.neo4j.session.run(query);
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  const { email, password } = data.node.properties;
+  const { email, password } = data.node;
   return { data, token: jwt.createToken(email, password) };
-};
-
-const deleteUser = async ({ services }, params) => {
-  const query = deleteUserQuery(params);
-
-  let data = await services.neo4j.session.run(query);
-  data = cleanNeo4j(data);
-
-  return data;
-};
-
-const getUser = async ({ services }, params) => {
-  const query = findUserQuery(params);
-
-  let data = await services.neo4j.session.run(query);
-
-  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
-
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-  return data;
-};
-
-const updateUser = async ({ services }, body) => {
-  if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
-  const query = updateUserQuery(body);
-
-  let data = await services.neo4j.session.run(query);
-
-  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
-
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-  return data;
 };
 
 const logIn = async ({ services }, body) => {
@@ -102,25 +73,77 @@ const logIn = async ({ services }, body) => {
   };
 };
 
-const createRelation = async ({ services }, body) => {
-  console.log("just cheching if it reaches user ctrl");
-  const query = createRelationQuery(body);
+const getUser = async ({ services }, params) => {
+  const query = getUserQuery(params);
 
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
 
   data = cleanNeo4j(data);
-  //cleanRecord(data);
+  cleanRecord(data);
+
+  return data;
+};
+
+const updateUser = async ({ services }, body) => {
+  if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
+
+  if (body.password) {
+    body.password = bcrypt.hashSync(body.password, saltScript);
+  }
+  const query = updateUserQuery(body);
+
+  let data = await services.neo4j.session.run(query);
+
+  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
+
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  return data;
+};
+
+const deleteUser = async ({ services }, params) => {
+  const query = deleteUserQuery(params);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+
+  return data;
+};
+
+// Student Relationships
+
+const createRel = async ({ services }, body) => {
+  const query = createRelQuery(body);
+
+  let data = await services.neo4j.session.run(query);
+
+  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
+
+  data = cleanNeo4j(data);
+  cleanRel(data);
+
+  return data;
+};
+
+const deleteRel = async ({ services }, body) => {
+  const query = deleteRelQuery(body);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
 
   return data;
 };
 
 Object.assign(module.exports, {
   createUser,
-  deleteUser,
+  logIn,
   getUser,
   updateUser,
-  logIn,
-  createRelation
+  deleteUser,
+
+  createRel,
+  deleteRel
 });

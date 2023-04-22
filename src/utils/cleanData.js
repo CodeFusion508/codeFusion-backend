@@ -18,6 +18,7 @@ const cleanRecord = (data) => {
             obj[key] = obj[key].low;
         }
     }
+
     data.node = obj;
 };
 
@@ -44,6 +45,23 @@ const cleanRecords = (data) => {
     data.node = arr;
 };
 
+const cleanRel = (data) => {
+    let obj = {
+        type       : data.node[0]._fields[0].type,
+        properties : data.node[0]._fields[0].properties
+    };
+
+    for (const key in obj.properties) {
+        if (obj.properties[key].low === undefined) {
+            continue;
+        } else {
+            obj.properties[key] = obj.properties[key].low;
+        }
+    }
+
+    data.node = obj;
+};
+
 const cleanRels = (data) => {
     let arr = [];
 
@@ -51,7 +69,7 @@ const cleanRels = (data) => {
         let obj = {
             node: {
                 labels: data.node[i]._fields[0].labels,
-                ... data.node[i]._fields[0].properties
+                ...data.node[i]._fields[0].properties
             },
             rels: {
                 type       : data.node[i]._fields[1].type,
@@ -84,5 +102,6 @@ module.exports = {
     cleanNeo4j,
     cleanRecord,
     cleanRecords,
+    cleanRel,
     cleanRels
 };

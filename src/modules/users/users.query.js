@@ -1,8 +1,8 @@
-const findRegisteredUser = (body) => `MATCH (u: Student {email: "${body.email}"}) RETURN u;`;
+const findRegisteredUser = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
 
-const createUserQuery = (uuid, body) => {
+const signUpQuery = (uuid, body) => {
     const query = `
-        CREATE (u: Student:User 
+        CREATE (u:Student:User 
             {
                 uuid      : "${uuid}", 
                 totalExp  : 0, 
@@ -18,13 +18,18 @@ const createUserQuery = (uuid, body) => {
     return query;
 };
 
-const deleteUserQuery = (params) => `
-    MATCH (u: Student {uuid: "${params.uuid}"})
-    SET u:softDeleted;
-`;
+const logInQuery = (body) => {
+    const query = `
+        MATCH (u:Student {email: "${body.email}"})
+        WHERE NOT u:softDeleted
+        RETURN u;
+    `;
 
-const findUserQuery = (params) => `
-    MATCH (u: Student {uuid: "${params.uuid}"}) 
+    return query;
+};
+
+const getUserQuery = (params) => `
+    MATCH (u:Student {uuid: "${params.uuid}"}) 
     WHERE NOT u:softDeleted 
     RETURN u;
 `;
@@ -49,55 +54,63 @@ const updateUserQuery = (body) => {
     }
 
     const updateQuery = `
-      MATCH (u: Student {uuid: "${body.uuid}"})
-      WHERE NOT u:softDeleted
-      SET ${propsToUpdate.join(", ")}
-      RETURN u;
+        MATCH (u:Student {uuid: "${body.uuid}"})
+        WHERE NOT u:softDeleted
+        SET ${propsToUpdate.join(", ")}
+        RETURN u;
     `;
 
     return updateQuery;
 };
 
-const createRelationQuery = (body) => {
+const deleteUserQuery = (params) => `
+    MATCH (u:Student {uuid: "${params.uuid}"})
+    SET u:softDeleted;
+`;
+
+const createRelQuery = (body) => {
     if (!body.eval) {
         const query = `
-        MATCH (u: Student {uuid: "${body.uuid}"})
-        WHERE NOT u:softDeleted
-        MATCH (c: Content {uuid: "${body.contentUuid}"})
-        WHERE NOT c:softDeleted
-        WITH u, c
-        CREATE (u)-[r:COMPLETED]->(c)
-        RETURN r;
-    `;
+            MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+            WHERE NOT u:softDeleted AND NOT c:softDeleted
+            WITH u, c
+            CREATE (u)-[r:${body.relation}]->(c)
+            RETURN r;
+        `;
+
         return query;
     }
-        const query = `
-        MATCH (u: Student {uuid: "${body.uuid}"})
-        WHERE NOT u:softDeleted
-        MATCH (c: Content {uuid: "${body.contentUuid}"})
-        WHERE NOT c:softDeleted
+    const query = `
+        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+        WHERE NOT u:softDeleted AND NOT c:softDeleted
         WITH u, c
-        CREATE (u)-[r:COMPLETED {eval: "${body.eval}"}]->(c)
+        CREATE (u)-[r:${body.relation} {eval: "${body.eval}"}]->(c)
         RETURN r;
     `;
-        return query;
+
+    return query;
 };
-const logInQuery = (body) => {
+
+const deleteRelQuery = (body) => {
     const query = `
-        MATCH (u: Student {email: "${body.email}"})
-        WHERE NOT u:softDeleted
-        RETURN u;
+        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+        WHERE NOT u:softDeleted AND NOT c:softDeleted
+        WITH u, c
+        MATCH (u)-[r:${body.relation}]->(c)
+        DELETE r;
     `;
 
     return query;
 };
 
 module.exports = {
-    createUserQuery,
-    deleteUserQuery,
     findRegisteredUser,
-    findUserQuery,
-    updateUserQuery,
+    signUpQuery,
     logInQuery,
-    createRelationQuery
+    getUserQuery,
+    updateUserQuery,
+    deleteUserQuery,
+
+    createRelQuery,
+    deleteRelQuery
 };

@@ -1,6 +1,6 @@
 const createSprintQuery = (uuid, body) => {
     const query = `
-        CREATE (s: Sprint
+        CREATE (s:Sprint:${body.label}
             {
                 uuid     : "${uuid}", 
                 totalExp : 0,
@@ -14,43 +14,16 @@ const createSprintQuery = (uuid, body) => {
     return query;
 };
 
-const getSprintQuery = (params) => {
-    const query = `
-        MATCH (s: Sprint {uuid: "${params.uuid}"}) 
-        WHERE NOT s:softDeleted 
-        RETURN s;
-    `;
-
-    return query;
-};
 
 const getAllSprintsQuery = () => {
     const query = `
-        MATCH (s: Sprint) 
+        MATCH (s:Sprint) 
         WHERE NOT s:softDeleted 
         RETURN s;
     `;
 
     return query;
 };
-
-const getSprintsRelsQuery = (params) => {
-    const query = `
-        MATCH (s: Sprint {uuid: "${params.uuid}"})
-        WHERE NOT s:softDeleted
-        WITH s
-        MATCH (d)-[r:BELONGS_TO]->(s)
-        WHERE NOT d:softDeleted
-        RETURN d, r;
-    `;
-
-    return query;
-};
-
-const deleteSprintQuery = (params) => `
-    MATCH (s: Sprint {uuid: "${params.uuid}"})
-    SET s:softDeleted;
-`;
 
 const updateSprintQuery = (body) => {
     let propsToUpdate = [];
@@ -69,21 +42,45 @@ const updateSprintQuery = (body) => {
     }
 
     const updateQuery = `
-      MATCH (s: Sprint {uuid: "${body.uuid}"})
-      WHERE NOT s:softDeleted
-      SET ${propsToUpdate.join(", ")}
-      RETURN s;
+        MATCH (s:Sprint {uuid: "${body.uuid}"})
+        WHERE NOT s:softDeleted
+        SET ${propsToUpdate.join(", ")}
+        RETURN s;
     `;
 
     return updateQuery;
 };
 
+const getSprintQuery = (params) => {
+    const query = `
+        MATCH (s:Sprint {uuid: "${params.uuid}"}) 
+        WHERE NOT s:softDeleted 
+        RETURN s;
+    `;
+
+    return query;
+};
+
+const deleteSprintQuery = (params) => `
+    MATCH (s:Sprint {uuid: "${params.uuid}"})
+    SET s:softDeleted;
+`;
+
+const getSprintsRelsQuery = (params) => {
+    const query = `
+        MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: "${params.uuid}"})
+        WHERE NOT s:softDeleted AND NOT d:softDeleted
+        RETURN d, r;
+    `;
+
+    return query;
+};
 
 module.exports = {
     createSprintQuery,
+    getAllSprintsQuery,
+    updateSprintQuery,
     getSprintQuery,
     deleteSprintQuery,
-    updateSprintQuery,
-    getAllSprintsQuery,
     getSprintsRelsQuery
 };
