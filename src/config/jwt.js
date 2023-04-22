@@ -4,7 +4,7 @@
 
 const jwt = require("jwt-simple");
 const moment = require("moment");
-const { SEED } = require("./config.txt");
+const { SEED } = require("./config.js");
 
 exports.createToken = function (user) {
     const payload = {
