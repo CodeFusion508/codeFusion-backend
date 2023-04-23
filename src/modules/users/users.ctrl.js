@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.txt");
+const { client } = require('../../config/googAuht')
 
 const {
   findRegisteredUser,
@@ -54,21 +55,36 @@ const createUser = async ({ services }, body) => {
 
 const createGoogleUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
-  const result = await services.neo4j.session.run(findUser);
+  let result = await services.neo4j.session.run(findUser);
 
-  if (result.records.length !== 0) throw { err: 403, message: "This email has already been registered, please use another or log in." };
+  if (result.records.length !== 0) {
 
-  body.password = bcrypt.hashSync(body.password, saltScript);
+    const responseToken = await client.verifyIdToken({ idToken: body.token })
+
+     if(responseToken === undefined) throw({ message: 'Autg Google faild', status: 500 })
+
+     result = cleanNeo4j(result);
+     cleanRecord(result);
+
+
+     const { email } = result.node;
+     return { token: jwt.createToken(email), data: result }
+  }
+
+  // body.password = bcrypt.hashSync(body.password, saltScript);
   const uuid = v4();
   const query = googleSignUpQuery(uuid, body);
 
   let data = await services.neo4j.session.run(query);
   data = cleanNeo4j(data);
   cleanRecord(data);
+  
 
-  const { email, password } = data.node;
+  const { email } = data.node;
   return { data, token: jwt.createToken(email) };
+
 };
+
 const logIn = async ({ services }, body) => {
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);

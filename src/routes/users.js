@@ -14,6 +14,7 @@ const {
 } = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
+    
     const endPoint = endpointMethods(deps);
 
     return Router()
@@ -27,7 +28,7 @@ module.exports = (deps) => {
         // Student Relationships
         .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
         .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel));
-};
+}
 
 
 const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createUser(data));
@@ -35,6 +36,6 @@ const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next
 const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(data));
 const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updateUser(data));
 const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));
-const googleSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.googleSignUp(data));
+const googleSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createGoogleUser(data));
 const createRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRel(data));
 const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteRel(data));

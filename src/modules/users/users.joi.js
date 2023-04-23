@@ -12,6 +12,7 @@ module.exports = {
     CREATE_GOOGLE_USER: Joi.object({
         userName : Joi.string().required(),
         email    : Joi.string().required(),
+        token    : Joi.string().required() 
     }),
     LOGIN_USER: Joi.object({
         email    : Joi.string().required(),

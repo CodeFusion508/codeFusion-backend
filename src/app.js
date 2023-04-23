@@ -1,6 +1,5 @@
 const path = require("path");
-const { OAuth2Client } = require("google-auth-library");
-const client = new OAuth2Client("1079746536463-hu5gv65n5jin72ee5s4gt7de5n7qhs4e.apps.googleusercontent.com");
+const { client } = require('./config/googAuht')
 const express = require("express");
 const helmet = require("helmet");
 const { serve, setup } = require("swagger-ui-express");
@@ -22,28 +21,28 @@ module.exports = (deps) => {
     app.use(cors());
     app.use(express.json());
 
-    // Route Paths
-    app.use("/static", express.static(path.join(__dirname, "mdContent")));
-    app.use(router);
-
     //Temporary ubication for the google login
     app.post("/gVerify", async (req, res) => {
         try {
-            console.log(req.body);
-            const ticket = await client.verifyIdToken({
-                idToken: req.body.idtoken
-            });
+            const ticket = await client.verifyIdToken({ idToken: req.body.idtoken });
             const payload = ticket.getPayload();
             // Save the user's information in your database
             // ...
             // Set a session cookie and return a success response
             res.cookie("session", "SESSION_ID", { httpOnly: true });
+            res.json(true)
             return true;
         } catch (error) {
             console.error("Sign-in failed. Error:", error);
             return false;
         }
     });
+
+    // Route Paths
+    app.use("/static", express.static(path.join(__dirname, "mdContent")));
+    app.use(router);
+
+    
 
 // Example protected endpoint that requires authentication
     app.get("/profile", (req, res) => {
