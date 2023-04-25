@@ -1,5 +1,5 @@
 const path = require("path");
-const { client } = require('./config/googAuht')
+const { client } = require("./config/googleAuth");
 const express = require("express");
 const helmet = require("helmet");
 const { serve, setup } = require("swagger-ui-express");
@@ -30,7 +30,7 @@ module.exports = (deps) => {
             // ...
             // Set a session cookie and return a success response
             res.cookie("session", "SESSION_ID", { httpOnly: true });
-            res.json(true)
+            res.json(true);
             return true;
         } catch (error) {
             console.error("Sign-in failed. Error:", error);
@@ -42,7 +42,7 @@ module.exports = (deps) => {
     app.use("/static", express.static(path.join(__dirname, "mdContent")));
     app.use(router);
 
-    
+
 
 // Example protected endpoint that requires authentication
     app.get("/profile", (req, res) => {
