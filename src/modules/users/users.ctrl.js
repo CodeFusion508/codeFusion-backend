@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
-const jwt = require("../../config/jwt.txt");
+const jwt = require("../../config/jwt.js");
 
 const {
   findRegisteredUser,

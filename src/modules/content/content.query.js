@@ -1,24 +1,4 @@
 const createContentQuery = (uuid, body) => {
-    if (!body.link) {
-        const query = `
-            CREATE (c: Content:${body.label}
-                {
-                    uuid  : "${uuid}", 
-                    path  : "${body.path}",
-                    desc  : "${body.desc}",
-                    exp   : ${body.exp},
-                    title : "${body.title}",
-                    time: ${body.time}
-                }
-            )
-            WITH c
-            CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d:Day { uuid: "${body.dayUuid}" })
-            RETURN c;
-        `;
-
-        return query;
-    }
-
     const query = `
         CREATE (c:Content:${body.label}
             {
@@ -27,12 +7,14 @@ const createContentQuery = (uuid, body) => {
                 desc  : "${body.desc}",
                 exp   : ${body.exp},
                 title : "${body.title}",
-                link  : "${body.link}",
-                time: ${body.time}
+                ${body.link ? `link  : "${body.link}",` : ""}
+                time  : ${body.time}
             }
         )
         WITH c
-        CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d:Day { uuid: "${body.dayUuid}" })
+        MATCH (d:Day { uuid: "${body.dayUuid}" })
+        WHERE NOT d:softDeleted
+        CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)
         RETURN c;
     `;
 

@@ -1,40 +1,34 @@
 const jwt = require("jsonwebtoken");
+const { SEED } = require("./config.js");
 
-const { SEED } = require("../../config/config.txt");
+const verifyToken = (req, res, next) => {
+    const { authorization } = req.headers;
 
-const verifyToken = (req, _, next = Function) => {
-    let error;
-    const auth = req.headers.authorization;
-    if (auth === undefined) {
-        error = new Error("No tienes autorización");
-        error.statusCode = 401;
+    try {
+        if (!authorization) {
+            throw new Error("Encabezado de autorización no encontrado.");
+        }
 
-        throw error;
+        const token = authorization.split(" ")[1];
+
+        if (!token) {
+            throw new Error("Token no encontrado.");
+        }
+
+        const decodedToken = jwt.decode(token, SEED);
+
+        if (!decodedToken) {
+            throw new Error("Token inválido.");
+        }
+
+        if (req.method !== "GET") {
+            req.body.uuid = decodedToken.sub;
+        }
+
+        next();
+    } catch (err) {
+        res.status(401).json({ message: err.message });
     }
-
-    const token = auth.split(" ")[1];
-
-    if (token === undefined) {
-        error = new Error("No tienes autorización");
-        error.statusCode = 401;
-
-        throw error;
-    }
-
-    const infoToken = jwt.decode(token, SEED);
-
-    if (infoToken === undefined || infoToken === null) {
-        error = new Error("Token Invalido");
-        error.statusCode = 401;
-
-        throw error;
-    }
-
-    if (req.method !== "GET") {
-        req["body"]["uuid"] = infoToken.sub;
-    }
-
-    next();
 };
 
 module.exports = { verifyToken };

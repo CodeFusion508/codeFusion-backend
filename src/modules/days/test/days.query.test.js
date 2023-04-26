@@ -18,7 +18,7 @@ describe("day querys tests", () => {
 
         expect(query).toContain(`CREATE (d:Day`);
         expect(query).toContain(`"${uuid}"`);
-        expect(query).toContain(`CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s:Sprint {uuid: "${body.sprintUuid}"})`);
+        expect(query).toContain(`CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)`);
     });
 
     it("getAllDaysQuery", () => {

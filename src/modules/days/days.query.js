@@ -8,7 +8,9 @@ const createDayQuery = (uuid, body) => {
             }
         )
         WITH d
-        CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s:Sprint {uuid: "${body.sprintUuid}"})
+        MATCH (s:Sprint {uuid: "${body.sprintUuid}"})
+        WHERE NOT s:softDeleted
+        CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)
         RETURN d;
     `;
 
