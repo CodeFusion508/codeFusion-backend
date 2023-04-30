@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.js");
-const { client } = require("../../config/googleAuth");
+const { client } = require("../../config/gAuth.js");
 
 const {
   findRegisteredUser,
