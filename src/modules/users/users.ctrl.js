@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.js");
+const { client } = require("../../config/googleAuth");
 
 const {
   findRegisteredUser,
@@ -11,7 +12,9 @@ const {
   deleteUserQuery,
 
   createRelQuery,
-  deleteRelQuery
+  deleteRelQuery,
+
+  googleSignUpQuery,
 } = require("./users.query.js");
 const {
   cleanNeo4j,
@@ -33,7 +36,6 @@ module.exports = (deps) =>
     }, {});
 
 // Student CRUD
-
 const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
   const result = await services.neo4j.session.run(findUser);
@@ -114,7 +116,6 @@ const deleteUser = async ({ services }, params) => {
 };
 
 // Student Relationships
-
 const createRel = async ({ services }, body) => {
   const query = createRelQuery(body);
 
@@ -137,6 +138,38 @@ const deleteRel = async ({ services }, body) => {
   return data;
 };
 
+//  Other
+const createGoogleUser = async ({ services }, body) => {
+  const findUser = findRegisteredUser(body);
+  let result = await services.neo4j.session.run(findUser);
+
+  if (result.records.length !== 0) {
+
+    const responseToken = await client.verifyIdToken({ idToken: body.token });
+
+    if (responseToken === undefined) throw ({ message: "Auth Google failed", status: 500 });
+
+    result = cleanNeo4j(result);
+    cleanRecord(result);
+
+
+    const { email } = result.node;
+    return { token: jwt.createToken(email), data: result };
+  }
+
+  const uuid = v4();
+  const query = googleSignUpQuery(uuid, body);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+
+  const { email } = data.node;
+  return { data, token: jwt.createToken(email) };
+};
+
+
 Object.assign(module.exports, {
   createUser,
   logIn,
@@ -145,5 +178,7 @@ Object.assign(module.exports, {
   deleteUser,
 
   createRel,
-  deleteRel
+  deleteRel,
+
+  createGoogleUser
 });

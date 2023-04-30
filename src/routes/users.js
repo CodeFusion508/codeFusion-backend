@@ -8,8 +8,11 @@ const {
     LOGIN_USER,
     UPDATE_USER,
     GET_UUID,
+
     CREATE_RELATION,
-    DELETE_RELATION
+    DELETE_RELATION,
+
+    CREATE_GOOGLE_USER,
 } = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
@@ -24,7 +27,9 @@ module.exports = (deps) => {
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
         // Student Relationships
         .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
-        .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel));
+        .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
+        // Other
+        .post("/google", endPoint(body, CREATE_GOOGLE_USER, googleSignUp));
 };
 
 
@@ -36,3 +41,5 @@ const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res,
 
 const createRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRel(data));
 const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteRel(data));
+
+const googleSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createGoogleUser(data));

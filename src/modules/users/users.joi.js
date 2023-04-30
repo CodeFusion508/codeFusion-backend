@@ -1,6 +1,7 @@
 const Joi = require("joi");
 
 module.exports = {
+    // Student CRUD
     GET_UUID: Joi.object({
         uuid: Joi.required(),
     }),
@@ -21,6 +22,7 @@ module.exports = {
         email     : Joi.string().optional(),
         password  : Joi.string().optional()
     }),
+    // Relation Joi
     CREATE_RELATION: Joi.object({
         uuid        : Joi.string().required(),
         contentUuid : Joi.string().required(),
@@ -33,5 +35,11 @@ module.exports = {
         contentUuid : Joi.string().required(),
         op          : Joi.string().required(),
         relation    : Joi.string().required()
+    }),
+    // Other Joi
+    CREATE_GOOGLE_USER: Joi.object({
+        userName : Joi.string().required(),
+        email    : Joi.string().required(),
+        token    : Joi.string().required()
     })
 };
