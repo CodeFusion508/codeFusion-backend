@@ -29,7 +29,8 @@ module.exports = (deps) => {
         .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
         .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         // Other
-        .post("/google", endPoint(body, CREATE_GOOGLE_USER, googleSignUp));
+        .post("/google", endPoint(body, CREATE_GOOGLE_USER, googleSignUp))
+        .post("/gVerify", endPoint(body, CREATE_GOOGLE_USER, googleSignUp));
 };
 
 
