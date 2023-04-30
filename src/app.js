@@ -2,10 +2,10 @@ const path = require("path");
 
 const express = require("express");
 const helmet = require("helmet");
-const { client } = require("./config/googleAuth");
 const { serve, setup } = require("swagger-ui-express");
 const cors = require("cors");
 
+const { client } = require("./config/gAuth.js");
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
 
