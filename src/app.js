@@ -27,9 +27,8 @@ module.exports = (deps) => {
         try {
             const ticket = await client.verifyIdToken({ idToken: req.body.idtoken });
             const payload = ticket.getPayload();
-            // Save the user's information in your database
-            // ...
-            // Set a session cookie and return a success response
+            // Checking if login is successful
+
             res.cookie("session", "SESSION_ID", { httpOnly: true });
             res.json(true);
             return true;
@@ -41,15 +40,6 @@ module.exports = (deps) => {
     // Route Paths
     app.use("/static", express.static(path.join(__dirname, "mdContent")));
     app.use(router);
-
-    // Example protected endpoint that requires authentication
-    app.get("/profile", (req, res) => {
-        if (req.cookies.session === "SESSION_ID") {
-            res.send("Welcome to your profile page!");
-        } else {
-            res.status(401).send("Unauthorized");
-        }
-    });
 
     app.listen(PORT, () => {
         process.stdout.write("Running at -> " + `\x1b[3m\x1b[96mhttp://localhost:${PORT}\x1b[39m\x1b[23\x1b[0m` + "\n");
