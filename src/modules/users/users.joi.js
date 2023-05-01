@@ -37,9 +37,12 @@ module.exports = {
         relation    : Joi.string().required()
     }),
     // Other Joi
-    CREATE_GOOGLE_USER: Joi.object({
+    CREATE_G_USER: Joi.object({
         userName : Joi.string().required(),
         email    : Joi.string().required(),
         token    : Joi.string().required()
+    }),
+    LOGIN_G_USER: Joi.object({
+        idtoken: Joi.string().required()
     })
 };

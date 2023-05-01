@@ -12,7 +12,8 @@ const {
     CREATE_RELATION,
     DELETE_RELATION,
 
-    CREATE_GOOGLE_USER,
+    CREATE_G_USER,
+    LOGIN_G_USER,
 } = require("../modules/users/users.joi.js");
 
 module.exports = (deps) => {
@@ -29,8 +30,8 @@ module.exports = (deps) => {
         .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
         .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         // Other
-        .post("/google", endPoint(body, CREATE_GOOGLE_USER, googleSignUp))
-        .post("/gVerify", endPoint(body, CREATE_GOOGLE_USER, googleSignUp));
+        .post("/google", endPoint(body, CREATE_G_USER, gSignUp))
+        .post("/gVerify", endPoint(body, LOGIN_G_USER, gLogIn));
 };
 
 
@@ -43,4 +44,5 @@ const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res,
 const createRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRel(data));
 const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteRel(data));
 
-const googleSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createGoogleUser(data));
+const gSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createGUser(data));
+const gLogIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.loginGUser(data));

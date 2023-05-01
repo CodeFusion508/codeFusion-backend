@@ -139,7 +139,7 @@ const deleteRel = async ({ services }, body) => {
 };
 
 //  Other
-const createGoogleUser = async ({ services }, body) => {
+const createGUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
   let result = await services.neo4j.session.run(findUser);
 
@@ -169,6 +169,16 @@ const createGoogleUser = async ({ services }, body) => {
   return { data, token: jwt.createToken(email) };
 };
 
+const loginGUser = async (_, body) => {
+  try {
+    const ticket = await client.verifyIdToken({ idToken: body.idtoken });
+    const payload = ticket.getPayload();
+
+    if(payload) return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 Object.assign(module.exports, {
   createUser,
@@ -180,5 +190,6 @@ Object.assign(module.exports, {
   createRel,
   deleteRel,
 
-  createGoogleUser
+  createGUser,
+  loginGUser
 });

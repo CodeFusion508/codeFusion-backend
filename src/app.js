@@ -5,7 +5,6 @@ const helmet = require("helmet");
 const { serve, setup } = require("swagger-ui-express");
 const cors = require("cors");
 
-const { client } = require("./config/gAuth.js");
 const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
 
@@ -21,21 +20,6 @@ module.exports = (deps) => {
     app.use(helmet());
     app.use(cors());
     app.use(express.json());
-
-    //Temporary ubication for the google login
-    app.post("/gVerify", async (req, res) => {
-        try {
-            const ticket = await client.verifyIdToken({ idToken: req.body.idtoken });
-            const payload = ticket.getPayload();
-            // Checking if login is successful
-
-            res.cookie("session", "SESSION_ID", { httpOnly: true });
-            res.json(true);
-            return true;
-        } catch (error) {
-            return false;
-        }
-    });
 
     // Route Paths
     app.use("/static", express.static(path.join(__dirname, "mdContent")));
