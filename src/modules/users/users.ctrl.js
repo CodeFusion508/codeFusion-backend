@@ -18,6 +18,9 @@ const {
   cleanRecord,
   cleanRel
 } = require("../../utils/cleanData.js");
+const {
+  getAnswersQuery,
+} = require("../../utils/gFormsAnswers.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
@@ -137,13 +140,18 @@ const deleteRel = async ({ services }, body) => {
   return data;
 };
 
+async function getUserAnswers () {
+    const data = await getAnswersQuery();
+    return data;
+};
+
 Object.assign(module.exports, {
   createUser,
   logIn,
   getUser,
   updateUser,
   deleteUser,
-
+  getUserAnswers,
   createRel,
   deleteRel
 });
