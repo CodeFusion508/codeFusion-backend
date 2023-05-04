@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
 const jwt = require("../../config/jwt.js");
-const { client } = require("../../config/gAuth.js");
 
 const {
   findRegisteredUser,
@@ -12,15 +11,16 @@ const {
   deleteUserQuery,
 
   createRelQuery,
-  deleteRelQuery,
-
-  googleSignUpQuery,
+  deleteRelQuery
 } = require("./users.query.js");
 const {
   cleanNeo4j,
   cleanRecord,
   cleanRel
 } = require("../../utils/cleanData.js");
+const {
+  getAnswersQuery,
+} = require("../../utils/gFormsAnswers.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
@@ -36,6 +36,7 @@ module.exports = (deps) =>
     }, {});
 
 // Student CRUD
+
 const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
   const result = await services.neo4j.session.run(findUser);
@@ -116,6 +117,7 @@ const deleteUser = async ({ services }, params) => {
 };
 
 // Student Relationships
+
 const createRel = async ({ services }, body) => {
   const query = createRelQuery(body);
 
@@ -138,46 +140,9 @@ const deleteRel = async ({ services }, body) => {
   return data;
 };
 
-//  Other
-const createGUser = async ({ services }, body) => {
-  const findUser = findRegisteredUser(body);
-  let result = await services.neo4j.session.run(findUser);
-
-  if (result.records.length !== 0) {
-
-    const responseToken = await client.verifyIdToken({ idToken: body.token });
-
-    if (responseToken === undefined) throw ({ message: "Auth Google failed", status: 500 });
-
-    result = cleanNeo4j(result);
-    cleanRecord(result);
-
-
-    const { email } = result.node;
-    return { token: jwt.createToken(email), data: result };
-  }
-
-  const uuid = v4();
-  const query = googleSignUpQuery(uuid, body);
-
-  let data = await services.neo4j.session.run(query);
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-
-  const { email } = data.node;
-  return { data, token: jwt.createToken(email) };
-};
-
-const loginGUser = async (_, body) => {
-  try {
-    const ticket = await client.verifyIdToken({ idToken: body.idtoken });
-    const payload = ticket.getPayload();
-
-    if(payload) return true;
-  } catch (error) {
-    return false;
-  }
+async function getUserAnswers () {
+    const data = await getAnswersQuery();
+    return data;
 };
 
 Object.assign(module.exports, {
@@ -186,10 +151,7 @@ Object.assign(module.exports, {
   getUser,
   updateUser,
   deleteUser,
-
+  getUserAnswers,
   createRel,
-  deleteRel,
-
-  createGUser,
-  loginGUser
+  deleteRel
 });
