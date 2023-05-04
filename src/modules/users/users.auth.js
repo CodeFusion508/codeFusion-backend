@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { SEED } = require("../../config/config.js");
 
 const verifyToken = (req, res, next) => {
     const { authorization } = req.headers;
@@ -15,7 +14,7 @@ const verifyToken = (req, res, next) => {
             throw new Error("Token no encontrado.");
         }
 
-        const decodedToken = jwt.decode(token, SEED);
+        const decodedToken = jwt.decode(token, process.env.SEED);
 
         if (!decodedToken) {
             throw new Error("Token inválido.");

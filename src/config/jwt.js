@@ -1,8 +1,6 @@
 const jwt = require("jwt-simple");
 const moment = require("moment");
 
-const { SEED } = require("./config.js");
-
 exports.createToken = function (user) {
     const payload = {
         sub   : user.uuid,
@@ -12,9 +10,9 @@ exports.createToken = function (user) {
         exp   : moment().add(2, "hour").unix(), // Expiration date of the token
     };
 
-    return jwt.encode(payload, SEED);
+    return jwt.encode(payload, process.env.SEED);
 };
 
 exports.decodeToken = function (token) {
-    return jwt.decode(token, SEED);
+    return jwt.decode(token, process.env.SEED);
 };
