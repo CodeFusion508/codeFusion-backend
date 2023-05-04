@@ -1,3 +1,4 @@
+// Student CRUD
 const findRegisteredUser = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
 
 const signUpQuery = (uuid, body) => {
@@ -68,6 +69,7 @@ const deleteUserQuery = (params) => `
     SET u:softDeleted;
 `;
 
+// Relation Queries
 const createRelQuery = (body) => {
     if (!body.eval) {
         const query = `
@@ -103,6 +105,24 @@ const deleteRelQuery = (body) => {
     return query;
 };
 
+// Other Queries
+const googleSignUpQuery = (uuid, body) => {
+    const query = `
+        CREATE (u:Student:User 
+            {
+                uuid      : "${uuid}", 
+                totalExp  : 0, 
+                weeklyExp : 0, 
+                email     : "${body.email}", 
+                userName  : "${body.userName}"
+            }
+        )
+        RETURN u;
+    `;
+
+    return query;
+};
+
 module.exports = {
     findRegisteredUser,
     signUpQuery,
@@ -112,5 +132,7 @@ module.exports = {
     deleteUserQuery,
 
     createRelQuery,
-    deleteRelQuery
+    deleteRelQuery,
+
+    googleSignUpQuery,
 };

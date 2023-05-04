@@ -28,10 +28,7 @@ const start = async () => {
 
     Object.assign(dependencies.ctrls, Controllers(dependencies, ctrlList));
 
-    const app = await App(dependencies);
-    dependencies.app = app;
-
-    return dependencies;
+    await App(dependencies);
 };
 
 if (require.main === module) {
