@@ -1,0 +1,84 @@
+const { v4 } = require("uuid");
+const { client } = require("../../config/gAuth.js");
+const jwt = require("../../config/jwt.js");
+
+const {
+  googleSignUpQuery,
+  findRegisteredUser,
+} = require("./google.query.js");
+const {
+  cleanNeo4j,
+  cleanRecord,
+  cleanRel
+} = require("../../utils/cleanData.js");
+const {
+  getAllAnswersQuery,
+  getEvaluationQuery,
+} = require("../../utils/gFormsAnswers.js");
+
+module.exports = (deps) =>
+  Object
+    .entries(module.exports)
+    .reduce((acc, [name, method]) => {
+      return {
+        ...acc,
+        [name]: method.bind(null, Object.assign({}, module.exports, deps))
+      };
+    }, {});
+
+// Student CRUD
+async function getUserAnswers (_, body) {
+    const data = await getAllAnswersQuery(body.sheet_id);
+    return data;
+};
+
+async function getEvaluation (_, body) {
+  const data = await getEvaluationQuery(body.sheet_id, body.email);
+  return data;
+}
+const createGUser = async ({ services }, body) => {
+  const findUser = findRegisteredUser(body);
+  let result = await services.neo4j.session.run(findUser);
+
+  if (result.records.length !== 0) {
+
+    const responseToken = await client.verifyIdToken({ idToken: body.token });
+
+    if (responseToken === undefined) throw ({ message: "Auth Google failed", status: 500 });
+
+    result = cleanNeo4j(result);
+    cleanRecord(result);
+
+
+    const { email } = result.node;
+    return { token: jwt.createToken(email), data: result };
+  }
+
+  const uuid = v4();
+  const query = googleSignUpQuery(uuid, body);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+
+  const { email } = data.node;
+  return { data, token: jwt.createToken(email) };
+};
+const loginGUser = async (_, body) => {
+  try {
+    const ticket = await client.verifyIdToken({ idToken: body.idtoken });
+    const payload = ticket.getPayload();
+
+    if(payload) return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+Object.assign(module.exports, {
+  getUserAnswers,
+  getEvaluation,
+  createGUser,
+  loginGUser
+});

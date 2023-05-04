@@ -82,7 +82,6 @@ async function getEvaluationQuery (sheet_id, email) {
 
         // Set rows to equal the rows
         const rows = res.data.values;
-        console.log(rows);
         for (let i = 0; i < rows.length; i++) {
             if (rows[i][0] === email) {
                 console.log(rows[i][1]);

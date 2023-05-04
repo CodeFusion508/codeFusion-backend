@@ -4,7 +4,8 @@ const routes = {
     "/users"    : require("./routes/users.js"),
     "/sprints"  : require("./routes/sprints.js"),
     "/days"     : require("./routes/days.js"),
-    "/contents" : require("./routes/content.js")
+    "/contents" : require("./routes/content.js"),
+    "/google"   : require("./routes/google.js"),
 };
 
 module.exports = (deps) => {

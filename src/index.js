@@ -12,7 +12,8 @@ const ctrlList = {
     usersCtrl    : require("./modules/users/users.ctrl.js"),
     sprintsCtrl  : require("./modules/sprints/sprints.ctrl.js"),
     daysCtrl     : require("./modules/days/days.ctrl.js"),
-    contentsCtrl : require("./modules/content/content.ctrl.js")
+    contentsCtrl : require("./modules/content/content.ctrl.js"),
+    googleCtrl   : require("./modules/google/google.ctrl.js"),
 };
 
 const start = async () => {
