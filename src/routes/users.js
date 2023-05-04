@@ -8,7 +8,8 @@ const {
     LOGIN_USER,
     UPDATE_USER,
     GET_UUID,
-
+    GET_ALL_ANSWERS,
+    GET_USER_ANSWERS,
     CREATE_RELATION,
     DELETE_RELATION,
 
@@ -21,17 +22,20 @@ module.exports = (deps) => {
 
     return Router()
         // Student CRUD
+        .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
+        .get("/all_ans", endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
+        .get("/ans", endPoint(body, GET_USER_ANSWERS, getEvaluation))
+        .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
         .post("/", endPoint(body, CREATE_USER, signUp))
         .post("/login", endPoint(body, LOGIN_USER, logIn))
-        .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
+        .post("/google", endPoint(body, CREATE_G_USER, gSignUp))
+        .post("/gVerify", endPoint(body, LOGIN_G_USER, gLogIn))
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
         // Student Relationships
-        .post("/create/rel", auth.verifyToken,  endPoint(body, CREATE_RELATION, createRel))
-        .delete("/delete/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
+        .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel));
         // Other
-        .post("/google", endPoint(body, CREATE_G_USER, gSignUp))
-        .post("/gVerify", endPoint(body, LOGIN_G_USER, gLogIn));
+
 };
 
 
@@ -46,3 +50,5 @@ const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, 
 
 const gSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createGUser(data));
 const gLogIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.loginGUser(data));
+const getAllAnswers = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUserAnswers(data));
+const getEvaluation = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getEvaluation(data));
