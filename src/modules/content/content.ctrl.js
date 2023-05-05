@@ -19,7 +19,7 @@ module.exports = (deps) =>
             };
         }, {});
 
-
+// Content CRUD
 const createContent = async ({ services }, body) => {
     const uuid = v4();
     const query = createContentQuery(uuid, body);
