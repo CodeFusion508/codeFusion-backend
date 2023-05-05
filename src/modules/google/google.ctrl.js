@@ -65,13 +65,20 @@ const loginGUser = async (_, body) => {
 };
 
 const getUserAnswers = async (_, body) => {
-  const data = await getAllAnswersQuery(body.sheet_id);
+  const data = await getAllAnswersQuery(body.sheet_id)
+    .catch((error) => {
+      throw ({ message: `${error}`, status: 400 });
+    });
 
   return data;
 };
 
 const getEvaluation = async (_, body) => {
-  const data = await getEvaluationQuery(body.sheet_id, body.email);
+  const data = await getEvaluationQuery(body.sheet_id, body.email)
+    .catch((error) => {
+      throw ({ message: `${error}`, status: 400 });
+    });
+
   return data;
 };
 

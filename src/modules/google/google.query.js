@@ -17,7 +17,4 @@ const googleSignUpQuery = (uuid, body) => {
     return query;
 };
 
-module.exports = {
-    findRegisteredUser,
-    googleSignUpQuery,
-};
+module.exports = { findRegisteredUser, googleSignUpQuery };
