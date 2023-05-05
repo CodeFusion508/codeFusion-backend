@@ -17,13 +17,14 @@ module.exports = (deps) => {
 
     return Router()
         // Student CRUD
-        .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
         .post("/", endPoint(body, CREATE_USER, signUp))
         .post("/login", endPoint(body, LOGIN_USER, logIn))
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))
+        .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
+        // Student Rels
         .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
-        .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser));
+        .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel));
 };
 
 

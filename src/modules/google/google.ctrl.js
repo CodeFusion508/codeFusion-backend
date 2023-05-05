@@ -30,7 +30,7 @@ module.exports = (deps) =>
 async function getUserAnswers (_, body) {
     const data = await getAllAnswersQuery(body.sheet_id);
     return data;
-};
+}
 
 async function getEvaluation (_, body) {
   const data = await getEvaluationQuery(body.sheet_id, body.email);

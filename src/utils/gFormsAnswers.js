@@ -17,7 +17,7 @@ let authClient = new google.auth.JWT(
 async function authorize () {
     const token = await authClient.authorize();
     authClient.setCredentials(token);
-};
+}
 authorize();
 
 
