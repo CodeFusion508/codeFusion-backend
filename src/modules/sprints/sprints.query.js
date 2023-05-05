@@ -1,3 +1,4 @@
+// Sprint CRUD
 const createSprintQuery = (uuid, body) => {
     const query = `
         CREATE (s:Sprint:${body.label}
@@ -66,6 +67,7 @@ const deleteSprintQuery = (params) => `
     SET s:softDeleted;
 `;
 
+// Sprint Relationships
 const getSprintsRelsQuery = (params) => {
     const query = `
         MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: "${params.uuid}"})
@@ -82,5 +84,6 @@ module.exports = {
     updateSprintQuery,
     getSprintQuery,
     deleteSprintQuery,
+
     getSprintsRelsQuery
 };

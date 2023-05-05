@@ -21,7 +21,4 @@ const endpointResponse = (res) => (promise) => promise.then((response) => {
     res.status(error.statusCode).send(error.message);
 });
 
-module.exports = {
-    endpointMethods,
-    endpointResponse
-};
+module.exports = { endpointMethods, endpointResponse };

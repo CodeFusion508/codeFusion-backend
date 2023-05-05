@@ -4,7 +4,7 @@ const service = google.sheets("v4");
 const credentials = require("../config/CF_credentials.json");
 
 
-let authClient = new google.auth.JWT(
+const authClient = new google.auth.JWT(
     credentials.client_email,
     null,
     credentials.private_key.replace(/\\n/g, "\n"),
@@ -45,7 +45,4 @@ async function getEvaluationQuery(sheet_id, email) {
     }
 }
 
-module.exports = {
-    getAllAnswersQuery,
-    getEvaluationQuery
-};
+module.exports = { getAllAnswersQuery, getEvaluationQuery };

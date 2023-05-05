@@ -14,7 +14,7 @@ module.exports = async () => {
 
         const neo4j = {
             driver,
-            session,
+            session
         };
 
         return neo4j;

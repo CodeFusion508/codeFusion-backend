@@ -12,11 +12,13 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
+        // Sprints CRUD
         .post("/", endPoint(body, CREATE_SPRINT, createSprint))
         .get("/", endPoint(undefined, undefined, getAllSprints))
         .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
         .get("/:uuid", endPoint(params, GET_UUID, getSprint))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteSprint))
+        // Sprints Relationships
         .get("/:uuid/rel", endPoint(params, GET_UUID, getSprintRels));
 };
 

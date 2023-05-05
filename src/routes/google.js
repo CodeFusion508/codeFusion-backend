@@ -1,7 +1,7 @@
-const {Router} = require("express");
+const { Router } = require("express");
 
-const {endpointMethods, endpointResponse} = require("../utils/endpointUtil.js");
-const {body} = require("../utils/reqData.js");
+const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
+const { body } = require("../utils/reqData.js");
 const {
     GET_ALL_ANSWERS,
     GET_USER_ANSWERS,
@@ -19,7 +19,7 @@ module.exports = (deps) => {
         .get("/", endPoint(body, GET_USER_ANSWERS, getEvaluation));
 };
 
-const gSignUp = ({ctrls}) => ({data}, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.createGUser(data));
-const gLogIn = ({ctrls}) => ({data}, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.loginGUser(data));
-const getAllAnswers = ({ctrls}) => ({data}, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.getUserAnswers(data));
-const getEvaluation = ({ctrls}) => ({data}, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.getEvaluation(data));
+const gSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.createGUser(data));
+const gLogIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.loginGUser(data));
+const getAllAnswers = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.getUserAnswers(data));
+const getEvaluation = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.getEvaluation(data));

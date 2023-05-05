@@ -1,3 +1,4 @@
+// Day CRUD
 const createDayQuery = (uuid, body) => {
     const query = `
         CREATE (d:Day 
@@ -62,6 +63,7 @@ const deleteDayQuery = (params) => `
     SET d:softDeleted;
 `;
 
+// Day Relationships
 const getDaysRelsQuery = (params) => {
     const query = `
         MATCH (c)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})
@@ -78,5 +80,6 @@ module.exports = {
     updateDayQuery,
     getDayQuery,
     deleteDayQuery,
+
     getDaysRelsQuery
 };

@@ -6,7 +6,6 @@ const {
     cleanRecords,
     cleanRels
 } = require("../../utils/cleanData.js");
-
 const {
     createDayQuery,
     deleteDayQuery,
@@ -26,7 +25,7 @@ module.exports = (deps) =>
             };
         }, {});
 
-
+// Day CRUD
 const createDay = async ({ services }, body) => {
     const uuid = v4();
     const query = createDayQuery(uuid, body);
@@ -87,6 +86,7 @@ const deleteDay = async ({ services }, params) => {
     return data;
 };
 
+// Day Relationships
 const getDaysRels = async ({ services }, params) => {
     const query = getDaysRelsQuery(params);
 
@@ -106,5 +106,6 @@ Object.assign(module.exports, {
     updatedDay,
     getDay,
     deleteDay,
+
     getDaysRels
 });

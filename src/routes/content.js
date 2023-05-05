@@ -12,6 +12,7 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
+        // Content CRUD
         .post("/", endPoint(body, CREATE_CONTENT, createContent))
         .put("/", endPoint(body, UPDATE_CONTENT, updateContent))
         .get("/:uuid", endPoint(params, GET_UUID, getContent))

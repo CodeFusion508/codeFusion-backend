@@ -26,7 +26,7 @@ module.exports = (deps) =>
             };
         }, {});
 
-
+// Sprint CURD
 const createSprint = async ({ services }, body) => {
     const uuid = v4();
     const query = createSprintQuery(uuid, body);
@@ -87,6 +87,8 @@ const deleteSprint = async ({ services }, params) => {
     return data;
 };
 
+// Sprint Relationships
+
 const getSprintRels = async ({ services }, params) => {
     const query = getSprintsRelsQuery(params);
 
@@ -106,5 +108,6 @@ Object.assign(module.exports, {
     updateSprint,
     getSprint,
     deleteSprint,
+
     getSprintRels
 });
