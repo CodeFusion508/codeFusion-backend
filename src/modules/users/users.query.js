@@ -105,24 +105,6 @@ const deleteRelQuery = (body) => {
     return query;
 };
 
-// Other Queries
-const googleSignUpQuery = (uuid, body) => {
-    const query = `
-        CREATE (u:Student:User 
-            {
-                uuid      : "${uuid}", 
-                totalExp  : 0, 
-                weeklyExp : 0, 
-                email     : "${body.email}", 
-                userName  : "${body.userName}"
-            }
-        )
-        RETURN u;
-    `;
-
-    return query;
-};
-
 module.exports = {
     findRegisteredUser,
     signUpQuery,
@@ -132,7 +114,5 @@ module.exports = {
     deleteUserQuery,
 
     createRelQuery,
-    deleteRelQuery,
-
-    googleSignUpQuery,
+    deleteRelQuery
 };

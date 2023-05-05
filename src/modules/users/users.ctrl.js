@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
-const jwt = require("../../config/jwt.js");
 
 const {
   findRegisteredUser,
@@ -9,6 +8,7 @@ const {
   getUserQuery,
   updateUserQuery,
   deleteUserQuery,
+
   createRelQuery,
   deleteRelQuery
 } = require("./users.query.js");
@@ -17,6 +17,7 @@ const {
   cleanRecord,
   cleanRel
 } = require("../../utils/cleanData.js");
+const jwt = require("../../config/jwt.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
@@ -32,12 +33,11 @@ module.exports = (deps) =>
     }, {});
 
 // Student CRUD
-
 const createUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
   const result = await services.neo4j.session.run(findUser);
 
-  if (result.records.length !== 0) throw { err: 403, message: "This email has already been registered, please use another or log in." };
+  if (result.records.length !== 0) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
 
   body.password = bcrypt.hashSync(body.password, saltScript);
   const uuid = v4();
@@ -55,12 +55,12 @@ const logIn = async ({ services }, body) => {
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length === 0) throw { err: 403, message: "This email or password is incorrect, please try again." };
+  if (data.records.length === 0) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "This email or password is incorrect, please try again." };
+  if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
   return {
     data,
@@ -77,7 +77,7 @@ const getUser = async ({ services }, params) => {
 
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
   data = cleanNeo4j(data);
   cleanRecord(data);
@@ -86,7 +86,7 @@ const getUser = async ({ services }, params) => {
 };
 
 const updateUser = async ({ services }, body) => {
-  if (Object.keys(body).length < 2) throw { err: 400, message: "You must provide at least one change." };
+  if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
   if (body.password) {
     body.password = bcrypt.hashSync(body.password, saltScript);
@@ -95,7 +95,7 @@ const updateUser = async ({ services }, body) => {
 
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
   data = cleanNeo4j(data);
   cleanRecord(data);
@@ -119,7 +119,7 @@ const createRel = async ({ services }, body) => {
 
   let data = await services.neo4j.session.run(query);
 
-  if (data.records.length === 0) throw { err: 404, message: "This user does not exist, please check if you have the valid uuid." };
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
   data = cleanNeo4j(data);
   cleanRel(data);
@@ -142,6 +142,7 @@ Object.assign(module.exports, {
   getUser,
   updateUser,
   deleteUser,
+
   createRel,
   deleteRel,
 });

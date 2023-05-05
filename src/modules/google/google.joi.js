@@ -15,5 +15,5 @@ module.exports = {
     GET_USER_ANSWERS: Joi.object({
         sheet_id : Joi.string().required(),
         email    : Joi.string().required()
-    }),
+    })
 };

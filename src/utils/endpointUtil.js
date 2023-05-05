@@ -14,7 +14,7 @@ const endpointResponse = (res) => (promise) => promise.then((response) => {
         error = new Error(message);
         error.statusCode = err;
     } else {
-        error = new Error("An unexpected error occurred while processing your request. Please try again later, or contact us at our github.");
+        error = new Error("Ocurrió un error inesperado al procesar su solicitud. Vuelva a intentarlo más tarde o póngase en contacto con nosotros en nuestro github.");
         error.statusCode = 500;
     }
 

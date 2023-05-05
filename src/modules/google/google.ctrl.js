@@ -1,6 +1,5 @@
 const { v4 } = require("uuid");
 const { client } = require("../../config/gAuth.js");
-const jwt = require("../../config/jwt.js");
 
 const {
   googleSignUpQuery,
@@ -8,13 +7,13 @@ const {
 } = require("./google.query.js");
 const {
   cleanNeo4j,
-  cleanRecord,
-  cleanRel
+  cleanRecord
 } = require("../../utils/cleanData.js");
 const {
   getAllAnswersQuery,
   getEvaluationQuery,
 } = require("../../utils/gFormsAnswers.js");
+const jwt = require("../../config/jwt.js");
 
 module.exports = (deps) =>
   Object
@@ -26,29 +25,17 @@ module.exports = (deps) =>
       };
     }, {});
 
-// Student CRUD
-async function getUserAnswers (_, body) {
-    const data = await getAllAnswersQuery(body.sheet_id);
-    return data;
-}
-
-async function getEvaluation (_, body) {
-  const data = await getEvaluationQuery(body.sheet_id, body.email);
-  return data;
-}
 const createGUser = async ({ services }, body) => {
   const findUser = findRegisteredUser(body);
   let result = await services.neo4j.session.run(findUser);
 
   if (result.records.length !== 0) {
-
     const responseToken = await client.verifyIdToken({ idToken: body.token });
 
-    if (responseToken === undefined) throw ({ message: "Auth Google failed", status: 500 });
+    if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
 
     result = cleanNeo4j(result);
     cleanRecord(result);
-
 
     const { email } = result.node;
     return { token: jwt.createToken(email), data: result };
@@ -65,15 +52,27 @@ const createGUser = async ({ services }, body) => {
   const { email } = data.node;
   return { data, token: jwt.createToken(email) };
 };
+
 const loginGUser = async (_, body) => {
   try {
     const ticket = await client.verifyIdToken({ idToken: body.idtoken });
     const payload = ticket.getPayload();
 
-    if(payload) return true;
+    if (payload) return true;
   } catch (error) {
     return false;
   }
+};
+
+const getUserAnswers = async (_, body) => {
+  const data = await getAllAnswersQuery(body.sheet_id);
+
+  return data;
+};
+
+const getEvaluation = async (_, body) => {
+  const data = await getEvaluationQuery(body.sheet_id, body.email);
+  return data;
 };
 
 Object.assign(module.exports, {

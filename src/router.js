@@ -18,7 +18,7 @@ module.exports = (deps) => {
     }
 
     router.all("*", (req, res) => {
-        const error = new Error("No matching route found");
+        const error = new Error("No se encontró ninguna ruta conocida");
         error.details = { requestedRoute: req.path };
         error.statusCode = 404;
 
