@@ -2,12 +2,13 @@ const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
 const { body } = require("../utils/reqData.js");
+
 const {
     GET_ALL_ANSWERS,
     GET_USER_ANSWERS,
     CREATE_G_USER,
     LOGIN_G_USER,
-} = require("../modules/users/users.joi.js");
+} = require("../modules/google/google.joi");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);

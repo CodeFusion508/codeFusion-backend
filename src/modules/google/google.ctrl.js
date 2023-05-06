@@ -5,10 +5,12 @@ const {
   googleSignUpQuery,
   findRegisteredUser,
 } = require("./google.query.js");
+
 const {
   cleanNeo4j,
   cleanRecord
 } = require("../../utils/cleanData.js");
+
 const {
   getAllAnswersQuery,
   getEvaluationQuery,
@@ -26,42 +28,48 @@ module.exports = (deps) =>
     }, {});
 
 const createGUser = async ({ services }, body) => {
-  const findUser = findRegisteredUser(body);
-  let result = await services.neo4j.session.run(findUser);
 
-  if (result.records.length !== 0) {
-    const responseToken = await client.verifyIdToken({ idToken: body.token });
-
-    if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
-
-    result = cleanNeo4j(result);
-    cleanRecord(result);
-
-    const { email } = result.node;
-    return { token: jwt.createToken(email), data: result };
+  try {
+    const findUser = findRegisteredUser(body);
+    let result = await services.neo4j.session.run(findUser);
+  
+  
+    if (result.records.length !== 0) {
+      const responseToken = await client.verifyIdToken({ idToken: body.idToken });
+  
+      if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
+  
+      result = cleanNeo4j(result);
+      cleanRecord(result);
+  
+      const { email } = result.node;
+      return { token: jwt.createToken(email), data: result };
+    }
+  
+    const uuid = v4();
+    const query = googleSignUpQuery(uuid, body);
+  
+    let data = await services.neo4j.session.run(query);
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+  
+  
+    const { email } = data.node;
+    return { data, token: jwt.createToken(email) }
+    
+  } catch (error) {
+    console.log(error)
   }
+    
 
-  const uuid = v4();
-  const query = googleSignUpQuery(uuid, body);
-
-  let data = await services.neo4j.session.run(query);
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-
-  const { email } = data.node;
-  return { data, token: jwt.createToken(email) };
 };
 
 const loginGUser = async (_, body) => {
-  try {
-    const ticket = await client.verifyIdToken({ idToken: body.idtoken });
+    const ticket = await client.verifyIdToken({ idToken: body.idToken });
     const payload = ticket.getPayload();
 
     if (payload) return true;
-  } catch (error) {
-    return false;
-  }
+
 };
 
 const getUserAnswers = async (_, body) => {
