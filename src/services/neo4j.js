@@ -11,7 +11,7 @@ module.exports = async () => {
         }
         );
 
-        if(!await driver.verifyAuthentication()) throw({message: "Auth neo4j error"})
+        if(!await driver.verifyAuthentication()) throw({message: "Auth neo4j error"});
         const session = driver.session();
 
         const neo4j = {

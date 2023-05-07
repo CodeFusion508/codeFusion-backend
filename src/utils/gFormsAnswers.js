@@ -29,13 +29,11 @@ async function getAllAnswersQuery(sheet_id) {
 
         return rows;
     } catch (error) {
-        console.log(error);
         return error;
-        }
+    }
 }
 
 async function getEvaluationQuery(sheet_id, email) {
-
     const res = await service.spreadsheets.values.get({
         auth          : authClient,
         spreadsheetId : sheet_id,

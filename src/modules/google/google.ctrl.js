@@ -28,52 +28,41 @@ module.exports = (deps) =>
     }, {});
 
 const createGUser = async ({ services }, body) => {
+  const findUser = findRegisteredUser(body);
+  let result = await services.neo4j.session.run(findUser);
 
-  try {
-    const findUser = findRegisteredUser(body);
-    let result = await services.neo4j.session.run(findUser);
+  if (result.records.length !== 0) {
+    const responseToken = await client.verifyIdToken({ idToken: body.idToken });
 
+    if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
 
-    if (result.records.length !== 0) {
-      const responseToken = await client.verifyIdToken({ idToken: body.idToken });
+    result = cleanNeo4j(result);
+    cleanRecord(result);
 
-      if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
-
-      result = cleanNeo4j(result);
-      cleanRecord(result);
-
-      const { email } = result.node;
-      return { token: jwt.createToken(email), data: result };
-    }
-
-    const uuid = v4();
-    const query = googleSignUpQuery(uuid, body);
-
-    let data = await services.neo4j.session.run(query);
-    data = cleanNeo4j(data);
-    cleanRecord(data);
-
-
-    const { email } = data.node;
-    return { data, token: jwt.createToken(email) };
-
-  } catch (error) {
-    console.log(error);
+    const { email } = result.node;
+    return { token: jwt.createToken(email), data: result };
   }
+  const uuid = v4();
+  const query = googleSignUpQuery(uuid, body);
+
+  let data = await services.neo4j.session.run(query);
+  data = cleanNeo4j(data);
+  cleanRecord(data);
 
 
+  const { email } = data.node;
+  return { data, token: jwt.createToken(email) };
 };
 
 const loginGUser = async (_, body) => {
-    const ticket = await client.verifyIdToken({ idToken: body.idToken });
-    const payload = ticket.getPayload();
+  const ticket = await client.verifyIdToken({ idToken: body.idToken });
+  const payload = ticket.getPayload();
 
-    if (payload) return true;
+  if (payload) return true;
 
 };
 
 const getUserAnswers = async (_, body) => {
-  console.log("entering getUserAnswers");
   const data = await getAllAnswersQuery(body.sheet_id)
     .catch((error) => {
       throw ({ message: `${error}`, status: 400 });

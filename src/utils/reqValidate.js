@@ -1,5 +1,4 @@
 module.exports = (reqData, joi) => (req, res, next) => {
-
     if (reqData === undefined || joi === undefined) {
         return next();
     }

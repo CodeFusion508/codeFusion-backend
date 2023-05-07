@@ -14,7 +14,7 @@ const ctrlList = {
     sprintsCtrl  : require("./modules/sprints/sprints.ctrl.js"),
     daysCtrl     : require("./modules/days/days.ctrl.js"),
     contentsCtrl : require("./modules/content/content.ctrl.js"),
-    googleCtrl   : require("./modules/google/google.ctrl.js"),
+    googleCtrl   : require("./modules/google/google.ctrl.js")
 };
 
 const start = async () => {
@@ -24,7 +24,7 @@ const start = async () => {
         services : {}
     };
 
-    
+
 
     Object.assign(dependencies.services, await Services(dependencies, servicesList));
 

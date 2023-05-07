@@ -4,7 +4,7 @@ module.exports = {
     CREATE_G_USER: Joi.object({
         userName : Joi.string().required(),
         email    : Joi.string().required(),
-        idToken    : Joi.string().required()
+        idToken  : Joi.string().required()
     }),
     LOGIN_G_USER: Joi.object({
         idToken: Joi.string().required()
