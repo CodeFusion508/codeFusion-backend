@@ -18,15 +18,20 @@ async function authorize() {
 authorize();
 
 async function getAllAnswersQuery(sheet_id) {
-    const res = await service.spreadsheets.values.get({
-        auth          : authClient,
-        spreadsheetId : sheet_id,
-        range         : "A1:F4",
-    });
+    try {
+        const res = await service.spreadsheets.values.get({
+            auth          : authClient,
+            spreadsheetId : sheet_id,
+            range         : "'Respuestas de formulario 1'",
+        });
 
-    const rows = res.data.values;
+        const rows = res.data.values;
 
-    return rows;
+        return rows;
+    } catch (error) {
+        console.log(error);
+        return error;
+        }
 }
 
 async function getEvaluationQuery(sheet_id, email) {
