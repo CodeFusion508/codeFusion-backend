@@ -26,8 +26,7 @@ module.exports = (deps) => {
         // Student Relationships
         .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel));
-};
-
+}
 
 const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createUser(data));
 const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.logIn(data));

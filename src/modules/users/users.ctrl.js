@@ -52,6 +52,7 @@ const createUser = async ({ services }, body) => {
 };
 
 const logIn = async ({ services }, body) => {
+
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
 
@@ -59,6 +60,8 @@ const logIn = async ({ services }, body) => {
 
   data = cleanNeo4j(data);
   cleanRecord(data);
+
+  if(!data.node.hasOwnProperty('password')) throw({ err: 400, message: "El correo electronico de la cuenta fue registra mediante google" })
 
   if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
@@ -70,6 +73,7 @@ const logIn = async ({ services }, body) => {
       uuid     : data.node.uuid
     })
   };
+
 };
 
 const getUser = async ({ services }, params) => {

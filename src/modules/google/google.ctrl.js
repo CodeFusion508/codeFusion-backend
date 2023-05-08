@@ -32,6 +32,7 @@ const createGUser = async ({ services }, body) => {
   let result = await services.neo4j.session.run(findUser);
 
   if (result.records.length !== 0) {
+
     const responseToken = await client.verifyIdToken({ idToken: body.idToken });
 
     if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
