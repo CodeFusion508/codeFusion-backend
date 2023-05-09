@@ -40,8 +40,8 @@ const createGUser = async ({ services }, body) => {
     result = cleanNeo4j(result);
     cleanRecord(result);
 
-    const { email } = result.node;
-    return { token: jwt.createToken(email), data: result };
+    const { email, userName, uuid } = result.node;
+    return { token: jwt.createToken({userName, email, uuid}), data: result };
   }
   const uuid = v4();
   const query = googleSignUpQuery(uuid, body);
@@ -51,8 +51,8 @@ const createGUser = async ({ services }, body) => {
   cleanRecord(data);
 
 
-  const { email } = data.node;
-  return { data, token: jwt.createToken(email) };
+  const { email, userName } = data.node;
+  return { data, token: jwt.createToken({userName, email, uuid}) };
 };
 
 const loginGUser = async (_, body) => {

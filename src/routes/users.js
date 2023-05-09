@@ -23,7 +23,6 @@ module.exports = (deps) => {
         // Router for confirm account to crated account with platform
         .post("/confirm-account", endPoint(body, CREATE_USER , confirmCreatedAccount))
         .get("/confirm-account-token/:token", endPoint(params, CONFIRM_ACCOUNT , confirmAccount))
-        // ----------------------------------------------------------------------------
         .post("/login", endPoint(body, LOGIN_USER, logIn))
         .put("/", auth.verifyToken, endPoint(body, UPDATE_USER, updateUser))
         .delete("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteUser))

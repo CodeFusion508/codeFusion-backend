@@ -3,11 +3,11 @@ const moment = require("moment");
 
 exports.createToken = function (user) {
     const payload = {
-        sub   : user.uuid,
-        name  : user.userName,
-        email : user.email,
-        iat   : moment().unix(), // Creation date of the token
-        exp   : moment().add(2, "hour").unix(), // Expiration date of the token
+        uuid     : user.uuid,
+        userName : user.userName,
+        email    : user.email,
+        iat      : moment().unix(), // Creation date of the token
+        exp      : moment().add(2, "hour").unix(), // Expiration date of the token
     };
 
     return jwt.encode(payload, process.env.SEED);

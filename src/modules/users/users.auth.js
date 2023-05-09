@@ -21,7 +21,8 @@ const verifyToken = (req, res, next) => {
         }
 
         if (req.method !== "GET") {
-            req.body.uuid = decodedToken.sub;
+            console.log(decodedToken, "decodedToken");
+            req.body.uuid = decodedToken.uuid;
         }
 
         next();

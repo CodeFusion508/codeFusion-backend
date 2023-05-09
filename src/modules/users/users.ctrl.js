@@ -33,20 +33,20 @@ module.exports = (deps) =>
     }, {});
 
 const WaitingForAccountConfirmation = async ({ services }, body) => {
-  body["password"] = bcrypt.hashSync(body.password, saltScript);
-  const token = jwt.createToken(body)
+  //body["password"] = bcrypt.hashSync(body.password, saltScript);
+  const token = jwt.createToken(body);
   services.email.send(
-    body.email, 
-    'Confirmación de Cuenta', 
-    services.templete.confirmEmail(body.userName, 'http://localhost:8080/users/confirm-account-token/'+token)
-  )
- 
-  return { data: "Se ha enviado un mensaje a "+body.email+" para confirmar tu cuenta" }
+    body.email,
+    "Confirmación de Cuenta",
+    services.templete.confirmEmail(body.userName, "http://localhost:8080/users/confirm-account-token/"+token)
+  );
+
+  return { data: "Se ha enviado un mensaje a "+body.email+" para confirmar tu cuenta" };
 };
 
 const confirmAccount = async ({ services }, params) => {
-  const body = jwt.decodeToken(params.token)
-  return createUser({ services }, body)
+  const body = jwt.decodeToken(params.token);
+  return createUser({ services }, body);
 };
 
 // Student CRUD
@@ -65,9 +65,9 @@ const createUser = async ({ services }, body) => {
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  const { email, password } = data.node;
-  return { data, token: jwt.createToken(email, password) };
-  
+  const { email, userName } = data.node;
+  return { data, token: jwt.createToken( { uuid, userName, email }) };
+
 };
 
 const logIn = async ({ services }, body) => {
@@ -80,7 +80,7 @@ const logIn = async ({ services }, body) => {
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  if(!data.node.hasOwnProperty('password')) throw({ err: 400, message: "El correo electronico de la cuenta fue registra mediante google" })
+  if(!data.node.hasOwnProperty("password")) throw({ err: 400, message: "El correo electrónico de la cuenta fue registrado mediante google" });
 
   if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
@@ -110,13 +110,18 @@ const getUser = async ({ services }, params) => {
 
 const updateUser = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
+  const findUser = findRegisteredUser(body);
+  const result = await services.neo4j.session.run(findUser);
+
+  if (result.records.length !== 0) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
 
   if (body.password) {
     body.password = bcrypt.hashSync(body.password, saltScript);
   }
   const query = updateUserQuery(body);
-
+  console.log(query, "query");
   let data = await services.neo4j.session.run(query);
+  console.log(data, "data");
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
