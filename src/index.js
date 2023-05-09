@@ -6,8 +6,10 @@ const Controllers = require("./controllers.js");
 const Services = require("./services.js");
 
 const servicesList = {
-    neo4j: require("./services/neo4j.js")
-};
+    neo4j: require("./services/neo4j.js"),
+    email: require('./services/nodemailer.js'),
+    templete: require('./services/templetes.js')
+}
 
 const ctrlList = {
     usersCtrl    : require("./modules/users/users.ctrl.js"),

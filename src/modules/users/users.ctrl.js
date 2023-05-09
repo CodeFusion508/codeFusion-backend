@@ -32,8 +32,26 @@ module.exports = (deps) =>
       };
     }, {});
 
+const WaitingForAccountConfirmation = async ({ services }, body) => {
+  body["password"] = bcrypt.hashSync(body.password, saltScript);
+  const token = jwt.createToken(body)
+  services.email.send(
+    body.email, 
+    'Confirmación de Cuenta', 
+    services.templete.confirmEmail(body.userName, 'http://localhost:8080/users/confirm-account-token/'+token)
+  )
+ 
+  return { data: "Se ha enviado un mensaje a "+body.email+" para confirmar tu cuenta" }
+};
+
+const confirmAccount = async ({ services }, params) => {
+  const body = jwt.decodeToken(params.token)
+  return createUser({ services }, body)
+};
+
 // Student CRUD
 const createUser = async ({ services }, body) => {
+
   const findUser = findRegisteredUser(body);
   const result = await services.neo4j.session.run(findUser);
 
@@ -49,6 +67,7 @@ const createUser = async ({ services }, body) => {
 
   const { email, password } = data.node;
   return { data, token: jwt.createToken(email, password) };
+  
 };
 
 const logIn = async ({ services }, body) => {
@@ -146,7 +165,8 @@ Object.assign(module.exports, {
   getUser,
   updateUser,
   deleteUser,
-
+  WaitingForAccountConfirmation,
+  confirmAccount,
   createRel,
   deleteRel,
 });
