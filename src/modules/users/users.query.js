@@ -1,5 +1,5 @@
 // Student CRUD
-const findRegisteredUser = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
+const findRegisteredEmail = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
 
 const signUpQuery = (uuid, body) => {
     const query = `
@@ -106,13 +106,12 @@ const deleteRelQuery = (body) => {
 };
 
 module.exports = {
-    findRegisteredUser,
+    findRegisteredEmail,
     signUpQuery,
     logInQuery,
     getUserQuery,
     updateUserQuery,
     deleteUserQuery,
-
     createRelQuery,
     deleteRelQuery
 };

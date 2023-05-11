@@ -3,7 +3,7 @@ const { client } = require("../../config/gAuth.js");
 
 const {
   googleSignUpQuery,
-  findRegisteredUser,
+  findRegisteredEmail,
 } = require("./google.query.js");
 
 const {
@@ -28,7 +28,7 @@ module.exports = (deps) =>
     }, {});
 
 const createGUser = async ({ services }, body) => {
-  const findUser = findRegisteredUser(body);
+  const findUser = findRegisteredEmail(body);
   let result = await services.neo4j.session.run(findUser);
 
   if (result.records.length !== 0) {

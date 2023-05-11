@@ -1,5 +1,5 @@
 // Student CRUD
-const findRegisteredUser = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
+const findRegisteredEmail = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
 const googleSignUpQuery = (uuid, body) => {
     const query = `
         CREATE (u:Student:User 
@@ -17,4 +17,4 @@ const googleSignUpQuery = (uuid, body) => {
     return query;
 };
 
-module.exports = { findRegisteredUser, googleSignUpQuery };
+module.exports = { findRegisteredEmail, googleSignUpQuery };

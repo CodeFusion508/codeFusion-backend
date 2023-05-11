@@ -1,5 +1,5 @@
 const {
-    findRegisteredUser,
+    findRegisteredEmail,
     signUpQuery,
     logInQuery,
     getUserQuery,
@@ -39,12 +39,12 @@ describe("users query tests", () => {
         expect(query).toContain(`SET u:softDeleted;`);
     });
 
-    it("findRegisteredUser", () => {
+    it("findRegisteredEmail", () => {
         const body = {
             email: "JohnnyAppleSeed@mail.com"
         };
 
-        const query = findRegisteredUser(body);
+        const query = findRegisteredEmail(body);
 
         expect(query).toContain(`MATCH (u:Student {email: "${body.email}"}) RETURN u;`);
     });

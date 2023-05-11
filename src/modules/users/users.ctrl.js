@@ -2,13 +2,12 @@ const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
 
 const {
-  findRegisteredUser,
+  findRegisteredEmail,
   signUpQuery,
   logInQuery,
   getUserQuery,
   updateUserQuery,
   deleteUserQuery,
-
   createRelQuery,
   deleteRelQuery
 } = require("./users.query.js");
@@ -52,7 +51,7 @@ const confirmAccount = async ({ services }, params) => {
 // Student CRUD
 const createUser = async ({ services }, body) => {
 
-  const findUser = findRegisteredUser(body);
+  const findUser = findRegisteredEmail(body);
   const result = await services.neo4j.session.run(findUser);
 
   if (result.records.length !== 0) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
@@ -110,10 +109,11 @@ const getUser = async ({ services }, params) => {
 
 const updateUser = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
-  const findUser = findRegisteredUser(body);
+  const findUser = findRegisteredEmail(body);
   const result = await services.neo4j.session.run(findUser);
+  console.log(result.records[0]._fields[0].properties, "result");
 
-  if (result.records.length !== 0) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
+  if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
 
   if (body.password) {
     body.password = bcrypt.hashSync(body.password, saltScript);
