@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
-const jwt = require("../../config/jwt.js");
 
 const {
   findRegisteredEmail,
@@ -17,9 +16,11 @@ const {
   cleanRecord,
   cleanRel
 } = require("../../utils/cleanData.js");
+const jwt = require("../../config/jwt.js");
 
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
+const MapConfirmAccount = new Map();
 
 module.exports = (deps) =>
   Object
@@ -31,6 +32,29 @@ module.exports = (deps) =>
       };
     }, {});
 
+const WaitingForAccountConfirmation = async ({ services }, body) => {
+  body["password"] = bcrypt.hashSync(body["password"], saltScript)
+  MapConfirmAccount.set(body["email"], body)
+  const token = jwt.createToken({ email: body["email"] });
+  services.email.send(
+    body.email,
+    "Confirmación de Cuenta",
+    services.templete.confirmEmail(body.userName, "http://localhost:5173/cuenta/"+token+'/confirmacion')
+  );
+
+  return { data: "Se ha enviado un mensaje a "+body.email+" para confirmar tu cuenta" };
+};
+
+const confirmAccount = async ({ services }, params) => {
+  const token = jwt.decodeToken(params.token);
+  const body = MapConfirmAccount.get(token.email)
+  if(body === undefined) throw({ err: 404, message:'El token no existe' })
+  await createUser({ services }, body);
+  return {
+    title: 'Confirmación de Cuenta',
+    message: 'Bienvenido a CodeFusion508'
+  }
+ };
 
 // Student CRUD
 const createUser = async ({ services }, body) => {
@@ -52,6 +76,7 @@ const createUser = async ({ services }, body) => {
 };
 
 const logIn = async ({ services }, body) => {
+
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
 
@@ -72,6 +97,7 @@ const logIn = async ({ services }, body) => {
       uuid     : data.node.uuid
     })
   };
+
 };
 
 const getUser = async ({ services }, params) => {
@@ -100,8 +126,9 @@ const updateUser = async ({ services }, body) => {
     body.password = bcrypt.hashSync(body.password, saltScript);
   }
   const query = updateUserQuery(body);
-
+  console.log(query, "query");
   let data = await services.neo4j.session.run(query);
+  console.log(data, "data");
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
@@ -121,6 +148,7 @@ const deleteUser = async ({ services }, params) => {
 };
 
 // Student Relationships
+
 const createRel = async ({ services }, body) => {
   const query = createRelQuery(body);
 
@@ -149,7 +177,8 @@ Object.assign(module.exports, {
   getUser,
   updateUser,
   deleteUser,
-
+  WaitingForAccountConfirmation,
+  confirmAccount,
   createRel,
   deleteRel,
 });

@@ -104,3 +104,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Fikes .json
+CF_credentials.json
