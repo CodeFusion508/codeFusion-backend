@@ -1,7 +1,6 @@
 const { v4 } = require("uuid");
 
 const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
-
 const {
     createContentQuery,
     updatedContentQuery,
@@ -18,6 +17,7 @@ module.exports = (deps) =>
                 [name]: method.bind(null, Object.assign({}, module.exports, deps))
             };
         }, {});
+
 
 // Content CRUD
 const createContent = async ({ services }, body) => {

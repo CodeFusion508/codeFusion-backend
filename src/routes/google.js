@@ -7,7 +7,7 @@ const {
     GET_ALL_ANSWERS,
     GET_USER_ANSWERS,
     CREATE_G_USER,
-    LOGIN_G_USER,
+    LOGIN_G_USER
 } = require("../modules/google/google.joi");
 
 module.exports = (deps) => {
@@ -19,6 +19,7 @@ module.exports = (deps) => {
         .get("/all", endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
         .get("/", endPoint(body, GET_USER_ANSWERS, getEvaluation));
 };
+
 
 const gSignUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.createGUser(data));
 const gLogIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.googleCtrl.loginGUser(data));

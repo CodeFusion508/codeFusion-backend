@@ -3,31 +3,25 @@ const findRegisteredEmail = (body) => `MATCH (u:Student {email: "${body.email}"}
 
 const signUpQuery = (uuid, body) => {
     const query = `
-        CREATE (u:Student:User 
-            {
-                uuid      : "${uuid}", 
-                totalExp  : 0, 
-                weeklyExp : 0, 
-                email     : "${body.email}", 
-                userName  : "${body.userName}", 
-                password  : "${body.password}"
-            }
-        )
+        CREATE (u:Student:User {
+            uuid      : "${uuid}", 
+            totalExp  : 0, 
+            weeklyExp : 0, 
+            email     : "${body.email}", 
+            userName  : "${body.userName}", 
+            password  : "${body.password}"
+        })
         RETURN u;
     `;
 
     return query;
 };
 
-const logInQuery = (body) => {
-    const query = `
-        MATCH (u:Student {email: "${body.email}"})
-        WHERE NOT u:softDeleted
-        RETURN u;
-    `;
-
-    return query;
-};
+const logInQuery = (body) => `
+    MATCH (u:Student {email: "${body.email}"})
+    WHERE NOT u:softDeleted
+    RETURN u;
+`;
 
 const getUserQuery = (params) => `
     MATCH (u:Student {uuid: "${params.uuid}"}) 
@@ -71,26 +65,14 @@ const deleteUserQuery = (params) => `
 
 // Relation Queries
 const createRelQuery = (body) => {
-    if (!body.eval) {
-        const query = `
-            MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
-            WHERE NOT u:softDeleted AND NOT c:softDeleted
-            WITH u, c
-            CREATE (u)-[r:${body.relation}]->(c)
-            RETURN r;
-        `;
+    const evalClause = body.eval ? `{eval: "${body.eval}"}` : "";
 
-        return query;
-    }
-    const query = `
+    return `
         MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
         WHERE NOT u:softDeleted AND NOT c:softDeleted
-        WITH u, c
-        CREATE (u)-[r:${body.relation} {eval: "${body.eval}"}]->(c)
+        CREATE (u)-[r:${body.relation}${evalClause}]->(c)
         RETURN r;
     `;
-
-    return query;
 };
 
 const deleteRelQuery = (body) => {
@@ -112,6 +94,7 @@ module.exports = {
     getUserQuery,
     updateUserQuery,
     deleteUserQuery,
+
     createRelQuery,
     deleteRelQuery
 };

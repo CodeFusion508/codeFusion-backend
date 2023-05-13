@@ -35,8 +35,5 @@ module.exports = {
         contentUuid : Joi.string().required(),
         op          : Joi.string().required(),
         relation    : Joi.string().required()
-    }),
-    CONFIRM_ACCOUNT: Joi.object({
-        token       : Joi.optional()
     })
 };

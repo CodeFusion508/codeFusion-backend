@@ -1,21 +1,19 @@
 const { v4 } = require("uuid");
 const { client } = require("../../config/gAuth.js");
+const jwt = require("../../config/jwt.js");
 
 const {
   googleSignUpQuery,
-  findRegisteredEmail,
+  findRegisteredEmail
 } = require("./google.query.js");
-
 const {
   cleanNeo4j,
   cleanRecord
 } = require("../../utils/cleanData.js");
-
 const {
   getAllAnswersQuery,
-  getEvaluationQuery,
+  getEvaluationQuery
 } = require("../../utils/gFormsAnswers.js");
-const jwt = require("../../config/jwt.js");
 
 module.exports = (deps) =>
   Object
@@ -27,12 +25,12 @@ module.exports = (deps) =>
       };
     }, {});
 
+
 const createGUser = async ({ services }, body) => {
   const findUser = findRegisteredEmail(body);
   let result = await services.neo4j.session.run(findUser);
 
   if (result.records.length !== 0) {
-
     const responseToken = await client.verifyIdToken({ idToken: body.idToken });
 
     if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
@@ -41,8 +39,12 @@ const createGUser = async ({ services }, body) => {
     cleanRecord(result);
 
     const { email, userName, uuid } = result.node;
-    return { token: jwt.createToken({userName, email, uuid}), data: result };
+    return {
+      token : jwt.createToken({ userName, email, uuid }),
+      data  : result
+    };
   }
+
   const uuid = v4();
   const query = googleSignUpQuery(uuid, body);
 
@@ -50,9 +52,11 @@ const createGUser = async ({ services }, body) => {
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-
   const { email, userName } = data.node;
-  return { data, token: jwt.createToken({userName, email, uuid}) };
+  return {
+    data,
+    token: jwt.createToken({ userName, email, uuid })
+  };
 };
 
 const loginGUser = async (_, body) => {
@@ -60,7 +64,6 @@ const loginGUser = async (_, body) => {
   const payload = ticket.getPayload();
 
   if (payload) return true;
-
 };
 
 const getUserAnswers = async (_, body) => {

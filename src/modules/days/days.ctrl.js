@@ -12,6 +12,7 @@ const {
     getDayQuery,
     updateDayQuery,
     getAllDaysQuery,
+
     getDaysRelsQuery
 } = require("./days.query.js");
 
@@ -24,6 +25,7 @@ module.exports = (deps) =>
                 [name]: method.bind(null, Object.assign({}, module.exports, deps))
             };
         }, {});
+
 
 // Day CRUD
 const createDay = async ({ services }, body) => {

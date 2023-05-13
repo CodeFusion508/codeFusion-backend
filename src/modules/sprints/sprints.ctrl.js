@@ -6,13 +6,13 @@ const {
     cleanRecords,
     cleanRels
 } = require("../../utils/cleanData.js");
-
 const {
     createSprintQuery,
     getAllSprintsQuery,
     updateSprintQuery,
     getSprintQuery,
     deleteSprintQuery,
+
     getSprintsRelsQuery
 } = require("./sprints.query.js");
 
@@ -25,6 +25,7 @@ module.exports = (deps) =>
                 [name]: method.bind(null, Object.assign({}, module.exports, deps))
             };
         }, {});
+
 
 // Sprint CURD
 const createSprint = async ({ services }, body) => {
@@ -44,7 +45,7 @@ const getAllSprints = async ({ services }) => {
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length === 0) throw { err: 404, message: "No existen sprints" };
-
+    const jwt = require("../../config/jwt.js");
     data = cleanNeo4j(data);
     cleanRecords(data);
 
@@ -88,7 +89,6 @@ const deleteSprint = async ({ services }, params) => {
 };
 
 // Sprint Relationships
-
 const getSprintRels = async ({ services }, params) => {
     const query = getSprintsRelsQuery(params);
 

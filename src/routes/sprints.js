@@ -22,9 +22,11 @@ module.exports = (deps) => {
         .get("/:uuid/rel", endPoint(params, GET_UUID, getSprintRels));
 };
 
+
 const createSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.createSprint(data));
 const getAllSprints = ({ ctrls }) => (_, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getAllSprints());
 const updateSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.updateSprint(data));
 const getSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprint(data));
 const deleteSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.deleteSprint(data));
+
 const getSprintRels = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprintRels(data));

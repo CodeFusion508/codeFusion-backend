@@ -1,14 +1,12 @@
 // Sprint CRUD
 const createSprintQuery = (uuid, body) => {
     const query = `
-        CREATE (s:Sprint:${body.label}
-            {
-                uuid     : "${uuid}", 
-                totalExp : 0,
-                title    : "${body.title}",
-                desc     : "${body.desc}"
-            }
-        )
+        CREATE (s:Sprint:${body.label} {
+            uuid     : "${uuid}", 
+            totalExp : 0,
+            title    : "${body.title}",
+            desc     : "${body.desc}"
+        })
         RETURN s;
     `;
 
@@ -16,15 +14,11 @@ const createSprintQuery = (uuid, body) => {
 };
 
 
-const getAllSprintsQuery = () => {
-    const query = `
-        MATCH (s:Sprint) 
-        WHERE NOT s:softDeleted 
-        RETURN s;
-    `;
-
-    return query;
-};
+const getAllSprintsQuery = () => `
+    MATCH (s:Sprint) 
+    WHERE NOT s:softDeleted 
+    RETURN s;
+`;
 
 const updateSprintQuery = (body) => {
     let propsToUpdate = [];
@@ -52,15 +46,11 @@ const updateSprintQuery = (body) => {
     return updateQuery;
 };
 
-const getSprintQuery = (params) => {
-    const query = `
-        MATCH (s:Sprint {uuid: "${params.uuid}"}) 
-        WHERE NOT s:softDeleted 
-        RETURN s;
-    `;
-
-    return query;
-};
+const getSprintQuery = (params) => `
+    MATCH (s:Sprint {uuid: "${params.uuid}"}) 
+    WHERE NOT s:softDeleted 
+    RETURN s;
+`;
 
 const deleteSprintQuery = (params) => `
     MATCH (s:Sprint {uuid: "${params.uuid}"})
@@ -68,15 +58,11 @@ const deleteSprintQuery = (params) => `
 `;
 
 // Sprint Relationships
-const getSprintsRelsQuery = (params) => {
-    const query = `
-        MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: "${params.uuid}"})
-        WHERE NOT s:softDeleted AND NOT d:softDeleted
-        RETURN d, r;
-    `;
-
-    return query;
-};
+const getSprintsRelsQuery = (params) => `
+    MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: "${params.uuid}"})
+    WHERE NOT s:softDeleted AND NOT d:softDeleted
+    RETURN d, r;
+`;
 
 module.exports = {
     createSprintQuery,

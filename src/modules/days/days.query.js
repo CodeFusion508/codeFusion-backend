@@ -1,13 +1,11 @@
 // Day CRUD
 const createDayQuery = (uuid, body) => {
     const query = `
-        CREATE (d:Day 
-            {
-                uuid : "${uuid}",
-                exp  : 0,
-                desc : "${body.desc}"
-            }
-        )
+        CREATE (d:Day {
+            uuid : "${uuid}",
+            exp  : 0,
+            desc : "${body.desc}"
+        })
         WITH d
         MATCH (s:Sprint {uuid: "${body.sprintUuid}"})
         WHERE NOT s:softDeleted
@@ -18,15 +16,11 @@ const createDayQuery = (uuid, body) => {
     return query;
 };
 
-const getAllDaysQuery = () => {
-    const query = `
-        MATCH (d:Day) 
-        WHERE NOT d:softDeleted
-        RETURN d;
-    `;
-
-    return query;
-};
+const getAllDaysQuery = () => `
+    MATCH (d:Day) 
+    WHERE NOT d:softDeleted
+    RETURN d;
+`;
 
 const updateDayQuery = (body) => {
     let propsToUpdate = [];
@@ -48,15 +42,12 @@ const updateDayQuery = (body) => {
     return query;
 };
 
-const getDayQuery = (params) => {
-    const query = `
-        MATCH (d: Day {uuid: "${params.uuid}"}) 
-        WHERE NOT d:softDeleted 
-        RETURN d;
-    `;
+const getDayQuery = (params) => `
+    MATCH (d: Day {uuid: "${params.uuid}"}) 
+    WHERE NOT d:softDeleted 
+    RETURN d;
+`;
 
-    return query;
-};
 
 const deleteDayQuery = (params) => `
     MATCH (d: Day {uuid: "${params.uuid}"})
@@ -64,15 +55,11 @@ const deleteDayQuery = (params) => `
 `;
 
 // Day Relationships
-const getDaysRelsQuery = (params) => {
-    const query = `
-        MATCH (c)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})
-        WHERE NOT d:softDeleted AND NOT c:softDeleted
-        RETURN c, r;
-    `;
-
-    return query;
-};
+const getDaysRelsQuery = (params) => `
+    MATCH (c)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})
+    WHERE NOT d:softDeleted AND NOT c:softDeleted
+    RETURN c, r;
+`;
 
 module.exports = {
     createDayQuery,
