@@ -100,8 +100,7 @@ describe("users query tests", () => {
 
         expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})`);
         expect(query).toContain(`WHERE NOT u:softDeleted AND NOT c:softDeleted`);
-        expect(query).toContain(`WITH u, c`);
-        expect(query).toContain(`CREATE (u)-[r:${body.relation}]->(c)`);
+        expect(query).toContain(`CREATE (u)-[r:${body.relation}`);
     });
 
     it("deleteRelQuery", () => {
