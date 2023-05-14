@@ -2,7 +2,7 @@ const neo4jDriver = require("neo4j-driver");
 
 module.exports = async () => {
     try {
-        const driver = neo4jDriver.driver(
+        const driver = await neo4jDriver.driver(
             process.env.URI,
             neo4jDriver.auth.basic(process.env.DB_USER, process.env.PASSWORD), {
             maxConnectionLifetime        : 30 * 60 * 1000,
