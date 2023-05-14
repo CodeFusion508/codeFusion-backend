@@ -6,13 +6,13 @@ const {
     cleanRecords,
     cleanRels
 } = require("../../utils/cleanData.js");
-
 const {
     createDayQuery,
     deleteDayQuery,
     getDayQuery,
     updateDayQuery,
     getAllDaysQuery,
+
     getDaysRelsQuery
 } = require("./days.query.js");
 
@@ -27,6 +27,7 @@ module.exports = (deps) =>
         }, {});
 
 
+// Day CRUD
 const createDay = async ({ services }, body) => {
     const uuid = v4();
     const query = createDayQuery(uuid, body);
@@ -43,7 +44,7 @@ const getAllDays = async ({ services }) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) throw { err: 404, message: "There are no results for your search." };
+    if (data.records.length === 0) throw { err: 404, message: "No hay resultados para su búsqueda." };
 
     data = cleanNeo4j(data);
     cleanRecords(data);
@@ -52,12 +53,12 @@ const getAllDays = async ({ services }) => {
 };
 
 const updatedDay = async ({ services }, body) => {
-    if (!body.desc && !body.exp) throw { err: 400, message: "You must provide a description or an experience value." };
+    if (!body.desc && !body.exp) throw { err: 400, message: "Debe proporcionar una descripción o un valor de experiencia." };
     const query = updateDayQuery(body);
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) throw { err: 404, message: "This day does not exist, please check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "Este día no existe, verifique si tiene un uuid válido." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);
@@ -70,7 +71,7 @@ const getDay = async ({ services }, params) => {
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) throw { err: 404, message: "This day does not exist, please check if you have a valid uuid." };
+    if (data.records.length === 0) throw { err: 404, message: "Este día no existe, verifique si tiene un uuid válido." };
 
     data = cleanNeo4j(data);
     cleanRecord(data);
@@ -87,12 +88,13 @@ const deleteDay = async ({ services }, params) => {
     return data;
 };
 
+// Day Relationships
 const getDaysRels = async ({ services }, params) => {
     const query = getDaysRelsQuery(params);
 
     let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0) throw { err: 404, message: "There are no relations for this node" };
+    if (data.records.length === 0) throw { err: 404, message: "No existen relaciones para este nodo." };
 
     data = cleanNeo4j(data);
     cleanRels(data);
@@ -106,5 +108,6 @@ Object.assign(module.exports, {
     updatedDay,
     getDay,
     deleteDay,
+
     getDaysRels
 });

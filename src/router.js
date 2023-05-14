@@ -4,7 +4,8 @@ const routes = {
     "/users"    : require("./routes/users.js"),
     "/sprints"  : require("./routes/sprints.js"),
     "/days"     : require("./routes/days.js"),
-    "/contents" : require("./routes/content.js")
+    "/contents" : require("./routes/content.js"),
+    "/google"   : require("./routes/google.js")
 };
 
 module.exports = (deps) => {
@@ -17,7 +18,7 @@ module.exports = (deps) => {
     }
 
     router.all("*", (req, res) => {
-        const error = new Error("No matching route found");
+        const error = new Error("No se encontró ninguna ruta conocida");
         error.details = { requestedRoute: req.path };
         error.statusCode = 404;
 

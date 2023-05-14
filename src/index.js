@@ -1,4 +1,5 @@
 const { config } = require("dotenv");
+config();
 
 const App = require("./app.js");
 const Controllers = require("./controllers.js");
@@ -12,7 +13,8 @@ const ctrlList = {
     usersCtrl    : require("./modules/users/users.ctrl.js"),
     sprintsCtrl  : require("./modules/sprints/sprints.ctrl.js"),
     daysCtrl     : require("./modules/days/days.ctrl.js"),
-    contentsCtrl : require("./modules/content/content.ctrl.js")
+    contentsCtrl : require("./modules/content/content.ctrl.js"),
+    googleCtrl   : require("./modules/google/google.ctrl.js")
 };
 
 const start = async () => {
@@ -21,8 +23,6 @@ const start = async () => {
         ctrls    : {},
         services : {}
     };
-
-    config();
 
     Object.assign(dependencies.services, await Services(dependencies, servicesList));
 

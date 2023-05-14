@@ -10,11 +10,13 @@ module.exports = async () => {
             connectionAcquisitionTimeout : 2 * 60 * 1000
         }
         );
-        const session = await driver.session();
+
+        if(!await driver.verifyAuthentication()) throw({message: "Auth neo4j error"});
+        const session = driver.session();
 
         const neo4j = {
             driver,
-            session,
+            session
         };
 
         return neo4j;
