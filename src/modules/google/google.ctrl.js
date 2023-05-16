@@ -62,8 +62,10 @@ const createGUser = async ({ services }, body) => {
 const loginGUser = async (_, body) => {
   const ticket = await client.verifyIdToken({ idToken: body.idToken });
   const payload = ticket.getPayload();
+  console.log(payload, "payload");
 
-  if (payload) return true;
+  if (payload !== undefined) return true;
+  return Error ("Token inválido");
 };
 
 const getUserAnswers = async (_, body) => {
