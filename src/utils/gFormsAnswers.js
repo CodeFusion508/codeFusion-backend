@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const { google } = require("googleapis");
 
 const service = google.sheets("v4");
@@ -18,6 +19,9 @@ async function authorize() {
 authorize();
 
 async function getAllAnswersQuery(sheet_id) {
+=======
+async function getAllAnswersQuery({ service, authClient }, sheet_id) {
+>>>>>>> 12bbcd00201cc1156f1680d6333804cb3557139e
     try {
         const res = await service.spreadsheets.values.get({
             auth          : authClient,
@@ -33,7 +37,7 @@ async function getAllAnswersQuery(sheet_id) {
     }
 }
 
-async function getEvaluationQuery(sheet_id, email) {
+async function getEvaluationQuery({ service, authClient }, sheet_id, email) {
     const res = await service.spreadsheets.values.get({
         auth          : authClient,
         spreadsheetId : sheet_id,

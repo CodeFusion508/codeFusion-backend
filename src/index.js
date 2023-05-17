@@ -6,7 +6,8 @@ const Controllers = require("./controllers.js");
 const Services = require("./services.js");
 
 const servicesList = {
-    neo4j: require("./services/neo4j.js")
+    neo4j  : require("./services/neo4j.js"),
+    google : require("./services/google.js")
 };
 
 const ctrlList = {
