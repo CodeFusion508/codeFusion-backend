@@ -20,14 +20,6 @@ const verifyToken = (req, res, next) => {
             throw new Error("Token inválido.");
         }
 
-        /*
-            I'm not sure about this line,
-            Why is this necessary to do this
-        */
-        // if (req.method !== "GET") {
-        //     req.body.uuid = decodedToken.uuid;
-        // }
-
         next();
     } catch (err) {
         res.status(401).json({ message: err.message });
