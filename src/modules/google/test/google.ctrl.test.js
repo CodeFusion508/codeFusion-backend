@@ -2,9 +2,7 @@ let { client } = require("../../../config/gAuth.js");
 
 const {
     createGUser,
-    loginGUser,
-    getUserAnswers,
-    getEvaluation
+    loginGUser
 } = require("../google.ctrl.js");
 
 describe("google controller tests", () => {
@@ -23,6 +21,7 @@ describe("google controller tests", () => {
             }
         };
 
+
     });
 
     describe("createGUser", () => {
@@ -39,7 +38,7 @@ describe("google controller tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            console.log(result);
+
             expect(result).toHaveProperty("err", 403);
             expect(result).toHaveProperty("message", "Autenticación de Google falló");
         });
@@ -60,89 +59,8 @@ describe("google controller tests", () => {
 
             expect(result).toBe(true);
         });
-
-        // it("logIn should give back data and token", async () => {
-        //     deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockLogIn);
-
-        //     const body = {
-        //         email    : "testing45@mail.com",
-        //         password : "password",
-        //         userName : "test300"
-        //     };
-        //     const result = await logIn(deps, body)
-        //         .then((res) => res)
-        //         .catch((err) => err);
-
-        //     expect(result).toHaveProperty("data");
-        //     expect(result.data).toHaveProperty("stats");
-        //     expect(result.data.node).toHaveProperty("userName");
-
-        //     expect(result).toHaveProperty("token");
-        // });
     });
 });
-
-let mockEmptyRecords = {
-    "records" : [],
-    "summary" : {
-        "query": {
-            "text"       : "MATCH (u: Student {email: \"testing10390@gmail.com\"}) RETURN u;",
-            "parameters" : {}
-        },
-        "queryType" : "r",
-        "counters"  : {
-            "_stats": {
-                "nodesCreated"         : 0,
-                "nodesDeleted"         : 0,
-                "relationshipsCreated" : 0,
-                "relationshipsDeleted" : 0,
-                "propertiesSet"        : 0,
-                "labelsAdded"          : 0,
-                "labelsRemoved"        : 0,
-                "indexesAdded"         : 0,
-                "indexesRemoved"       : 0,
-                "constraintsAdded"     : 0,
-                "constraintsRemoved"   : 0
-            },
-            "_systemUpdates": 0
-        },
-        "updateStatistics": {
-            "_stats": {
-                "nodesCreated"         : 0,
-                "nodesDeleted"         : 0,
-                "relationshipsCreated" : 0,
-                "relationshipsDeleted" : 0,
-                "propertiesSet"        : 0,
-                "labelsAdded"          : 0,
-                "labelsRemoved"        : 0,
-                "indexesAdded"         : 0,
-                "indexesRemoved"       : 0,
-                "constraintsAdded"     : 0,
-                "constraintsRemoved"   : 0
-            },
-            "_systemUpdates": 0
-        },
-        "plan"          : false,
-        "profile"       : false,
-        "notifications" : [],
-        "server"        : {
-            "address"         : "470f45fb.databases.neo4j.io:7687",
-            "agent"           : "Neo4j/5.6-aura",
-            "protocolVersion" : 5
-        },
-        "resultConsumedAfter": {
-            "low"  : 2,
-            "high" : 0
-        },
-        "resultAvailableAfter": {
-            "low"  : 35,
-            "high" : 0
-        },
-        "database": {
-            "name": "neo4j"
-        }
-    }
-};
 
 let mockValue = {
     "records": [
