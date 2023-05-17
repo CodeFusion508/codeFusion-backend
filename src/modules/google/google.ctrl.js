@@ -1,5 +1,4 @@
 const { v4 } = require("uuid");
-const { client } = require("../../config/gAuth.js");
 const jwt = require("../../config/jwt.js");
 
 const {
@@ -31,7 +30,7 @@ const createGUser = async ({ services }, body) => {
   let result = await services.neo4j.session.run(findUser);
 
   if (result.records.length !== 0) {
-    const responseToken = await client.verifyIdToken({ idToken: body.idToken });
+    const responseToken = await services.google.client.verifyIdToken({ idToken: body.idToken });
 
     if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
 
@@ -59,15 +58,15 @@ const createGUser = async ({ services }, body) => {
   };
 };
 
-const loginGUser = async (_, body) => {
-  const ticket = await client.verifyIdToken({ idToken: body.idToken });
+const loginGUser = async ({ services }, body) => {
+  const ticket = await services.google.client.verifyIdToken({ idToken: body.idToken });
   const payload = ticket.getPayload();
 
   if (payload) return true;
 };
 
-const getUserAnswers = async (_, body) => {
-  const data = await getAllAnswersQuery(body.sheet_id)
+const getUserAnswers = async ({ services }, body) => {
+  const data = await getAllAnswersQuery(services.google, body.sheet_id)
     .catch((error) => {
       throw ({ message: `${error}`, status: 400 });
     });
@@ -75,8 +74,8 @@ const getUserAnswers = async (_, body) => {
   return data;
 };
 
-const getEvaluation = async (_, body) => {
-  const data = await getEvaluationQuery(body.sheet_id, body.email)
+const getEvaluation = async ({ services }, body) => {
+  const data = await getEvaluationQuery(services.google, body.sheet_id, body.email)
     .catch((error) => {
       throw ({ message: `${error}`, status: 400 });
     });
