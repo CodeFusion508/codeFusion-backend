@@ -25,10 +25,11 @@ describe("google controller tests", () => {
 
     });
 
-    /**describe("createGUser", () => {
+    describe("createGUser", () => {
         it("createGUser should throw an error", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
             client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
+
             const body = {
                 email    : "testing10390@gmail.com",
                 userName : "testing800"
@@ -38,22 +39,25 @@ describe("google controller tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
+            console.log(result);
             expect(result).toHaveProperty("err", 403);
-            expect(result).toHaveProperty("message", "Autenticación de Google falló.");
+            expect(result).toHaveProperty("message", "Autenticación de Google falló");
         });
-    });*/
+    });
 
     describe("loginGUser", () => {
         it("loginGUser should throw an error", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+            client.verifyIdToken = jest.fn().mockResolvedValue({ getPayload: () => { return { undefined }; } });
 
             const body = {
                 token: "214nxcndfskhfdsf98349qxsihcsdbi"
             };
-            client.verifyIdToken = jest.fn().mockResolvedValue({ getPayload: () => ({ undefined }) });
+
             const result = await loginGUser(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
+
             expect(result).toBe(true);
         });
 
