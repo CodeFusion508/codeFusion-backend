@@ -9,9 +9,8 @@ List any external dependencies that are required for this change.
 
 ## How Has This Been Tested?
 
-- Please describe any manual testing done to verify your changes.
-- Provide instructions so we can reproduce.
-- Please also list any relevant details for your test configuration as well an explanation as to why the testing had to be manual and could not be automated in a unit or integration test.
+- Describe any manual testing done to verify your changes.
+- List any relevant details for your test configuration as well an explanation.
 
 ## Checklist:
 
