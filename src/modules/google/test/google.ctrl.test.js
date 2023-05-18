@@ -1,5 +1,3 @@
-let { client } = require("../../../config/gAuth.js");
-
 const {
     createGUser,
     loginGUser
@@ -10,24 +8,50 @@ describe("google controller tests", () => {
 
     beforeAll(() => {
         deps = {
-            config   : {},
-            ctrls    : {},
-            services : {
+            services: {
                 neo4j: {
                     session: {
-                        run: null
+                        run: jest.fn().mockResolvedValue(mockValue)
                     }
+                },
+                google: {
+                    client: {
+                        verifyIdToken: jest.fn().mockResolvedValue({
+                            getPayload: () =>  undefined
+                        })
+                    },
+                    service: {
+                        spreadsheets: {
+                            values: {
+                                get: jest.fn().mockResolvedValue(true)
+                            }
+                        }
+                    },
+                    authClient: true
                 }
             }
         };
+    });
 
 
+    describe("loginGUser", () => {
+        it("loginGUser should throw an error", async () => {
+            const body = {
+                token: "214nxcndfskhfdsf98349qxsihcsdbi"
+            };
+
+            const result = await loginGUser(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err", 400);
+            expect(result).toHaveProperty("message", "Token Invalido");
+        });
     });
 
     describe("createGUser", () => {
         it("createGUser should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-            client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
+            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
 
             const body = {
                 email    : "testing10390@gmail.com",
@@ -41,23 +65,6 @@ describe("google controller tests", () => {
 
             expect(result).toHaveProperty("err", 403);
             expect(result).toHaveProperty("message", "Autenticación de Google falló");
-        });
-    });
-
-    describe("loginGUser", () => {
-        it("loginGUser should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-            client.verifyIdToken = jest.fn().mockResolvedValue({ getPayload: () => { return { undefined }; } });
-
-            const body = {
-                token: "214nxcndfskhfdsf98349qxsihcsdbi"
-            };
-
-            const result = await loginGUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toBe(true);
         });
     });
 });
@@ -152,106 +159,6 @@ let mockValue = {
         },
         "resultAvailableAfter": {
             "low"  : 35,
-            "high" : 0
-        },
-        "database": {
-            "name": "neo4j"
-        }
-    }
-};
-
-let mockLogIn = {
-    "records": [
-        {
-            "keys": [
-                "u"
-            ],
-            "length"  : 1,
-            "_fields" : [
-                {
-                    "identity": {
-                        "low"  : 52,
-                        "high" : 0
-                    },
-                    "labels": [
-                        "Student",
-                        "User"
-                    ],
-                    "properties": {
-                        "weeklyExp": {
-                            "low"  : 0,
-                            "high" : 0
-                        },
-                        "userName" : "test300",
-                        "uuid"     : "61accdac-6a32-4dc4-9fdd-fbe2bb6580cd",
-                        "email"    : "testing45@mail.com",
-                        "totalExp" : {
-                            "low"  : 0,
-                            "high" : 0
-                        }
-                    },
-                    "elementId": "4:fa284c45-c13e-4980-8dbe-982377fdef6e:52"
-                }
-            ],
-            "_fieldLookup": {
-                "u": 0
-            }
-        }
-    ],
-    "summary": {
-        "query": {
-            "text"       : "\n        CREATE (u:Student:User \n            {\n                uuid      : \"61accdac-6a32-4dc4-9fdd-fbe2bb6580cd\", \n                totalExp  : 0, \n                weeklyExp : 0, \n                email     : \"testing45@mail.com\", \n                userName  : \"test300\", \n                password  : \"$2b$10$7G2NQAknmOLoh8zJTjd.6OwKRUzwlBeOzOaQ9Zc80UD.40LQLf9Hm\"\n            }\n        )\n        RETURN u;\n    ",
-            "parameters" : {}
-        },
-        "queryType" : "rw",
-        "counters"  : {
-            "_stats": {
-                "nodesCreated"         : 1,
-                "nodesDeleted"         : 0,
-                "relationshipsCreated" : 0,
-                "relationshipsDeleted" : 0,
-                "propertiesSet"        : 6,
-                "labelsAdded"          : 2,
-                "labelsRemoved"        : 0,
-                "indexesAdded"         : 0,
-                "indexesRemoved"       : 0,
-                "constraintsAdded"     : 0,
-                "constraintsRemoved"   : 0
-            },
-            "_systemUpdates"   : 0,
-            "_containsUpdates" : true
-        },
-        "updateStatistics": {
-            "_stats": {
-                "nodesCreated"         : 1,
-                "nodesDeleted"         : 0,
-                "relationshipsCreated" : 0,
-                "relationshipsDeleted" : 0,
-                "propertiesSet"        : 6,
-                "labelsAdded"          : 2,
-                "labelsRemoved"        : 0,
-                "indexesAdded"         : 0,
-                "indexesRemoved"       : 0,
-                "constraintsAdded"     : 0,
-                "constraintsRemoved"   : 0
-            },
-            "_systemUpdates"   : 0,
-            "_containsUpdates" : true
-        },
-        "plan"          : false,
-        "profile"       : false,
-        "notifications" : [],
-        "server"        : {
-            "address"         : "470f45fb.databases.neo4j.io:7687",
-            "agent"           : "Neo4j/5.6-aura",
-            "protocolVersion" : 5.1
-        },
-        "resultConsumedAfter": {
-            "low"  : 2,
-            "high" : 0
-        },
-        "resultAvailableAfter": {
-            "low"  : 15,
             "high" : 0
         },
         "database": {

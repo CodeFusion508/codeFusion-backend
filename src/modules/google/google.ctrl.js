@@ -60,10 +60,12 @@ const createGUser = async ({ services }, body) => {
 
 const loginGUser = async ({ services }, body) => {
   const ticket = await services.google.client.verifyIdToken({ idToken: body.idToken });
+
   const payload = ticket.getPayload();
 
-  if (payload !== undefined) return true;
-  return Error ("Token inválido");
+  if (payload) return true;
+
+  throw { err: 400, message: "Token Invalido" };
 };
 
 const getUserAnswers = async ({ services }, body) => {
