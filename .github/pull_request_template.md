@@ -1,10 +1,11 @@
-# Title: <PUT_TITLE_HERE>
+# <PUT_TITLE_HERE>
 
 ## Description
 
 <DESCRIPTION_HERE>
 
 List any external dependencies that are required for this change.
+
 - DEPENDENCIES_HERE OR LIST AS "NONE"
 
 ## Type of change
@@ -17,7 +18,9 @@ List any external dependencies that are required for this change.
 ## How Has This Been Tested?
 
 - Describe any manual testing done to verify your changes.
+  - <ANSWER_HERE>
 - List any relevant details for your test configuration as well an explanation.
+  - <ANSWER_HERE>
 
 ## Checklist
 
