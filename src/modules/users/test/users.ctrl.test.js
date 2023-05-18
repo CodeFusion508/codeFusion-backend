@@ -19,7 +19,7 @@ describe("users controller tests", () => {
             services : {
                 neo4j: {
                     session: {
-                        run: jest.fn().mockResolvedValue(mockValue)
+                        run: null
                     }
                 }
             }
@@ -29,6 +29,8 @@ describe("users controller tests", () => {
 
     describe("createUser", () => {
         it("createUser should throw an error", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+
             const body = {
                 email    : "testing10390@gmail.com",
                 password : "1234",
@@ -46,6 +48,8 @@ describe("users controller tests", () => {
 
     describe("logIn", () => {
         it("logIn should throw an error", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+
             const body = {
                 email    : "testing10390@gmail.com",
                 password : "12345",
@@ -114,6 +118,8 @@ describe("users controller tests", () => {
         });
 
         it("getUser should return formatted result and records", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
@@ -129,6 +135,8 @@ describe("users controller tests", () => {
 
     describe("updateUser", () => {
         it("updateUser should throw an error if body has no changes", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+
             const body = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
@@ -142,6 +150,8 @@ describe("users controller tests", () => {
         });
 
         it("updateUser should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+
             const body = {
                 uuid  : "d76abc42-cfe5-4c59-afbb-3d4e04573543",
                 email : "JuanDoe@mail.com"
