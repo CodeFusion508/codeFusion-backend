@@ -8,8 +8,8 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore",
-    "test": "NODE_ENV=test jest --colors",
-    "coverage": "NODE_ENV=test jest --colors --coverage",
+    "test": "jest --colors",
+    "coverage": "jest --colors --coverage",
     "clearCache": "jest --clearCache"
   },
   "repository": {
