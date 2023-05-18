@@ -1,8 +1,8 @@
 const {
-    CREATE_G_USER,
-    LOGIN_G_USER,
-    GET_ALL_ANSWERS,
-    GET_USER_ANSWERS
+  CREATE_G_USER,
+  LOGIN_G_USER,
+  GET_ALL_ANSWERS,
+  GET_USER_ANSWERS
 } = require("../google.joi");
 
 describe("google joi tests", () => {

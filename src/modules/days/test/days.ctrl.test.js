@@ -17,7 +17,7 @@ describe("users controller tests", () => {
             services : {
                 neo4j: {
                     session: {
-                        run: null
+                        run: jest.fn().mockResolvedValue(mockCreate)
                     }
                 }
             }
@@ -27,13 +27,12 @@ describe("users controller tests", () => {
 
     describe("createDay", () => {
         it("createDay should return data", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
-
             const body = {
                 desc       : "something 123 g!",
                 dayNo      : 4,
                 sprintUuid : "d54jd3-d58k543-83k45d8-9dd84"
             };
+
             const result = await createDay(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -50,6 +49,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "d54jd3-d58k543-83k45d8-9dd84"
             };
+
             const result = await deleteDay(deps, params)
                 .then((res) => res)
                 .catch((err) => err);
@@ -74,13 +74,12 @@ describe("users controller tests", () => {
 
     describe("updatedDay", () => {
         it("updatedDay should return data", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
-
             const body = {
                 uuid : "28k9-d490dk-2md94k-903d",
                 exp  : 12,
                 desc : "It's all in your head."
             };
+
             const result = await updatedDay(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -92,11 +91,10 @@ describe("users controller tests", () => {
 
     describe("getDay", () => {
         it("getDay should return data", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
-
             const params = {
                 uuid: "d54jd3-d58k543-83k45d8-9dd84"
             };
+
             const result = await getDay(deps, params)
                 .then((res) => res)
                 .catch((err) => err);

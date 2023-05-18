@@ -19,7 +19,7 @@ describe("users controller tests", () => {
             services : {
                 neo4j: {
                     session: {
-                        run: null
+                        run: jest.fn().mockResolvedValue(mockValue)
                     }
                 }
             }
@@ -29,8 +29,6 @@ describe("users controller tests", () => {
 
     describe("createUser", () => {
         it("createUser should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-
             const body = {
                 email    : "testing10390@gmail.com",
                 password : "1234",
@@ -48,13 +46,12 @@ describe("users controller tests", () => {
 
     describe("logIn", () => {
         it("logIn should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-
             const body = {
                 email    : "testing10390@gmail.com",
                 password : "12345",
                 userName : "testing800"
             };
+
             const result = await logIn(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -90,6 +87,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await deleteUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -106,6 +104,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await getUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -115,11 +114,10 @@ describe("users controller tests", () => {
         });
 
         it("getUser should return formatted result and records", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await getUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -131,11 +129,10 @@ describe("users controller tests", () => {
 
     describe("updateUser", () => {
         it("updateUser should throw an error if body has no changes", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-
             const body = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await updateUser(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -145,8 +142,6 @@ describe("users controller tests", () => {
         });
 
         it("updateUser should return formatted result", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-
             const body = {
                 uuid  : "d76abc42-cfe5-4c59-afbb-3d4e04573543",
                 email : "JuanDoe@mail.com"
@@ -170,6 +165,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -187,6 +183,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -207,6 +204,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await deleteRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);

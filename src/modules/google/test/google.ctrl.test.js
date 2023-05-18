@@ -16,9 +16,7 @@ describe("google controller tests", () => {
                 },
                 google: {
                     client: {
-                        verifyIdToken: jest.fn().mockResolvedValue({
-                            getPayload: () =>  undefined
-                        })
+                        verifyIdToken: jest.fn().mockResolvedValue({ getPayload: () => undefined })
                     },
                     service: {
                         spreadsheets: {

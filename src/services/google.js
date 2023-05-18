@@ -8,13 +8,13 @@ module.exports = async () => {
     try {
         const client = await new OAuth2Client(process.env.GOOGLE_API);
 
-
         const authClient = await new google.auth.JWT(
             credentials.client_email,
             null,
             credentials.private_key.replace(/\\n/g, "\n"),
             ["https://www.googleapis.com/auth/spreadsheets"]
         );
+
         const token = await authClient.authorize();
         authClient.setCredentials(token);
 
