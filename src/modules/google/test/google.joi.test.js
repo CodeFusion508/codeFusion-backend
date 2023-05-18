@@ -4,7 +4,6 @@ const {
     GET_ALL_ANSWERS,
     GET_USER_ANSWERS
 } = require("../google.joi");
-const {number} = require("joi");
 
 describe("google joi tests", () => {
   describe("create google user joi", () => {
