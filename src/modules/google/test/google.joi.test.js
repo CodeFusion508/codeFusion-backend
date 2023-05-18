@@ -72,25 +72,25 @@ describe("google joi tests", () => {
     });
   });
 
-  // describe("get all answers joi", () => {
-  //   it("give error when idToken is not provided", () => {
-  //     const body = {};
+  describe("get user answers joi", () => {
+    it("give error when idToken is not provided", () => {
+      const body = {};
 
-  //     const { error } = GET_ALL_ANSWERS.validate(body);
+      const { error } = GET_USER_ANSWERS.validate(body);
 
-  //     expect(error.details[0].message).toBe('"sheet_id" is required');
-  //   });
+      expect(error.details[0].message).toBe('"sheet_id" is required');
+    });
 
-  //   it("give error when idToken is not a string", () => {
-  //     const body = {
-  //       sheet_id: 949494,
-  //     };
+    it("give error when idToken is not a string", () => {
+      const body = {
+        sheet_id: "something123",
+      };
 
-  //     const { error } = GET_ALL_ANSWERS.validate(body);
+      const { error } = GET_USER_ANSWERS.validate(body);
 
-  //     expect(error.details[0].message).toBe('"sheet_id" must be a string');
-  //   });
-  // });
+      expect(error.details[0].message).toBe('"email" is required');
+    });
+  });
 });
 
 
