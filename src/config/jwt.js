@@ -13,6 +13,4 @@ exports.createToken = function (user) {
     return jwt.encode(payload, process.env.SEED);
 };
 
-exports.decodeToken = function (token) {
-    return jwt.decode(token, process.env.SEED);
-};
+exports.decodeToken = (token) => jwt.decode(token, process.env.SEED);

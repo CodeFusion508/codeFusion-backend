@@ -60,7 +60,7 @@ const logIn = async ({ services }, body) => {
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  if (!Object.prototype.hasOwnProperty.call(data.node, "password")) throw ({ err: 400, message: "El correo electrónico de la cuenta fue registrado mediante google" });
+  if (!Object.prototype.hasOwnProperty.call(data.node, "password")) throw { err: 400, message: "El correo electrónico de la cuenta fue registrado mediante google" };
 
   if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
@@ -92,7 +92,9 @@ const updateUser = async ({ services }, body) => {
   const findUser = findRegisteredEmail(body);
   const result = await services.neo4j.session.run(findUser);
 
-  if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
+  if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) {
+    throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
+  }
 
   if (body.password) {
     body.password = bcrypt.hashSync(body.password, saltScript);

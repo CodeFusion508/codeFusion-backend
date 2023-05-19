@@ -32,7 +32,7 @@ const createGUser = async ({ services }, body) => {
   if (result.records.length !== 0) {
     const responseToken = await services.google.client.verifyIdToken({ idToken: body.idToken });
 
-    if (responseToken === undefined) throw ({ message: "Autenticación de Google falló", status: 500 });
+    if (responseToken === undefined) throw { err: 403, message: "Autenticación de Google falló" };
 
     result = cleanNeo4j(result);
     cleanRecord(result);
@@ -60,15 +60,18 @@ const createGUser = async ({ services }, body) => {
 
 const loginGUser = async ({ services }, body) => {
   const ticket = await services.google.client.verifyIdToken({ idToken: body.idToken });
+
   const payload = ticket.getPayload();
 
   if (payload) return true;
+
+  throw { err: 400, message: "Token Invalido" };
 };
 
 const getUserAnswers = async ({ services }, body) => {
   const data = await getAllAnswersQuery(services.google, body.sheet_id)
     .catch((error) => {
-      throw ({ message: `${error}`, status: 400 });
+      throw { err: 400, message: `${error}` };
     });
 
   return data;
@@ -77,7 +80,7 @@ const getUserAnswers = async ({ services }, body) => {
 const getEvaluation = async ({ services }, body) => {
   const data = await getEvaluationQuery(services.google, body.sheet_id, body.email)
     .catch((error) => {
-      throw ({ message: `${error}`, status: 400 });
+      throw { err: 400, message: `${error}` };
     });
 
   return data;

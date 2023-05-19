@@ -55,6 +55,7 @@ describe("users controller tests", () => {
                 password : "12345",
                 userName : "testing800"
             };
+
             const result = await logIn(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -90,6 +91,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await deleteUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -106,6 +108,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await getUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -120,6 +123,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await getUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -136,6 +140,7 @@ describe("users controller tests", () => {
             const body = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await updateUser(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -170,6 +175,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -187,6 +193,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -207,6 +214,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await deleteRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);

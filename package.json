@@ -9,7 +9,8 @@
     "dev": "nodemon src/index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore",
     "test": "jest --colors",
-    "coverage": "jest --colors --coverage"
+    "coverage": "jest --colors --coverage",
+    "clearCache": "jest --clearCache"
   },
   "repository": {
     "type": "git",

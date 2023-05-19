@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
 const { params, body } = require("../utils/reqData.js");
-const auth = require("../modules/users/users.auth.js");
+
 
 const {
     CREATE_USER,
@@ -12,6 +12,7 @@ const {
     CREATE_RELATION,
     DELETE_RELATION
 } = require("../modules/users/users.joi.js");
+const auth = require("../modules/users/users.auth.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
