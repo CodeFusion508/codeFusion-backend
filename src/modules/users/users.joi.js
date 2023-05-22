@@ -39,5 +39,8 @@ module.exports = {
     // Other Joi
     CONFIRM_ACCOUNT: Joi.object({
         token: Joi.string().required()
+    }),
+    RECOVERY_ACCOUNT: Joi.object({
+        email: Joi.string().required()
     })
 };

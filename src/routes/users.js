@@ -11,9 +11,9 @@ const {
     GET_UUID,
     CREATE_RELATION,
     DELETE_RELATION,
-    CONFIRM_ACCOUNT
+    CONFIRM_ACCOUNT,
+    RECOVERY_ACCOUNT
 } = require("../modules/users/users.joi.js");
-const auth = require("../modules/users/users.auth.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
@@ -30,7 +30,9 @@ module.exports = (deps) => {
         .get("/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getUser))
         // Student Relationships
         .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
-        .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel));
+        .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
+        .get("/recovery/:token/account/:password", endPoint(params, CONFIRM_ACCOUNT, updatedPassword))
+        .post("/recovery/account", endPoint(body, RECOVERY_ACCOUNT, recoveryAccount));
 };
 
 
@@ -38,8 +40,10 @@ const signUp = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, nex
 const logIn = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.logIn(data));
 const confirmCreatedAccount = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.WaitingForAccountConfirmation(data));
 const confirmAccount = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.confirmAccount(data));
+const recoveryAccount = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.recoveryAccount(data));
+const updatedPassword = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updatedPassword(data));
 const getUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.getUser(data));
 const updateUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updateUser(data));
+const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteRel(data));
 const deleteUser = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteUser(data));
 const createRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.createRel(data));
-const deleteRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.deleteRel(data));

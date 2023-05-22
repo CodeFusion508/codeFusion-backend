@@ -42,8 +42,12 @@ module.exports = () => {
         </body>
         </html>`;
       };
+
+      const recoveryAccount = (name = "", body = "") => {
+
+      }
   
-      return { confirmEmail };
+      return { confirmEmail, recoveryAccount };
     } catch (error) {
       throw new Error("Failed templetes: " + err.message);
     }
