@@ -34,7 +34,6 @@ module.exports = (deps) =>
     }, {});
 
 const WaitingForAccountConfirmation = async ({ services }, body) => {
-  body["password"] = bcrypt.hashSync(body["password"], saltScript)
   MapConfirmAccount.set(body["email"], body)
   const token = jwt.createToken({ email: body["email"] });
   services.email.send(
@@ -82,18 +81,22 @@ const updatedPassword = async ({ services }, params ) => {
 }
 
 const confirmAccount = async ({ services }, params) => {
+
   const token = jwt.decodeToken(params.token);
   const body = MapConfirmAccount.get(token.email)
   if(body === undefined) throw({ err: 404, message:'El token no existe' })
   await createUser({ services }, body);
+
   return {
     title: 'Confirmación de Cuenta',
     message: 'Bienvenido a CodeFusion508'
   }
- };
+
+};
 
 // Student CRUD
 const createUser = async ({ services }, body) => {
+  
   const findUser = findRegisteredUser(body);
   const result = await services.neo4j.session.run(findUser);
 
