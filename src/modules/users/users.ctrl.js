@@ -21,6 +21,7 @@ const jwt = require("../../config/jwt.js");
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
 const MapConfirmAccount = new Map();
+const MapRecoveryAccount = new Map();
 
 module.exports = (deps) =>
   Object
@@ -44,6 +45,41 @@ const WaitingForAccountConfirmation = async ({ services }, body) => {
 
   return { data: "Se ha enviado un mensaje a "+body.email+" para confirmar tu cuenta" };
 };
+
+const recoveryAccount = async ({ services }, body ) => {
+
+  const data = await services.neo4j.session.run(logInQuery(body))
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." }
+  
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  const token = jwt.createToken({ uuid : data.node.uuid })
+  services.email.send(body.email, "Recuperar Cuenta", 
+  services.templete.confirmEmail(data.node.userName, "http://localhost:5173/recovery/"+token+'/account'))
+  MapRecoveryAccount.set(body.email, data.node.uuid)
+  return {
+    message: 'Se ha enviado un mensaje al correo '+body.email+' para recuperar tu cuenta'
+  }
+
+}
+
+const updatedPassword = async ({ services }, params ) => {
+  const token = jwt.decodeToken(params.token);
+  const body = MapRecoveryAccount.get(token.email)
+  body["password"] = bcrypt.hashSync(params["password"], saltScript)
+  const query = updateUserQuery(body)
+
+  let data = await services.neo4j.session.run(query)
+
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
+
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  return { procces: true };
+
+}
 
 const confirmAccount = async ({ services }, params) => {
   const token = jwt.decodeToken(params.token);
@@ -118,7 +154,7 @@ const updateUser = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
   const findUser = findRegisteredEmail(body);
   const result = await services.neo4j.session.run(findUser);
-  console.log(result.records[0]._fields[0].properties, "result");
+  // console.log(result.records[0]._fields[0].properties, "result");
 
   if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
 
@@ -181,4 +217,6 @@ Object.assign(module.exports, {
   confirmAccount,
   createRel,
   deleteRel,
+  updatedPassword,
+  recoveryAccount
 });
