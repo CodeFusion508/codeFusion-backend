@@ -12,27 +12,14 @@ const {
   createRelQuery,
   deleteRelQuery
 } = require("./users.query.js");
-const {
-  cleanNeo4j,
-  cleanRecord,
-  cleanRel
-} = require("../../utils/cleanData.js");
+const { cleanNeo4j, cleanRecord, cleanRel } = require("../../utils/cleanData.js");
 const jwt = require("../../config/jwt.js");
 
+// Global variables
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
 const MapConfirmAccount = new Map();
 const MapRecoveryAccount = new Map();
-
-module.exports = (deps) =>
-  Object
-    .entries(module.exports)
-    .reduce((acc, [name, method]) => {
-      return {
-        ...acc,
-        [name]: method.bind(null, Object.assign({}, module.exports, deps))
-      };
-    }, {});
 
 
 // Student CRUD
@@ -212,18 +199,27 @@ const confirmAccount = async ({ services }, params) => {
   };
 };
 
-Object.assign(module.exports, {
-  createUser,
-  logIn,
-  getUser,
-  updateUser,
-  deleteUser,
+module.exports = (deps) => {
+  const methods = {
+    createUser,
+    logIn,
+    getUser,
+    updateUser,
+    deleteUser,
 
-  createRel,
-  deleteRel,
+    createRel,
+    deleteRel,
 
-  WaitingForAccountConfirmation,
-  confirmAccount,
-  updatedPassword,
-  recoveryAccount
-});
+    WaitingForAccountConfirmation,
+    confirmAccount,
+    updatedPassword,
+    recoveryAccount
+  };
+
+  const boundMethods = {};
+  for (const [name, method] of Object.entries(methods)) {
+    boundMethods[name] = method.bind(null, { ...methods, ...deps });
+  }
+
+  return boundMethods;
+};

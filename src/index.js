@@ -27,9 +27,9 @@ const start = async () => {
         services : {}
     };
 
-    Object.assign(dependencies.services, await Services(dependencies, servicesList));
+    dependencies.services = await Services(dependencies, servicesList);
 
-    Object.assign(dependencies.ctrls, Controllers(dependencies, ctrlList));
+    dependencies.ctrls = await Controllers(dependencies, ctrlList);
 
     await App(dependencies);
 };

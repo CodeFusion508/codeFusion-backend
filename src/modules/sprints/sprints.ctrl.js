@@ -16,16 +16,6 @@ const {
     getSprintsRelsQuery
 } = require("./sprints.query.js");
 
-module.exports = (deps) =>
-    Object
-        .entries(module.exports)
-        .reduce((acc, [name, method]) => {
-            return {
-                ...acc,
-                [name]: method.bind(null, Object.assign({}, module.exports, deps))
-            };
-        }, {});
-
 
 // Sprint CURD
 const createSprint = async ({ services }, body) => {
@@ -102,12 +92,22 @@ const getSprintRels = async ({ services }, params) => {
     return data;
 };
 
-Object.assign(module.exports, {
-    createSprint,
-    getAllSprints,
-    updateSprint,
-    getSprint,
-    deleteSprint,
 
-    getSprintRels
-});
+module.exports = (deps) => {
+    const methods = {
+        createSprint,
+        getAllSprints,
+        updateSprint,
+        getSprint,
+        deleteSprint,
+
+        getSprintRels
+    };
+
+    const boundMethods = {};
+    for (const [name, method] of Object.entries(methods)) {
+        boundMethods[name] = method.bind(null, { ...methods, ...deps });
+    }
+
+    return boundMethods;
+};

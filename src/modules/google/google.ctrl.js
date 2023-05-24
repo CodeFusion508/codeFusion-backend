@@ -14,16 +14,6 @@ const {
   getEvaluationQuery
 } = require("../../utils/gFormsAnswers.js");
 
-module.exports = (deps) =>
-  Object
-    .entries(module.exports)
-    .reduce((acc, [name, method]) => {
-      return {
-        ...acc,
-        [name]: method.bind(null, Object.assign({}, module.exports, deps))
-      };
-    }, {});
-
 
 const createGUser = async ({ services }, body) => {
   const findUser = findRegisteredEmail(body);
@@ -86,9 +76,19 @@ const getEvaluation = async ({ services }, body) => {
   return data;
 };
 
-Object.assign(module.exports, {
-  getUserAnswers,
-  getEvaluation,
-  createGUser,
-  loginGUser
-});
+
+module.exports = (deps) => {
+  const methods = {
+    getUserAnswers,
+    getEvaluation,
+    createGUser,
+    loginGUser
+  };
+
+  const boundMethods = {};
+  for (const [name, method] of Object.entries(methods)) {
+      boundMethods[name] = method.bind(null, { ...methods, ...deps });
+  }
+
+  return boundMethods;
+};
