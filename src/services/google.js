@@ -18,11 +18,7 @@ module.exports = async () => {
         const token = await authClient.authorize();
         authClient.setCredentials(token);
 
-        return {
-            client,
-            service,
-            authClient
-        };
+        return { client, service, authClient };
     } catch (err) {
         throw new Error("Failed to establish connection to Google Services: " + err.message);
     }

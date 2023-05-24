@@ -157,7 +157,7 @@ const WaitingForAccountConfirmation = async ({ services }, body) => {
   services.email.send(
     body.email,
     "Confirmación de Cuenta",
-    services.templete.confirmEmail(body.userName, "http://localhost:5173/cuenta/" + token + "/confirmacion")
+    services.template.confirmEmail(body.userName, "http://localhost:5173/cuenta/" + token + "/confirmacion")
   );
 
   return { data: "Se ha enviado un mensaje a " + body.email + " para confirmar tu cuenta" };
@@ -175,7 +175,7 @@ const recoveryAccount = async ({ services }, body) => {
   services.email.send(
     body.email,
     "Recuperar Cuenta",
-    services.templete.confirmEmail(data.node.userName, "http://localhost:5173/recovery/" + token + "/account")
+    services.template.confirmEmail(data.node.userName, "http://localhost:5173/recovery/" + token + "/account")
   );
   MapRecoveryAccount.set(body.email, data.node.uuid);
 

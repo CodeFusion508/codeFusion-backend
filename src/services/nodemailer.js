@@ -8,11 +8,8 @@ const secureSupport = process.env.SECURE_EMAIL === true;
 
 module.exports = () => {
     try {
-
-        // Creamos credenciales para enviar correos
         const auth = { user: emailSupport, pass: passwordSupport };
 
-        // Creamos el transporte de correos
         const transporter = nodemailer.createTransport({
             host   : hostSupport,
             port   : portSupport,
@@ -20,15 +17,15 @@ module.exports = () => {
             auth
         });
 
-        const send = (to = "", title= "", templete = "") => {
+        const send = (to = "", title = "", template = "") => {
             transporter.sendMail({
                 from    : auth.user, to,
-                subject : title, html    : templete
+                subject : title, html    : template
             });
         };
 
         return { send };
-    } catch (error) {
+    } catch (err) {
         throw new Error("Failed to establish connection to nodemailer: " + err.message);
     }
 };

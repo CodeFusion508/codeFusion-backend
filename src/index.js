@@ -9,7 +9,7 @@ const servicesList = {
     neo4j    : require("./services/neo4j.js"),
     google   : require("./services/google.js"),
     email    : require("./services/nodemailer.js"),
-    templete : require("./services/templetes.js")
+    template : require("./services/template.js")
 };
 
 const ctrlList = {
