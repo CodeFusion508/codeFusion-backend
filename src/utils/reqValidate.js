@@ -8,7 +8,7 @@ module.exports = (reqData, joi) => (req, res, next) => {
 
     if (error) {
         error.statusCode = 400;
-        return next(error);
+        res.status(error.statusCode).send(error.message);
     }
 
     req.data = value;
