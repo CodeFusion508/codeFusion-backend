@@ -1,7 +1,6 @@
 module.exports = () => {
     try {
-      const confirmEmail = (name = "", body = "") => {
-        return `
+      const confirmEmail = (name = "", body = "") => `
         <!DOCTYPE html>
         <html lang="en">
         
@@ -41,12 +40,11 @@ module.exports = () => {
             </div>
         </body>
         </html>`;
-      };
 
       const recoveryAccount = (name = "", body = "") => {
 
-      }
-  
+      };
+
       return { confirmEmail, recoveryAccount };
     } catch (error) {
       throw new Error("Failed templetes: " + err.message);
