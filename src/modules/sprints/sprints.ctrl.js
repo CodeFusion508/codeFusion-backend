@@ -17,6 +17,14 @@ const {
 } = require("./sprints.query.js");
 
 
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
+    return {
+        ...acc,
+        [name]: method.bind(null, { ...module.exports, ...deps })
+    };
+}, {});
+
+
 // Sprint CURD
 const createSprint = async ({ services }, body) => {
     const uuid = v4();
@@ -102,10 +110,3 @@ Object.assign(module.exports, {
 
     getSprintRels
 });
-
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});

@@ -9,6 +9,14 @@ const {
 } = require("./content.query.js");
 
 
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
+    return {
+        ...acc,
+        [name]: method.bind(null, { ...module.exports, ...deps })
+    };
+}, {});
+
+
 // Content CRUD
 const createContent = async ({ services }, body) => {
     const uuid = v4();
@@ -64,10 +72,3 @@ Object.assign(module.exports, {
     getContent,
     deleteContent
 });
-
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});

@@ -22,6 +22,13 @@ const MapConfirmAccount = new Map();
 const MapRecoveryAccount = new Map();
 
 
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
+  return {
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+  };
+}, {});
+
 // Student CRUD
 const createUser = async ({ services }, body) => {
   const findUser = findRegisteredEmail(body);
@@ -215,10 +222,3 @@ Object.assign(module.exports, {
   updatedPassword,
   recoveryAccount
 });
-
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-  return {
-    ...acc,
-    [name]: method.bind(null, { ...module.exports, ...deps })
-  };
-}, {});

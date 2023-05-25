@@ -15,6 +15,14 @@ const {
 } = require("../../utils/gFormsAnswers.js");
 
 
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
+  return {
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+  };
+}, {});
+
+
 const createGUser = async ({ services }, body) => {
   const findUser = findRegisteredEmail(body);
   let result = await services.neo4j.session.run(findUser);
@@ -83,10 +91,3 @@ Object.assign(module.exports, {
   createGUser,
   loginGUser
 });
-
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-  return {
-    ...acc,
-    [name]: method.bind(null, { ...module.exports, ...deps })
-  };
-}, {});
