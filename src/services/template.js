@@ -46,9 +46,7 @@ module.exports = () => {
       </html>
     `;
 
-    const recoveryAccount = (name = "", body = "") => { };
-
-    return { confirmEmail, recoveryAccount };
+    return { confirmEmail };
   } catch (err) {
     throw new Error("Failed template: " + err.message);
   }
