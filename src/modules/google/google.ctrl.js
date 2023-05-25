@@ -77,18 +77,19 @@ const getEvaluation = async ({ services }, body) => {
 };
 
 
-module.exports = (deps) => {
-  const methods = {
-    getUserAnswers,
-    getEvaluation,
-    createGUser,
-    loginGUser
-  };
+Object.assign(module.exports, {
+  getUserAnswers,
+  getEvaluation,
+  createGUser,
+  loginGUser
+});
 
-  const boundMethods = {};
-  for (const [name, method] of Object.entries(methods)) {
-      boundMethods[name] = method.bind(null, { ...methods, ...deps });
-  }
-
-  return boundMethods;
-};
+module.exports = (deps) =>
+  Object
+    .entries(module.exports)
+    .reduce((acc, [name, method]) => {
+      return {
+        ...acc,
+        [name]: method.bind(null, Object.assign({}, module.exports, deps))
+      };
+    }, {});

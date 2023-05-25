@@ -93,21 +93,22 @@ const getDaysRels = async ({ services }, params) => {
 };
 
 
-module.exports = (deps) => {
-    const methods = {
-        createDay,
-        getAllDays,
-        updatedDay,
-        getDay,
-        deleteDay,
+Object.assign(module.exports, {
+    createDay,
+    getAllDays,
+    updatedDay,
+    getDay,
+    deleteDay,
 
-        getDaysRels
-    };
+    getDaysRels
+});
 
-    const boundMethods = {};
-    for (const [name, method] of Object.entries(methods)) {
-        boundMethods[name] = method.bind(null, { ...methods, ...deps });
-    }
-
-    return boundMethods;
-};
+module.exports = (deps) =>
+  Object
+    .entries(module.exports)
+    .reduce((acc, [name, method]) => {
+      return {
+        ...acc,
+        [name]: method.bind(null, Object.assign({}, module.exports, deps))
+      };
+    }, {});

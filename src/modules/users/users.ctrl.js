@@ -199,27 +199,29 @@ const confirmAccount = async ({ services }, params) => {
   };
 };
 
-module.exports = (deps) => {
-  const methods = {
-    createUser,
-    logIn,
-    getUser,
-    updateUser,
-    deleteUser,
 
-    createRel,
-    deleteRel,
+Object.assign(module.exports, {
+  createUser,
+  logIn,
+  getUser,
+  updateUser,
+  deleteUser,
 
-    WaitingForAccountConfirmation,
-    confirmAccount,
-    updatedPassword,
-    recoveryAccount
-  };
+  createRel,
+  deleteRel,
 
-  const boundMethods = {};
-  for (const [name, method] of Object.entries(methods)) {
-    boundMethods[name] = method.bind(null, { ...methods, ...deps });
-  }
+  WaitingForAccountConfirmation,
+  confirmAccount,
+  updatedPassword,
+  recoveryAccount
+});
 
-  return boundMethods;
-};
+module.exports = (deps) =>
+  Object
+    .entries(module.exports)
+    .reduce((acc, [name, method]) => {
+      return {
+        ...acc,
+        [name]: method.bind(null, Object.assign({}, module.exports, deps))
+      };
+    }, {});

@@ -58,18 +58,19 @@ const deleteContent = async ({ services }, params) => {
 };
 
 
-module.exports = (deps) => {
-    const methods = {
-        createContent,
-        updateContent,
-        getContent,
-        deleteContent
-    };
+Object.assign(module.exports, {
+    createContent,
+    updateContent,
+    getContent,
+    deleteContent
+});
 
-    const boundMethods = {};
-    for (const [name, method] of Object.entries(methods)) {
-        boundMethods[name] = method.bind(null, { ...methods, ...deps });
-    }
-
-    return boundMethods;
-};
+module.exports = (deps) =>
+    Object
+        .entries(module.exports)
+        .reduce((acc, [name, method]) => {
+            return {
+                ...acc,
+                [name]: method.bind(null, Object.assign({}, module.exports, deps))
+            };
+        }, {});
