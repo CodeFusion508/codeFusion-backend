@@ -103,12 +103,9 @@ Object.assign(module.exports, {
     getDaysRels
 });
 
-module.exports = (deps) =>
-  Object
-    .entries(module.exports)
-    .reduce((acc, [name, method]) => {
-      return {
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
+    return {
         ...acc,
-        [name]: method.bind(null, Object.assign({}, module.exports, deps))
-      };
-    }, {});
+        [name]: method.bind(null, { ...module.exports, ...deps })
+    };
+}, {});
