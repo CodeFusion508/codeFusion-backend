@@ -9,7 +9,8 @@
     "dev": "nodemon src/index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore",
     "test": "jest --colors",
-    "coverage": "jest --colors --coverage"
+    "coverage": "jest --colors --coverage",
+    "clearCache": "jest --clearCache"
   },
   "repository": {
     "type": "git",
@@ -26,19 +27,21 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "google-auth-library": "^8.7.0",
-    "helmet": "^6.1.5",
-    "joi": "^17.9.1",
+    "google-auth-library": "^8.8.0",
+    "googleapis": "^118.0.0",
+    "helmet": "^7.0.0",
+    "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "jwt-simple": "^0.5.6",
     "moment": "^2.29.4",
-    "neo4j-driver": "^5.7.0",
+    "neo4j-driver": "^5.8.1",
+    "nodemailer": "^6.9.2",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2",
+    "swagger-ui-express": "^4.6.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.38.0",
+    "eslint": "^8.41.0",
     "eslint-plugin-jest": "^27.2.1",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22"

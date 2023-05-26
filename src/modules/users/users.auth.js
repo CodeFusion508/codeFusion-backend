@@ -20,10 +20,6 @@ const verifyToken = (req, res, next) => {
             throw new Error("Token inválido.");
         }
 
-        if (req.method !== "GET") {
-            req.body.uuid = decodedToken.sub;
-        }
-
         next();
     } catch (err) {
         res.status(401).json({ message: err.message });

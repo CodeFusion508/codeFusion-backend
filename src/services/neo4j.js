@@ -4,18 +4,18 @@ module.exports = async () => {
     try {
         const driver = await neo4jDriver.driver(
             process.env.URI,
-            neo4jDriver.auth.basic(process.env.DB_USER, process.env.PASSWORD), {
-            maxConnectionLifetime        : 30 * 60 * 1000,
-            maxConnectionPoolSize        : 50,
-            connectionAcquisitionTimeout : 2 * 60 * 1000
-        }
+            neo4jDriver.auth.basic(process.env.DB_USER, process.env.PASSWORD),
+            {
+                maxConnectionLifetime        : 30 * 60 * 1000,
+                maxConnectionPoolSize        : 50,
+                connectionAcquisitionTimeout : 2 * 60 * 1000
+            }
         );
-        const session = await driver.session();
 
-        const neo4j = {
-            driver,
-            session,
-        };
+        if (!await driver.verifyAuthentication()) throw ({ message: "Auth neo4j error" });
+        const session = driver.session();
+
+        const neo4j = { driver, session };
 
         return neo4j;
     } catch (err) {

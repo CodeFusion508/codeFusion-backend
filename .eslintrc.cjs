@@ -32,10 +32,10 @@ module.exports = {
         "no-unused-vars"       : "warn",
         "no-var"               : "error",
         "object-curly-newline" : ["error", {
-            "ExportDeclaration" : { "consistent": true, "minProperties": 3 },
-            "ImportDeclaration" : { "consistent": true, "minProperties": 3 },
-            "ObjectExpression"  : { "consistent": true, "minProperties": 3 },
-            "ObjectPattern"     : { "consistent": true, "minProperties": 3 }
+            "ExportDeclaration" : { "consistent": true, "minProperties": 4 },
+            "ImportDeclaration" : { "consistent": true, "minProperties": 4 },
+            "ObjectExpression"  : { "consistent": true, "minProperties": 4 },
+            "ObjectPattern"     : { "consistent": true, "minProperties": 4 }
         }],
         "prefer-destructuring" : ["error", { "object": true }],
         "quotes"               : [

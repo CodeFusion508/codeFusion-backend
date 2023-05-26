@@ -69,7 +69,7 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 400);
-            expect(result).toHaveProperty("message", "You must provide at least one change.");
+            expect(result).toHaveProperty("message", "Debe indicar al menos un cambio.");
         });
 
         it("updateSprint should return correct data", async () => {
@@ -163,7 +163,7 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "This sprint does not exist, check if you have a valid uuid.");
+            expect(result).toHaveProperty("message", "Este sprint no existe, verifique si tiene un uuid válido.");
         });
     });
 });

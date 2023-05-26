@@ -9,7 +9,7 @@ const { swaggerSpec } = require("./docs/index.js");
 const Router = require("./router.js");
 
 module.exports = (deps) => {
-    let app = express();
+    const app = express();
     const PORT = process.env.PORT || 3000;
     const router = Router(deps);
 
@@ -17,9 +17,10 @@ module.exports = (deps) => {
     app.use("/docs", serve, setup(swaggerSpec));
 
     // Middleware
+    app.use(express.json());
     app.use(helmet());
     app.use(cors());
-    app.use(express.json());
+
 
     // Route Paths
     app.use("/static", express.static(path.join(__dirname, "mdContent")));

@@ -1,18 +1,16 @@
 const createContentQuery = (uuid, body) => {
     const query = `
-        CREATE (c:Content:${body.label}
-            {
-                uuid  : "${uuid}", 
-                path  : "${body.path}",
-                desc  : "${body.desc}",
-                exp   : ${body.exp},
-                title : "${body.title}",
-                ${body.link ? `link  : "${body.link}",` : ""}
-                time  : ${body.time}
-            }
-        )
+        CREATE (c:Content:${body.label} {
+            uuid  : "${uuid}", 
+            path  : "${body.path}",
+            desc  : "${body.desc}",
+            exp   : ${body.exp},
+            title : "${body.title}",
+            ${body.link ? `link  : "${body.link}",` : ""}
+            time  : ${body.time}
+        })
         WITH c
-        MATCH (d:Day { uuid: "${body.dayUuid}" })
+        MATCH (d:Day {uuid: "${body.dayUuid}"})
         WHERE NOT d:softDeleted
         CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)
         RETURN c;
@@ -53,15 +51,11 @@ const updatedContentQuery = (body) => {
     return query;
 };
 
-const getContentQuery = (params) => {
-    const query = `
-        MATCH (c:Content {uuid: "${params.uuid}"}) 
-        WHERE NOT c:softDeleted 
-        RETURN c;
-    `;
-
-    return query;
-};
+const getContentQuery = (params) => `
+    MATCH (c:Content {uuid: "${params.uuid}"}) 
+    WHERE NOT c:softDeleted 
+    RETURN c;
+`;
 
 const deletedContentQuery = (params) => `
     MATCH (c:Content {uuid: "${params.uuid}"})

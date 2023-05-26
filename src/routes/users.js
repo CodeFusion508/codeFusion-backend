@@ -14,6 +14,8 @@ const {
     CONFIRM_ACCOUNT,
     RECOVERY_ACCOUNT
 } = require("../modules/users/users.joi.js");
+const auth = require("../modules/users/users.auth.js");
+
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);

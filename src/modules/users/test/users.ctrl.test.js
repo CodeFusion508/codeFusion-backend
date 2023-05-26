@@ -42,7 +42,7 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 403);
-            expect(result).toHaveProperty("message", "This email has already been registered, please use another or log in.");
+            expect(result).toHaveProperty("message", "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión.");
         });
     });
 
@@ -55,12 +55,13 @@ describe("users controller tests", () => {
                 password : "12345",
                 userName : "testing800"
             };
+
             const result = await logIn(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 403);
-            expect(result).toHaveProperty("message", "This email or password is incorrect, please try again.");
+            expect(result).toHaveProperty("message", "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo.");
         });
 
         // it("logIn should give back data and token", async () => {
@@ -90,6 +91,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await deleteUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -106,12 +108,13 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await getUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "This user does not exist, please check if you have the valid uuid.");
+            expect(result).toHaveProperty("message", "Este usuario no existe, verifique si tiene el uuid válido.");
         });
 
         it("getUser should return formatted result and records", async () => {
@@ -120,6 +123,7 @@ describe("users controller tests", () => {
             const param = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await getUser(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
@@ -136,12 +140,13 @@ describe("users controller tests", () => {
             const body = {
                 uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
             };
+
             const result = await updateUser(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 400);
-            expect(result).toHaveProperty("message", "You must provide at least one change.");
+            expect(result).toHaveProperty("message", "Debe indicar al menos un cambio.");
         });
 
         it("updateUser should return formatted result", async () => {
@@ -170,12 +175,13 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
             expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "This user does not exist, please check if you have the valid uuid.");
+            expect(result).toHaveProperty("message", "Este usuario no existe, verifique si tiene el uuid válido.");
         });
 
         it("createRel should return formatted result", async () => {
@@ -187,6 +193,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -207,6 +214,7 @@ describe("users controller tests", () => {
                 "op"          : "Sprint",
                 "relation"    : "COMPLETED"
             };
+
             const result = await deleteRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
