@@ -10,7 +10,9 @@ const {
   deleteUserQuery,
 
   createRelQuery,
-  deleteRelQuery
+  deleteRelQuery,
+
+  findDeletedUser
 } = require("./users.query.js");
 const { cleanNeo4j, cleanRecord, cleanRel } = require("../../utils/cleanData.js");
 const jwt = require("../../config/jwt.js");
@@ -158,8 +160,11 @@ const WaitingForAccountConfirmation = async ({ services }, body) => {
 };
 
 const recoveryAccount = async ({ services }, body) => {
-  let data = await services.neo4j.session.run(logInQuery(body));
-  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
+  const query = findDeletedUser(body);
+
+  let data = await services.neo4j.session.run(query);
+
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe o ya esta registrado" };
 
   data = cleanNeo4j(data);
   cleanRecord(data);
@@ -171,17 +176,20 @@ const recoveryAccount = async ({ services }, body) => {
     "Recuperar Cuenta",
     services.template.confirmEmail(data.node.userName, `${process.env.FRONT_END_PATH}/recovery/` + token + "/account")
   );
+
   MapRecoveryAccount.set(body.email, data.node.uuid);
 
   return { message: "Se ha enviado un mensaje al correo " + body.email + " para recuperar tu cuenta" };
 };
 
 const updatedPassword = async ({ services }, params) => {
-  const token = jwt.decodeToken(params.token);
-  const body = MapRecoveryAccount.get(token.email);
   body.password = bcrypt.hashSync(params.password, saltScript);
 
+  const token = jwt.decodeToken(params.token);
+  const body = MapRecoveryAccount.get(token.email);
+
   const query = updateUserQuery(body);
+
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
@@ -189,7 +197,7 @@ const updatedPassword = async ({ services }, params) => {
   data = cleanNeo4j(data);
   cleanRecord(data);
 
-  return { procces: true };
+  return { process: true };
 };
 
 const confirmAccount = async ({ services }, params) => {
