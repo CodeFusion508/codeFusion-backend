@@ -7,13 +7,13 @@ const {
   DELETE_RELATION
 } = require("../users.joi.js");
 
-describe("user joi tests", () => {
-  describe("create user joi", () => {
+describe("users JOI tests", () => {
+  describe("CREATE_USER JOI", () => {
     it("give error when password is null", () => {
       const body = {
-        email    : "testing10390@gmail.com",
+        email    : "AsyncResearch@mail.org",
         password : null,
-        userName : "testing800"
+        userName : "Async Research Institute"
       };
 
       const { error } = CREATE_USER.validate(body);
@@ -25,7 +25,7 @@ describe("user joi tests", () => {
       const body = {
         email    : null,
         password : "1234",
-        userName : "testing800"
+        userName : "Async Research Institute"
       };
 
       const { error } = CREATE_USER.validate(body);
@@ -34,11 +34,11 @@ describe("user joi tests", () => {
     });
   });
 
-  describe("update user joi", () => {
+  describe("UPDATE_USER JOI", () => {
     it("give error when no uuid given", () => {
       const body = {
-        email    : "somethingELSE@gmail.com",
-        userName : "asd400"
+        email    : "AsyncResearch@mail.org",
+        userName : "Async Research Institute"
       };
 
       const { error } = UPDATE_USER.validate(body);
@@ -58,7 +58,7 @@ describe("user joi tests", () => {
     });
   });
 
-  describe("user joi login", () => {
+  describe("LOGIN_USER JOI", () => {
     it("give error when email is empty", () => {
       const body = {
         email    : "",
@@ -72,7 +72,7 @@ describe("user joi tests", () => {
 
     it("give error when password is empty", () => {
       const body = {
-        email    : "testing400@mail.com",
+        email    : "AsyncResearch@mail.org",
         password : "",
       };
 
@@ -82,7 +82,7 @@ describe("user joi tests", () => {
     });
   });
 
-  describe("user joi uuid", () => {
+  describe("GET_UUID JOI", () => {
     it("give error when no UUID given", () => {
       const params = {};
 
@@ -92,7 +92,7 @@ describe("user joi tests", () => {
     });
   });
 
-  describe("create rel joi", () => {
+  describe("CREATE_RELATION JOI", () => {
     it("give error when no uuid is given", () => {
       const body = {
         contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
@@ -114,7 +114,7 @@ describe("user joi tests", () => {
     });
   });
 
-  describe("delete rel joi", () => {
+  describe("DELETE_RELATION JOI", () => {
     it("give error when no uuid is given", () => {
       const body = {
         contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"

@@ -9,22 +9,22 @@ const {
     deleteRel
 } = require("../users.ctrl.js");
 
+const jwt = require("../../../config/jwt.js");
+
+
 describe("users controller tests", () => {
     let deps;
 
     beforeAll(() => {
         deps = {
-            config   : {},
-            ctrls    : {},
-            services : {
+            services: {
                 neo4j: {
-                    session: {
-                        run: null
-                    }
+                    session: { run: null }
                 }
             }
         };
 
+        jest.spyOn(jwt, "createToken").mockReturnValue("mockedToken");
     });
 
     describe("createUser", () => {
@@ -32,9 +32,9 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                email    : "testing10390@gmail.com",
+                email    : "AsyncResearch@mail.org",
                 password : "1234",
-                userName : "testing800"
+                userName : "Async Research Institute"
             };
 
             const result = await createUser(deps, body)
@@ -44,6 +44,23 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("err", 403);
             expect(result).toHaveProperty("message", "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión.");
         });
+
+        it("createUser should return back token and data", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
+
+            const body = {
+                email    : "AsyncResearch@mail.org",
+                password : "1234",
+                userName : "Async Research Institute"
+            };
+
+            const result = await createUser(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("token", "mockedToken");
+            expect(result.data.node).toHaveProperty("email", "AsyncResearch@mail.org");
+        });
     });
 
     describe("logIn", () => {
@@ -51,9 +68,9 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                email    : "testing10390@gmail.com",
+                email    : "AsyncResearch@mail.org",
                 password : "12345",
-                userName : "testing800"
+                userName : "Async Research Institute"
             };
 
             const result = await logIn(deps, body)
@@ -64,24 +81,25 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("message", "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo.");
         });
 
-        // it("logIn should give back data and token", async () => {
-        //     deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockLogIn);
+        it("logIn should return data and token", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockLogIn);
 
-        //     const body = {
-        //         email    : "testing45@mail.com",
-        //         password : "password",
-        //         userName : "test300"
-        //     };
-        //     const result = await logIn(deps, body)
-        //         .then((res) => res)
-        //         .catch((err) => err);
+            const body = {
+                email    : "AsyncResearch@mail.org",
+                password : "password",
+                userName : "Async Research Institute"
+            };
 
-        //     expect(result).toHaveProperty("data");
-        //     expect(result.data).toHaveProperty("stats");
-        //     expect(result.data.node).toHaveProperty("userName");
+            const result = await logIn(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
 
-        //     expect(result).toHaveProperty("token");
-        // });
+            expect(result).toHaveProperty("data");
+            expect(result.data).toHaveProperty("stats");
+            expect(result.data.node).toHaveProperty("userName");
+
+            expect(result).toHaveProperty("token");
+        });
     });
 
     describe("deleteUser", () => {
@@ -89,7 +107,7 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
             const result = await deleteUser(deps, param)
@@ -106,7 +124,7 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
             const result = await getUser(deps, param)
@@ -121,7 +139,7 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const param = {
-                uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
             const result = await getUser(deps, param)
@@ -138,7 +156,7 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid: "d76abc42-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
             const result = await updateUser(deps, body)
@@ -153,9 +171,10 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid  : "d76abc42-cfe5-4c59-afbb-3d4e04573543",
-                email : "JuanDoe@mail.com"
+                uuid  : "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                email : "AsyncResearch@mail.org"
             };
+
             const result = await updateUser(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -173,7 +192,7 @@ describe("users controller tests", () => {
                 "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
                 "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
                 "op"          : "Sprint",
-                "relation"    : "COMPLETED"
+                "relation"    : "orgPLETED"
             };
 
             const result = await createRel(deps, body)
@@ -191,7 +210,7 @@ describe("users controller tests", () => {
                 "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
                 "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
                 "op"          : "Sprint",
-                "relation"    : "COMPLETED"
+                "relation"    : "orgPLETED"
             };
 
             const result = await createRel(deps, body)
@@ -212,7 +231,7 @@ describe("users controller tests", () => {
                 "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
                 "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
                 "op"          : "Sprint",
-                "relation"    : "COMPLETED"
+                "relation"    : "orgPLETED"
             };
 
             const result = await deleteRel(deps, body)
@@ -229,7 +248,7 @@ let mockEmptyRecords = {
     "records" : [],
     "summary" : {
         "query": {
-            "text"       : "MATCH (u: Student {email: \"testing10390@gmail.com\"}) RETURN u;",
+            "text"       : "MATCH (u: Student {email: \"AsyncResearch@mail.org\"}) RETURN u;",
             "parameters" : {}
         },
         "queryType" : "r",
@@ -310,13 +329,13 @@ let mockValue = {
                             "high" : 0
                         },
                         "password" : "1234",
-                        "userName" : "testing800",
-                        "uuid"     : "d76abc42-cfe5-4c59-afbb-3d4e04573543",
+                        "userName" : "Async Research Institute",
+                        "uuid"     : "MOCK-cfe5-4c59-afbb-3d4e04573543",
                         "totalExp" : {
                             "low"  : 0,
                             "high" : 0
                         },
-                        "email": "testing10390@gmail.com"
+                        "email": "AsyncResearch@mail.org"
                     },
                     "elementId": "4:fa284c45-c13e-4980-8dbe-982377fdef6e:0"
                 }
@@ -328,7 +347,7 @@ let mockValue = {
     ],
     "summary": {
         "query": {
-            "text"       : "MATCH (u: Student {email: \"testing10390@gmail.com\"}) RETURN u;",
+            "text"       : "MATCH (u: Student {email: \"AsyncResearch@mail.org\"}) RETURN u;",
             "parameters" : {}
         },
         "queryType" : "r",
@@ -409,9 +428,9 @@ let mockLogIn = {
                             "high" : 0
                         },
                         "password" : "$2b$10$7G2NQAknmOLoh8zJTjd.6OwKRUzwlBeOzOaQ9Zc80UD.40LQLf9Hm",
-                        "userName" : "test300",
+                        "userName" : "Async Research Institute",
                         "uuid"     : "61accdac-6a32-4dc4-9fdd-fbe2bb6580cd",
-                        "email"    : "testing45@mail.com",
+                        "email"    : "AsyncResearch@mail.org",
                         "totalExp" : {
                             "low"  : 0,
                             "high" : 0
@@ -427,7 +446,7 @@ let mockLogIn = {
     ],
     "summary": {
         "query": {
-            "text"       : "\n        CREATE (u:Student:User \n            {\n                uuid      : \"61accdac-6a32-4dc4-9fdd-fbe2bb6580cd\", \n                totalExp  : 0, \n                weeklyExp : 0, \n                email     : \"testing45@mail.com\", \n                userName  : \"test300\", \n                password  : \"$2b$10$7G2NQAknmOLoh8zJTjd.6OwKRUzwlBeOzOaQ9Zc80UD.40LQLf9Hm\"\n            }\n        )\n        RETURN u;\n    ",
+            "text"       : "\n        CREATE (u:Student:User \n            {\n                uuid      : \"61accdac-6a32-4dc4-9fdd-fbe2bb6580cd\", \n                totalExp  : 0, \n                weeklyExp : 0, \n                email     : \"AsyncResearch@mail.org\", \n                userName  : \"Async Research Institute\", \n                password  : \"$2b$10$7G2NQAknmOLoh8zJTjd.6OwKRUzwlBeOzOaQ9Zc80UD.40LQLf9Hm\"\n            }\n        )\n        RETURN u;\n    ",
             "parameters" : {}
         },
         "queryType" : "rw",
@@ -508,7 +527,7 @@ let mockCreateRel = {
                         "low"  : 33,
                         "high" : 0
                     },
-                    "type"               : "COMPLETED",
+                    "type"               : "orgPLETED",
                     "properties"         : {},
                     "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:31",
                     "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:30",
@@ -522,7 +541,7 @@ let mockCreateRel = {
     ],
     "summary": {
         "query": {
-            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:COMPLETED]->(c)\n            RETURN r;\n        ",
+            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:orgPLETED]->(c)\n            RETURN r;\n        ",
             "parameters" : {}
         },
         "queryType" : "rw",
