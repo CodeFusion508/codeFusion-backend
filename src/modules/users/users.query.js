@@ -87,6 +87,14 @@ const deleteRelQuery = (body) => {
     return query;
 };
 
+// Other Queries
+
+const findDeletedUser = (body) => `
+    MATCH (u:Student {email: "${body.email}"})
+    WHERE  u:softDeleted
+    RETURN u;
+`;
+
 module.exports = {
     findRegisteredEmail,
     signUpQuery,
@@ -96,5 +104,7 @@ module.exports = {
     deleteUserQuery,
 
     createRelQuery,
-    deleteRelQuery
+    deleteRelQuery,
+
+    findDeletedUser
 };

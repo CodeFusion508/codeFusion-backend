@@ -6,8 +6,10 @@ const Controllers = require("./controllers.js");
 const Services = require("./services.js");
 
 const servicesList = {
-    neo4j  : require("./services/neo4j.js"),
-    google : require("./services/google.js")
+    neo4j    : require("./services/neo4j.js"),
+    google   : require("./services/google.js"),
+    email    : require("./services/nodemailer.js"),
+    template : require("./services/template.js")
 };
 
 const ctrlList = {
@@ -25,9 +27,9 @@ const start = async () => {
         services : {}
     };
 
-    Object.assign(dependencies.services, await Services(dependencies, servicesList));
+    dependencies.services = await Services(dependencies, servicesList);
 
-    Object.assign(dependencies.ctrls, Controllers(dependencies, ctrlList));
+    dependencies.ctrls = await Controllers(dependencies, ctrlList);
 
     await App(dependencies);
 };

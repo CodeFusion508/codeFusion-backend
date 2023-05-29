@@ -16,15 +16,13 @@ const {
     getDaysRelsQuery
 } = require("./days.query.js");
 
-module.exports = (deps) =>
-    Object
-        .entries(module.exports)
-        .reduce((acc, [name, method]) => {
-            return {
-                ...acc,
-                [name]: method.bind(null, Object.assign({}, module.exports, deps))
-            };
-        }, {});
+
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
+    return {
+        ...acc,
+        [name]: method.bind(null, { ...module.exports, ...deps })
+    };
+}, {});
 
 
 // Day CRUD
@@ -101,6 +99,7 @@ const getDaysRels = async ({ services }, params) => {
 
     return data;
 };
+
 
 Object.assign(module.exports, {
     createDay,

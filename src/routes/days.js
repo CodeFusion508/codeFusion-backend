@@ -2,12 +2,8 @@ const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
 const { params, body } = require("../utils/reqData.js");
+const { GET_UUID, CREATE_DAY, UPDATE_DAY } = require("../modules/days/days.joi.js");
 
-const {
-    GET_UUID,
-    CREATE_DAY,
-    UPDATE_DAY
-} = require("../modules/days/days.joi.js");
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
