@@ -19,8 +19,10 @@ module.exports = () => {
 
         const send = (to = "", title = "", template = "") => {
             transporter.sendMail({
-                from    : auth.user, to,
-                subject : title, html    : template
+                from    : auth.user,
+                to,
+                subject : title,
+                html    : template
             });
         };
 
