@@ -7,7 +7,7 @@ exports.createToken = function (user) {
         userName : user.userName,
         email    : user.email,
         iat      : moment().unix(), // Creation date of the token
-        exp      : moment().add(2, "hour").unix(), // Expiration date of the token
+        exp      : moment().add(2, "hour").unix() // Expiration date of the token
     };
 
     return jwt.encode(payload, process.env.SEED);

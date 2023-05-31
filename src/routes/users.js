@@ -29,8 +29,8 @@ module.exports = (deps) => {
         .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
         // Other Student Logic
-        .post("/confirm-account", endPoint(body, CREATE_USER , confirmCreatedAccount))
-        .get("/confirm-account-token/:token", endPoint(params, CONFIRM_ACCOUNT , confirmAccount))
+        .post("/confirm-account", endPoint(body, CREATE_USER, confirmCreatedAccount))
+        .get("/confirm-account-token/:token", endPoint(params, CONFIRM_ACCOUNT, confirmAccount))
         .post("/recovery/account", endPoint(body, RECOVERY_ACCOUNT, recoveryAccount));
 };
 
