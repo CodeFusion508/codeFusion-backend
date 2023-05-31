@@ -1,4 +1,4 @@
-const {
+let {
     createUser,
     logIn,
     getUser,
@@ -6,13 +6,17 @@ const {
     deleteUser,
 
     createRel,
-    deleteRel
+    deleteRel,
+
+    WaitingForAccountConfirmation,
+    confirmAccount,
+    recoveryAccount
 } = require("../users.ctrl.js");
 
 const jwt = require("../../../config/jwt.js");
 
 
-describe("users controller tests", () => {
+describe("users controllers tests", () => {
     let deps;
 
     beforeAll(() => {
@@ -20,7 +24,9 @@ describe("users controller tests", () => {
             services: {
                 neo4j: {
                     session: { run: null }
-                }
+                },
+                email    : { send: null },
+                template : { confirmEmail: null }
             }
         };
 
@@ -240,6 +246,80 @@ describe("users controller tests", () => {
 
             expect(result).toHaveProperty("node");
             expect(result).toHaveProperty("stats");
+        });
+    });
+
+    describe("WaitingForAccountConfirmation", () => {
+        it("WaitingForAccountConfirmation should return message", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+            deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
+            deps.services.template.confirmEmail = jest.fn().mockResolvedValue("Email Confirmed!");
+
+            const body = {
+                email    : "AsyncResearch@mail.org",
+                password : "password",
+                userName : "Async Research Institute"
+            };
+
+            const result = await WaitingForAccountConfirmation(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result.data).toBe("Se ha enviado un mensaje a " + body.email + " para confirmar tu cuenta");
+        });
+    });
+
+    describe("confirmAccount", () => {
+        it("confirmAccount should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
+            deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
+            deps.services.template.confirmEmail = jest.fn().mockResolvedValue("Email Confirmed!");
+            jest.spyOn(jwt, "decodeToken").mockReturnValue({
+                email    : "AsyncResearch@mail.org",
+                password : "password",
+                userName : "Async Research Institute"
+            });
+
+
+            const body = {
+                email    : "AsyncResearch@mail.org",
+                password : "password",
+                userName : "Async Research Institute"
+            };
+
+            const result = await confirmAccount(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("title", "Confirmación de Cuenta");
+            expect(result).toHaveProperty("message", "Bienvenido a CodeFusion508");
+        });
+    });
+
+    describe("recoveryAccount", () => {
+        it("recoveryAccount should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
+            deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
+            deps.services.template.confirmEmail = jest.fn().mockResolvedValue("Email Confirmed!");
+            jest.spyOn(jwt, "decodeToken").mockReturnValue({
+                email    : "AsyncResearch@mail.org",
+                password : "password",
+                userName : "Async Research Institute"
+            });
+
+
+            const body = {
+                email    : "AsyncResearch@mail.org",
+                password : "password",
+                userName : "Async Research Institute"
+            };
+
+            const result = await recoveryAccount(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("title", "Confirmación de Cuenta");
+            expect(result).toHaveProperty("message", "Bienvenido a CodeFusion508");
         });
     });
 });

@@ -12,9 +12,7 @@ describe("users controller tests", () => {
 
     beforeAll(() => {
         deps = {
-            config   : {},
-            ctrls    : {},
-            services : {
+            services: {
                 neo4j: {
                     session: {
                         run: null
@@ -30,11 +28,12 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                "path"  : "/section2/nodejs",
-                "title" : "Example Sprint 5",
-                "desc"  : "esto es un ejemplo de un sprint en section 2 para nodejs",
-                "label" : "Section_2"
+                path  : "/section2/nodejs",
+                title : "Example Sprint 5",
+                esc   : "esto es un ejemplo de un sprint en section 2 para nodejs",
+                label : "Section_2"
             };
+
             const result = await createSprint(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -64,6 +63,7 @@ describe("users controller tests", () => {
             const body = {
                 "uuid": "69a03f16-195e-4f82-871b-051bd82cc28b"
             };
+
             const result = await updateSprint(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -80,6 +80,7 @@ describe("users controller tests", () => {
                 title : "new title",
                 desc  : "new description"
             };
+
             const result = await updateSprint(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -97,6 +98,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
             };
+
             const result = await getSprint(deps, params)
                 .then((res) => res)
                 .catch((err) => err);
@@ -111,6 +113,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
             };
+
             const result = await getSprint(deps, params)
                 .then((res) => res)
                 .catch((err) => err);
@@ -127,6 +130,7 @@ describe("users controller tests", () => {
             const body = {
                 uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
             };
+
             const result = await deleteSprint(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -143,6 +147,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
             };
+
             const result = await getSprintRels(deps, params)
                 .then((res) => res)
                 .catch((err) => err);
@@ -158,6 +163,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
             };
+
             const result = await getSprintRels(deps, params)
                 .then((res) => res)
                 .catch((err) => err);
