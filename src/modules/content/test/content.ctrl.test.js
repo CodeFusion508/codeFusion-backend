@@ -10,9 +10,7 @@ describe("users controller tests", () => {
 
     beforeAll(() => {
         deps = {
-            config   : {},
-            ctrls    : {},
-            services : {
+            services: {
                 neo4j: {
                     session: {
                         run: null
@@ -37,6 +35,7 @@ describe("users controller tests", () => {
                 contentNo : 6,
                 time      : 100,
             };
+
             const result = await createContent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -55,9 +54,9 @@ describe("users controller tests", () => {
                 label : "SECTION_1",
                 path  : "/3d3d3/",
                 title : "something 1",
-                desc  : "something here1.",
-
+                desc  : "something here1."
             };
+
             const result = await updateContent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
@@ -74,6 +73,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "d54jd3-d58k543-83k45d8-9dd84"
             };
+
             const result = await getContent(deps, params)
                 .then((res) => res)
                 .catch((err) => err);
@@ -90,6 +90,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "d54jd3-d58k543-83k45d8-9dd84"
             };
+
             const result = await deleteContent(deps, params)
                 .then((res) => res)
                 .catch((err) => err);

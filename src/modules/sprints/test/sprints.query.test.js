@@ -4,6 +4,7 @@ const {
     updateSprintQuery,
     getSprintQuery,
     deleteSprintQuery,
+
     getSprintsRelsQuery
 } = require("../sprints.query.js");
 

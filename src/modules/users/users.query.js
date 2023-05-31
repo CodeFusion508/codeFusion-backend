@@ -88,7 +88,6 @@ const deleteRelQuery = (body) => {
 };
 
 // Other Queries
-
 const findDeletedUser = (body) => `
     MATCH (u:Student {email: "${body.email}"})
     WHERE  u:softDeleted

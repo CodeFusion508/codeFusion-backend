@@ -44,7 +44,7 @@ describe("content joi tests", () => {
         desc      : "something 1/.",
         dayUuid   : "",
         contentNo : 6,
-        time      : 100,
+        time      : 100
       };
 
       const { error } = CREATE_CONTENT.validate(body);
