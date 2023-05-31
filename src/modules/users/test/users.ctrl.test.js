@@ -198,7 +198,7 @@ describe("users controllers tests", () => {
                 "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
                 "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
                 "op"          : "Sprint",
-                "relation"    : "orgPLETED"
+                "relation"    : "related"
             };
 
             const result = await createRel(deps, body)
@@ -216,7 +216,7 @@ describe("users controllers tests", () => {
                 "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
                 "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
                 "op"          : "Sprint",
-                "relation"    : "orgPLETED"
+                "relation"    : "related"
             };
 
             const result = await createRel(deps, body)
@@ -237,7 +237,7 @@ describe("users controllers tests", () => {
                 "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
                 "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
                 "op"          : "Sprint",
-                "relation"    : "orgPLETED"
+                "relation"    : "related"
             };
 
             const result = await deleteRel(deps, body)
@@ -274,6 +274,7 @@ describe("users controllers tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
             deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
             deps.services.template.confirmEmail = jest.fn().mockResolvedValue("Email Confirmed!");
+
             jest.spyOn(jwt, "decodeToken").mockReturnValue({
                 email    : "AsyncResearch@mail.org",
                 password : "password",
@@ -298,9 +299,10 @@ describe("users controllers tests", () => {
 
     describe("recoveryAccount", () => {
         it("recoveryAccount should return formatted result", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
             deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
             deps.services.template.confirmEmail = jest.fn().mockResolvedValue("Email Confirmed!");
+
             jest.spyOn(jwt, "decodeToken").mockReturnValue({
                 email    : "AsyncResearch@mail.org",
                 password : "password",
@@ -318,8 +320,7 @@ describe("users controllers tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("title", "Confirmación de Cuenta");
-            expect(result).toHaveProperty("message", "Bienvenido a CodeFusion508");
+            expect(result).toHaveProperty("message", "Se ha enviado un mensaje al correo " + body.email + " para recuperar tu cuenta");
         });
     });
 });
@@ -607,7 +608,7 @@ let mockCreateRel = {
                         "low"  : 33,
                         "high" : 0
                     },
-                    "type"               : "orgPLETED",
+                    "type"               : "related",
                     "properties"         : {},
                     "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:31",
                     "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:30",
@@ -621,7 +622,7 @@ let mockCreateRel = {
     ],
     "summary": {
         "query": {
-            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:orgPLETED]->(c)\n            RETURN r;\n        ",
+            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:related]->(c)\n            RETURN r;\n        ",
             "parameters" : {}
         },
         "queryType" : "rw",
