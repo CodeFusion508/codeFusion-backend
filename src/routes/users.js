@@ -29,9 +29,8 @@ module.exports = (deps) => {
         .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         .post("/create/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
         // Other Student Logic
-        .post("/confirm-account", endPoint(body, CREATE_USER , confirmCreatedAccount))
-        .get("/confirm-account-token/:token", endPoint(params, CONFIRM_ACCOUNT , confirmAccount))
-        .get("/recovery/:token/account/:password", endPoint(params, CONFIRM_ACCOUNT, updatedPassword))
+        .post("/confirm-account", endPoint(body, CREATE_USER, confirmCreatedAccount))
+        .get("/confirm-account-token/:token", endPoint(params, CONFIRM_ACCOUNT, confirmAccount))
         .post("/recovery/account", endPoint(body, RECOVERY_ACCOUNT, recoveryAccount));
 };
 
@@ -48,4 +47,3 @@ const createRel = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, 
 const confirmCreatedAccount = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.WaitingForAccountConfirmation(data));
 const confirmAccount = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.confirmAccount(data));
 const recoveryAccount = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.recoveryAccount(data));
-const updatedPassword = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.usersCtrl.updatedPassword(data));

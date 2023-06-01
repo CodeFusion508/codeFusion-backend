@@ -4,6 +4,7 @@ const {
     updatedDay,
     getDay,
     deleteDay,
+
     getDaysRels
 } = require("../days.ctrl.js");
 
@@ -12,9 +13,7 @@ describe("users controller tests", () => {
 
     beforeAll(() => {
         deps = {
-            config   : {},
-            ctrls    : {},
-            services : {
+            services: {
                 neo4j: {
                     session: {
                         run: jest.fn().mockResolvedValue(mockCreate)
@@ -111,6 +110,7 @@ describe("users controller tests", () => {
             const params = {
                 uuid: "d54jd3-d58k543-83k45d8-9dd84"
             };
+
             const result = await getDaysRels(deps, params)
                 .then((res) => res)
                 .catch((err) => err);

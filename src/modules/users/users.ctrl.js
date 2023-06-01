@@ -182,24 +182,6 @@ const recoveryAccount = async ({ services }, body) => {
   return { message: "Se ha enviado un mensaje al correo " + body.email + " para recuperar tu cuenta" };
 };
 
-const updatedPassword = async ({ services }, params) => {
-  body.password = bcrypt.hashSync(params.password, saltScript);
-
-  const token = jwt.decodeToken(params.token);
-  const body = MapRecoveryAccount.get(token.email);
-
-  const query = updateUserQuery(body);
-
-  let data = await services.neo4j.session.run(query);
-
-  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
-
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-  return { process: true };
-};
-
 const confirmAccount = async ({ services }, params) => {
   const token = jwt.decodeToken(params.token);
   const body = MapConfirmAccount.get(token.email);
@@ -227,6 +209,5 @@ Object.assign(module.exports, {
 
   WaitingForAccountConfirmation,
   confirmAccount,
-  updatedPassword,
   recoveryAccount
 });
