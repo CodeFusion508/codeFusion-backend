@@ -31,7 +31,7 @@ describe("users controller tests", () => {
             const body = {
                 path  : "/section2/nodejs",
                 title : "Example Sprint 5",
-                esc   : "esto es un ejemplo de un sprint en section 2 para nodejs",
+                desc  : "esto es un ejemplo de un sprint en section 2 para nodejs",
                 label : "Section_2"
             };
 
