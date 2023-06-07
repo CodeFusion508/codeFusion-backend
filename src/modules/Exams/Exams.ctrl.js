@@ -22,40 +22,35 @@ const {
 
 const createdExams = async ({ services }, body) => {
   const allData = [];
-    for (const key in body.content) {
-      const content = body.content[key];
-      const uuid = v4();
-      const query = createdQuery(uuid, content);
-      console.log(query);
-      let data = await services.neo4j.session.run(query);
-      data = cleanNeo4j(data);
-      cleanRecord(data);
-      allData.push(data);
-    }
+  for (const key in body.content) {
+    const content = body.content[key];
+    const uuid = v4();
+    const query = createdQuery(uuid, content);
 
-    return allData;
+    let data = await services.neo4j.session.run(query);
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+    allData.push(data);
+  }
+
+  return allData;
 };
 
 const findAllBySprint = async ({ services }, params) => {
-  try {
-    const query = getAllBySprint(params);
+  const query = getAllBySprint(params);
 
-    let data = await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query);
 
-    if (data.records.length === 0)
-      throw { err: 404, message: "No hay resultados para su búsqueda." };
+  if (data.records.length === 0)
+    throw { err: 404, message: "No hay resultados para su búsqueda." };
 
-    data = cleanNeo4j(data);
-    cleanRecords(data);
+  data = cleanNeo4j(data);
+  cleanRecords(data);
 
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  return data;
 };
 
 const getById = async ({ services }, params) => {
-  console.log(params);
   const query = getByUuid(params);
   let data = await services.neo4j.session.run(query);
 

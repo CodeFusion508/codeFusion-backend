@@ -1,11 +1,10 @@
 const createdQuery = (uuid, body) => {
-
     const query = `
         CREATE (d:Exams {
             uuid      : "${uuid}",
             element   : "${body.element}",
             content   : "${body.content}",
-            leguaje   : "${body.leguaje}",
+            language   : "${body.language}",
             uuidSprint: "${body.uuidSprint}"
         })
         RETURN d;

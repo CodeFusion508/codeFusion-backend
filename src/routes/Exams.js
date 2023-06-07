@@ -10,18 +10,16 @@ const {
     VERIFY_CODE
 } = require("../modules/Exams/Exams.joi.js");
 
-// const auth = require("../modules/users/users.auth.js");
-
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
         // Student CRUD
-        .post("/", endPoint(body, CREATE_EXMANS, created)).
-        get("/:uuid", endPoint(params, GET_UUID, findById)).
-        get("/sprint/:uuid", endPoint(params, GET_UUID, findAllBySprint)).
-        post("/sprint", endPoint(body,VERIFY_CODE, findAllBySprint));
+        .post("/", endPoint(body, CREATE_EXMANS, created))
+        .get("/:uuid", endPoint(params, GET_UUID, findById))
+        .get("/sprint/:uuid", endPoint(params, GET_UUID, findAllBySprint))
+        .post("/sprint", endPoint(body, VERIFY_CODE, findAllBySprint));
 };
 
 const created = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.examsCtrl.createdExams(data));
