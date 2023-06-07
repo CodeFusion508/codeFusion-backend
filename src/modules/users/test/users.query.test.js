@@ -13,9 +13,9 @@ const {
 describe("users query tests", () => {
     it("createUserQuery", () => {
         const body = {
-            email    : "testing10390@gmail.com",
-            password : "1234",
-            userName : "testing800",
+            email    : "AsyncResearch@mail.org",
+            password : "password",
+            userName : "Async Research Institute"
         };
         const uuid = "1c12d3x-123d1232c13";
 
@@ -41,7 +41,7 @@ describe("users query tests", () => {
 
     it("findRegisteredEmail", () => {
         const body = {
-            email: "JohnnyAppleSeed@mail.com"
+            email: "AsyncResearch@mail.org",
         };
 
         const query = findRegisteredEmail(body);
@@ -51,7 +51,7 @@ describe("users query tests", () => {
 
     it("logInQuery", () => {
         const body = {
-            email: "JohnnyAppleSeed@mail.com"
+            email: "AsyncResearch@mail.org",
         };
 
         const query = logInQuery(body);
@@ -74,9 +74,9 @@ describe("users query tests", () => {
     it("updateUserQuery", () => {
         const body = {
             uuid     : "1c12d3x-123d1232c13",
-            email    : "testing10390@gmail.com",
-            password : "1234",
-            userName : "testing800",
+            email    : "AsyncResearch@mail.org",
+            password : "password",
+            userName : "Async Research Institute"
         };
 
         const query = updateUserQuery(body);

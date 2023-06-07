@@ -8,14 +8,13 @@ const {
   getUserQuery,
   updateUserQuery,
   deleteUserQuery,
+
   createRelQuery,
-  deleteRelQuery
+  deleteRelQuery,
+
+  findDeletedUser
 } = require("./users.query.js");
-const {
-  cleanNeo4j,
-  cleanRecord,
-  cleanRel
-} = require("../../utils/cleanData.js");
+const { cleanNeo4j, cleanRecord, cleanRel } = require("../../utils/cleanData.js");
 const jwt = require("../../config/jwt.js");
 
 // Global variables
@@ -31,67 +30,6 @@ module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, me
     [name]: method.bind(null, { ...module.exports, ...deps })
   };
 }, {});
-
-const WaitingForAccountConfirmation = async ({ services }, body) => {
-  MapConfirmAccount.set(body["email"], body)
-  const token = jwt.createToken({ email: body["email"] });
-  services.email.send(
-    body.email,
-    "Confirmación de Cuenta",
-    services.templete.confirmEmail(body.userName, "http://localhost:5173/cuenta/"+token+'/confirmacion')
-  );
-
-  return { data: "Se ha enviado un mensaje a "+body.email+" para confirmar tu cuenta" };
-};
-
-const recoveryAccount = async ({ services }, body ) => {
-
-  const data = await services.neo4j.session.run(logInQuery(body))
-  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." }
-  
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-  const token = jwt.createToken({ uuid : data.node.uuid })
-  services.email.send(body.email, "Recuperar Cuenta", 
-  services.templete.confirmEmail(data.node.userName, "http://localhost:5173/recovery/"+token+'/account'))
-  MapRecoveryAccount.set(body.email, data.node.uuid)
-  return {
-    message: 'Se ha enviado un mensaje al correo '+body.email+' para recuperar tu cuenta'
-  }
-
-}
-
-const updatedPassword = async ({ services }, params ) => {
-  const token = jwt.decodeToken(params.token);
-  const body = MapRecoveryAccount.get(token.email)
-  body["password"] = bcrypt.hashSync(params["password"], saltScript)
-  const query = updateUserQuery(body)
-
-  let data = await services.neo4j.session.run(query)
-
-  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
-
-  data = cleanNeo4j(data);
-  cleanRecord(data);
-
-  return { procces: true };
-
-}
-
-const confirmAccount = async ({ services }, params) => {
-
-  const token = jwt.decodeToken(params.token);
-  const body = MapConfirmAccount.get(token.email)
-  if(body === undefined) throw({ err: 404, message:'El token no existe' })
-  await createUser({ services }, body);
-
-  return {
-    title: 'Confirmación de Cuenta',
-    message: 'Bienvenido a CodeFusion508'
-  }
-
-};
 
 // Student CRUD
 const createUser = async ({ services }, body) => {
@@ -165,9 +103,8 @@ const updateUser = async ({ services }, body) => {
   }
 
   const query = updateUserQuery(body);
-  console.log(query, "query");
+
   let data = await services.neo4j.session.run(query);
-  console.log(data, "data");
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
@@ -210,16 +147,70 @@ const deleteRel = async ({ services }, body) => {
   return data;
 };
 
+// Other User Controllers
+const WaitingForAccountConfirmation = async ({ services }, body) => {
+  MapConfirmAccount.set(body.email, body);
+
+  const token = jwt.createToken({ email: body.email });
+
+  services.email.send(
+    body.email,
+    "Confirmación de Cuenta",
+    services.template.confirmEmail(body.userName, `${process.env.FRONT_END_PATH}/cuenta/` + token + "/confirmacion")
+  );
+
+  return { data: "Se ha enviado un mensaje a " + body.email + " para confirmar tu cuenta" };
+};
+
+const recoveryAccount = async ({ services }, body) => {
+  const query = findDeletedUser(body);
+
+  let data = await services.neo4j.session.run(query);
+
+  if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe o ya esta registrado" };
+
+  data = cleanNeo4j(data);
+  cleanRecord(data);
+
+  const token = jwt.createToken({ uuid: data.node.uuid });
+
+  services.email.send(
+    body.email,
+    "Recuperar Cuenta",
+    services.template.confirmEmail(data.node.userName, `${process.env.FRONT_END_PATH}/recovery/` + token + "/account")
+  );
+
+  MapRecoveryAccount.set(body.email, data.node.uuid);
+
+  return { message: "Se ha enviado un mensaje al correo " + body.email + " para recuperar tu cuenta" };
+};
+
+const confirmAccount = async ({ services }, params) => {
+  const token = jwt.decodeToken(params.token);
+  const body = MapConfirmAccount.get(token.email);
+
+  if (body === undefined) throw ({ err: 404, message: "El token no existe" });
+
+  await createUser({ services }, body);
+
+  return {
+    title   : "Confirmación de Cuenta",
+    message : "Bienvenido a CodeFusion508"
+  };
+};
+
+
 Object.assign(module.exports, {
   createUser,
   logIn,
   getUser,
   updateUser,
   deleteUser,
-  WaitingForAccountConfirmation,
-  confirmAccount,
+
   createRel,
   deleteRel,
-  updatedPassword,
+
+  WaitingForAccountConfirmation,
+  confirmAccount,
   recoveryAccount
 });

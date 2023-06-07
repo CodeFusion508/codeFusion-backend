@@ -40,12 +40,6 @@ module.exports = {
     CONFIRM_ACCOUNT: Joi.object({
         token: Joi.string().required()
     }),
-    LOGIN_G_USER: Joi.object({
-        idtoken: Joi.string().required()
-    }),
-    CONFIRM_ACCOUNT: Joi.object({
-        token: Joi.string().required()
-    }),
     RECOVERY_ACCOUNT: Joi.object({
         email: Joi.string().required()
     })
