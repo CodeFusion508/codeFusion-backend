@@ -35,6 +35,7 @@ describe("users controller tests", () => {
                 contentNo : 6,
                 time      : 100,
             };
+
             const result = await createContent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);

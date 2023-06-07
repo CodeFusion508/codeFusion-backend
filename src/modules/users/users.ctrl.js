@@ -51,7 +51,6 @@ const createUser = async ({ services }, body) => {
 };
 
 const logIn = async ({ services }, body) => {
-
   const query = logInQuery(body);
   let data = await services.neo4j.session.run(query);
 
@@ -72,7 +71,6 @@ const logIn = async ({ services }, body) => {
       uuid     : data.node.uuid
     })
   };
-
 };
 
 const getUser = async ({ services }, params) => {
@@ -124,7 +122,6 @@ const deleteUser = async ({ services }, params) => {
 };
 
 // Student Relationships
-
 const createRel = async ({ services }, body) => {
   const query = createRelQuery(body);
 

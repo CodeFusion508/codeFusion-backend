@@ -5,8 +5,8 @@ const routes = {
     "/sprints"  : require("./routes/sprints.js"),
     "/days"     : require("./routes/days.js"),
     "/contents" : require("./routes/content.js"),
-    "/exams"    : require("./routes/Exams.js"),
-
+    "/google"   : require("./routes/google.js"),
+    "/exams"    : require("./routes/Exams.js")
 };
 
 module.exports = (deps) => {
