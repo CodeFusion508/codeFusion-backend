@@ -12,19 +12,19 @@ const createdQuery = (uuid, body) => {
     `;
 
     return query;
-}
+};
 
 const getAllBySprint = (params) => `
     MATCH (d: Exams {uuidSprint: "${params.uuid}"}) 
     WHERE NOT d:softDeleted 
     RETURN d;
-`
+`;
 
 const getByUuid = (params) => `
     MATCH (d: Exams {uuid: "${params.uuid}"}) 
     WHERE NOT d:softDeleted 
     RETURN d;
-`
+`;
 
 const deleteByIdQuery = (params) => `
     MATCH (d: Exams {uuid: "${params.uuid}"})

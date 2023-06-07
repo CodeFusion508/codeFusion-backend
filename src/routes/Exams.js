@@ -20,9 +20,9 @@ module.exports = (deps) => {
         // Student CRUD
         .post("/", endPoint(body, CREATE_EXMANS, created)).
         get("/:uuid", endPoint(params, GET_UUID, findById)).
-        get('/sprint/:uuid', endPoint(params, GET_UUID, findAllBySprint)).
-        post('/sprint', endPoint(body,VERIFY_CODE, findAllBySprint))
-}
+        get("/sprint/:uuid", endPoint(params, GET_UUID, findAllBySprint)).
+        post("/sprint", endPoint(body,VERIFY_CODE, findAllBySprint));
+};
 
 const created = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.examsCtrl.createdExams(data));
 const findById = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.examsCtrl.getById(data));

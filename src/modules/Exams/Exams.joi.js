@@ -15,7 +15,7 @@ module.exports = {
         uuidSprint : Joi.string().required()
     }),
     VERIFY_CODE: Joi.object({
-        uuidSprint  : Joi.string().required(),
-        code        : Joi.string().required()
+        uuidSprint : Joi.string().required(),
+        code       : Joi.string().required()
     })
 };

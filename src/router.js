@@ -5,7 +5,7 @@ const routes = {
     "/sprints"  : require("./routes/sprints.js"),
     "/days"     : require("./routes/days.js"),
     "/contents" : require("./routes/content.js"),
-    "/exams"   : require("./routes/Exams.js"),
+    "/exams"    : require("./routes/Exams.js"),
 
 };
 
