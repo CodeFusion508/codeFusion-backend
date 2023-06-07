@@ -6,11 +6,11 @@ const hostSupport = process.env.HOST_EMAIL;
 const portSupport = process.env.PORT_EMAIL;
 const secureSupport = process.env.SECURE_EMAIL === true;
 
-module.exports = () => {
+module.exports = async () => {
     try {
         const auth = { user: emailSupport, pass: passwordSupport };
 
-        const transporter = nodemailer.createTransport({
+        const transporter = await nodemailer.createTransport({
             host   : hostSupport,
             port   : portSupport,
             secure : secureSupport,

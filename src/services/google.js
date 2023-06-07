@@ -2,7 +2,7 @@ const { OAuth2Client } = require("google-auth-library");
 const { google } = require("googleapis");
 const service = google.sheets("v4");
 
-const credentials = require("../config/credentials.json");
+const credentials = require("../config/credentials.js");
 
 module.exports = async () => {
     try {

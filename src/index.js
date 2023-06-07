@@ -22,7 +22,6 @@ const ctrlList = {
 
 const start = async () => {
     let dependencies = {
-        config   : {},
         ctrls    : {},
         services : {}
     };
