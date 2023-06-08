@@ -2,7 +2,7 @@ const {
     signUpQuery,
     logInQuery,
     findRegisteredEmailQuery,
-    findDeletedUserQuery,
+    findDeletedStudentQuery,
     getStudentQuery,
     updateStudentQuery,
     deleteStudentQuery,

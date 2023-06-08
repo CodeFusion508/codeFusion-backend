@@ -23,7 +23,7 @@ const logInQuery = (body) => `
 
 const findRegisteredEmailQuery = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
 
-const findDeletedUserQuery = (body) => `
+const findDeletedStudentQuery = (body) => `
     MATCH (u:Student {email: "${body.email}"})
     WHERE  u:softDeleted
     RETURN u;
@@ -97,7 +97,7 @@ module.exports = {
     signUpQuery,
     logInQuery,
     findRegisteredEmailQuery,
-    findDeletedUserQuery,
+    findDeletedStudentQuery,
     getStudentQuery,
     updateStudentQuery,
     deleteStudentQuery,
