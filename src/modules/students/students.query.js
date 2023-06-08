@@ -1,6 +1,4 @@
 // Student CRUD
-const findRegisteredEmail = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
-
 const signUpQuery = (uuid, body) => {
     const query = `
         CREATE (u:Student:User {
@@ -23,13 +21,21 @@ const logInQuery = (body) => `
     RETURN u;
 `;
 
-const getUserQuery = (params) => `
+const findRegisteredEmailQuery = (body) => `MATCH (u:Student {email: "${body.email}"}) RETURN u;`;
+
+const findDeletedUserQuery = (body) => `
+    MATCH (u:Student {email: "${body.email}"})
+    WHERE  u:softDeleted
+    RETURN u;
+`;
+
+const getStudentQuery = (params) => `
     MATCH (u:Student {uuid: "${params.uuid}"}) 
     WHERE NOT u:softDeleted 
     RETURN u;
 `;
 
-const updateUserQuery = (body) => {
+const updateStudentQuery = (body) => {
     let propsToUpdate = [];
 
     if (body.totalExp) {
@@ -58,7 +64,7 @@ const updateUserQuery = (body) => {
     return updateQuery;
 };
 
-const deleteUserQuery = (params) => `
+const deleteStudentQuery = (params) => `
     MATCH (u:Student {uuid: "${params.uuid}"})
     SET u:softDeleted;
 `;
@@ -87,23 +93,15 @@ const deleteRelQuery = (body) => {
     return query;
 };
 
-// Other Queries
-const findDeletedUser = (body) => `
-    MATCH (u:Student {email: "${body.email}"})
-    WHERE  u:softDeleted
-    RETURN u;
-`;
-
 module.exports = {
-    findRegisteredEmail,
     signUpQuery,
     logInQuery,
-    getUserQuery,
-    updateUserQuery,
-    deleteUserQuery,
+    findRegisteredEmailQuery,
+    findDeletedUserQuery,
+    getStudentQuery,
+    updateStudentQuery,
+    deleteStudentQuery,
 
     createRelQuery,
-    deleteRelQuery,
-
-    findDeletedUser
+    deleteRelQuery
 };

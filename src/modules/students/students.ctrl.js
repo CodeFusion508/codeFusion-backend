@@ -2,22 +2,21 @@ const bcrypt = require("bcrypt");
 const { v4 } = require("uuid");
 
 const {
-  findRegisteredEmail,
   signUpQuery,
   logInQuery,
-  getUserQuery,
-  updateUserQuery,
-  deleteUserQuery,
+  findRegisteredEmailQuery,
+  findDeletedUserQuery,
+  getStudentQuery,
+  updateStudentQuery,
+  deleteStudentQuery,
 
   createRelQuery,
-  deleteRelQuery,
-
-  findDeletedUser
-} = require("./users.query.js");
+  deleteRelQuery
+} = require("./students.query.js");
 const { cleanNeo4j, cleanRecord, cleanRel } = require("../../utils/cleanData.js");
 const jwt = require("../../config/jwt.js");
 
-// Global variables
+// Global Variables
 const saltRounds = 10;
 const saltScript = bcrypt.genSaltSync(saltRounds);
 const MapConfirmAccount = new Map();
@@ -32,9 +31,9 @@ module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, me
 }, {});
 
 // Student CRUD
-const createUser = async ({ services }, body) => {
-  const findUser = findRegisteredEmail(body);
-  const result = await services.neo4j.session.run(findUser);
+const signUp = async ({ services }, body) => {
+  const findStudent = findRegisteredEmailQuery(body);
+  const result = await services.neo4j.session.run(findStudent);
 
   if (result.records.length !== 0) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
 
@@ -63,19 +62,12 @@ const logIn = async ({ services }, body) => {
 
   if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
-  return {
-    data,
-    token: jwt.createToken({
-      userName : data.node.userName,
-      email    : data.node.email,
-      uuid     : data.node.uuid
-    })
-  };
+  const { email, userName, uuid } = data.node;
+  return { data, token: jwt.createToken({ userName, email, uuid }) };
 };
 
-const getUser = async ({ services }, params) => {
-  const query = getUserQuery(params);
-
+const getStudent = async ({ services }, params) => {
+  const query = getStudentQuery(params);
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
@@ -86,12 +78,13 @@ const getUser = async ({ services }, params) => {
   return data;
 };
 
-const updateUser = async ({ services }, body) => {
+const updateStudent = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
-  const findUser = findRegisteredEmail(body);
-  const result = await services.neo4j.session.run(findUser);
+  const findStudent = findRegisteredEmailQuery(body);
+  const result = await services.neo4j.session.run(findStudent);
 
+  // This is to prevent people from updating their email to a different email address that is already in use
   if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) {
     throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
   }
@@ -100,8 +93,7 @@ const updateUser = async ({ services }, body) => {
     body.password = bcrypt.hashSync(body.password, saltScript);
   }
 
-  const query = updateUserQuery(body);
-
+  const query = updateStudentQuery(body);
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
@@ -112,8 +104,8 @@ const updateUser = async ({ services }, body) => {
   return data;
 };
 
-const deleteUser = async ({ services }, params) => {
-  const query = deleteUserQuery(params);
+const deleteStudent = async ({ services }, params) => {
+  const query = deleteStudentQuery(params);
 
   let data = await services.neo4j.session.run(query);
   data = cleanNeo4j(data);
@@ -124,7 +116,6 @@ const deleteUser = async ({ services }, params) => {
 // Student Relationships
 const createRel = async ({ services }, body) => {
   const query = createRelQuery(body);
-
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
@@ -160,8 +151,7 @@ const WaitingForAccountConfirmation = async ({ services }, body) => {
 };
 
 const recoveryAccount = async ({ services }, body) => {
-  const query = findDeletedUser(body);
-
+  const query = findDeletedUserQuery(body);
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe o ya esta registrado" };
@@ -188,7 +178,7 @@ const confirmAccount = async ({ services }, params) => {
 
   if (body === undefined) throw ({ err: 404, message: "El token no existe" });
 
-  await createUser({ services }, body);
+  await signUp({ services }, body);
 
   return {
     title   : "Confirmación de Cuenta",
@@ -198,16 +188,16 @@ const confirmAccount = async ({ services }, params) => {
 
 
 Object.assign(module.exports, {
-  createUser,
+  signUp,
   logIn,
-  getUser,
-  updateUser,
-  deleteUser,
+  getStudent,
+  updateStudent,
+  deleteStudent,
 
   createRel,
   deleteRel,
 
   WaitingForAccountConfirmation,
-  confirmAccount,
-  recoveryAccount
+  recoveryAccount,
+  confirmAccount
 });

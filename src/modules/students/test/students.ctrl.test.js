@@ -1,9 +1,9 @@
 const {
-    createUser,
+    signUp,
     logIn,
-    getUser,
-    updateUser,
-    deleteUser,
+    getStudent,
+    updateStudent,
+    deleteStudent,
 
     createRel,
     deleteRel,
@@ -11,12 +11,12 @@ const {
     WaitingForAccountConfirmation,
     confirmAccount,
     recoveryAccount
-} = require("../users.ctrl.js");
+} = require("../students.ctrl.js");
 
 const jwt = require("../../../config/jwt.js");
 
 
-describe("users controllers tests", () => {
+describe("Students Controller Tests", () => {
     let deps;
 
     beforeAll(() => {
@@ -33,8 +33,8 @@ describe("users controllers tests", () => {
         jest.spyOn(jwt, "createToken").mockReturnValue("mockedToken");
     });
 
-    describe("createUser", () => {
-        it("createUser should throw an error", async () => {
+    describe("signUp Controller", () => {
+        it("signUp should throw an error", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
@@ -43,7 +43,7 @@ describe("users controllers tests", () => {
                 userName : "Async Research Institute"
             };
 
-            const result = await createUser(deps, body)
+            const result = await signUp(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -51,7 +51,7 @@ describe("users controllers tests", () => {
             expect(result).toHaveProperty("message", "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión.");
         });
 
-        it("createUser should return back token and data", async () => {
+        it("signUp should return back token and data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
 
             const body = {
@@ -60,7 +60,7 @@ describe("users controllers tests", () => {
                 userName : "Async Research Institute"
             };
 
-            const result = await createUser(deps, body)
+            const result = await signUp(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -69,7 +69,7 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("logIn", () => {
+    describe("logIn Controller", () => {
         it("logIn should throw an error", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
@@ -108,15 +108,15 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("deleteUser", () => {
-        it("deleteUser should return formatted result", async () => {
+    describe("deleteStudent Controller", () => {
+        it("deleteStudent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
                 uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
-            const result = await deleteUser(deps, param)
+            const result = await deleteStudent(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -125,15 +125,15 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("getUser", () => {
-        it("getUser should throw an error", async () => {
+    describe("getStudent Controller", () => {
+        it("getStudent should throw an error", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
                 uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
-            const result = await getUser(deps, param)
+            const result = await getStudent(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -141,14 +141,14 @@ describe("users controllers tests", () => {
             expect(result).toHaveProperty("message", "Este usuario no existe, verifique si tiene el uuid válido.");
         });
 
-        it("getUser should return formatted result and records", async () => {
+        it("getStudent should return formatted result and records", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const param = {
                 uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
-            const result = await getUser(deps, param)
+            const result = await getStudent(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -157,15 +157,15 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("updateUser", () => {
-        it("updateUser should throw an error if body has no changes", async () => {
+    describe("updateStudent Controller", () => {
+        it("updateStudent should throw an error if body has no changes", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
                 uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
             };
 
-            const result = await updateUser(deps, body)
+            const result = await updateStudent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -173,7 +173,7 @@ describe("users controllers tests", () => {
             expect(result).toHaveProperty("message", "Debe indicar al menos un cambio.");
         });
 
-        it("updateUser should return formatted result", async () => {
+        it("updateStudent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
@@ -181,7 +181,7 @@ describe("users controllers tests", () => {
                 email : "AsyncResearch@mail.org"
             };
 
-            const result = await updateUser(deps, body)
+            const result = await updateStudent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
@@ -190,7 +190,7 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("createRel", () => {
+    describe("createRel Controller", () => {
         it("createRel should throw an error", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
@@ -249,7 +249,7 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("WaitingForAccountConfirmation", () => {
+    describe("WaitingForAccountConfirmation Controller", () => {
         it("WaitingForAccountConfirmation should return message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
             deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
@@ -269,7 +269,7 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("confirmAccount", () => {
+    describe("confirmAccount Controller", () => {
         it("confirmAccount should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
             deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
@@ -297,7 +297,7 @@ describe("users controllers tests", () => {
         });
     });
 
-    describe("recoveryAccount", () => {
+    describe("recoveryAccount Controller", () => {
         it("recoveryAccount should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
             deps.services.email.send = jest.fn().mockResolvedValue("Email Sent!");
