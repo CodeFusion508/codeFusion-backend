@@ -151,7 +151,7 @@ const WaitingForAccountConfirmation = async ({ services }, body) => {
 };
 
 const recoveryAccount = async ({ services }, body) => {
-  const query = findDeletedStudentQuery(body);
+  const query = findDeletedStudentQuery (body);
   let data = await services.neo4j.session.run(query);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe o ya esta registrado" };

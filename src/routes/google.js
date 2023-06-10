@@ -14,10 +14,10 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        .post("/", endPoint(body, CREATE_G_USER, gSignUp))
-        .post("/ver", endPoint(body, LOGIN_G_USER, gLogIn))
-        .get("/all", endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
-        .get("/", endPoint(body, GET_USER_ANSWERS, getEvaluation));
+        .post("/users/signUp", endPoint(body, CREATE_G_USER, gSignUp))
+        .post("/users/logIn", endPoint(body, LOGIN_G_USER, gLogIn))
+        .get("/sheets/all", endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
+        .get("/sheets/evaluation", endPoint(body, GET_USER_ANSWERS, getEvaluation));
 };
 
 

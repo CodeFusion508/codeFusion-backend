@@ -13,7 +13,7 @@ module.exports = (deps) => {
         .post("/", endPoint(body, CREATE_DAY, createDay))
         .get("/", endPoint(undefined, undefined, getAllDays))
         .put("/", endPoint(body, UPDATE_DAY, updateDay))
-        .get("/:uuid", endPoint(params, GET_UUID, getDay))
+        .get("/:uuid/info", endPoint(params, GET_UUID, getDay))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteDay))
         // Day Relationships
         .get("/:uuid/rel", endPoint(params, GET_UUID, getDayRels));
