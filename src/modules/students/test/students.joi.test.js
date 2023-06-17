@@ -6,9 +6,6 @@ const {
 
   CREATE_RELATION,
   DELETE_RELATION,
-
-  CONFIRM_ACCOUNT,
-  RECOVERY_ACCOUNT
 } = require("../students.joi.js");
 
 describe("Students Joi Tests", () => {
