@@ -1,14 +1,15 @@
 const {
-  CREATE_USER,
-  LOGIN_USER,
-  UPDATE_USER,
   GET_UUID,
-  CREATE_RELATION,
-  DELETE_RELATION
-} = require("../users.joi.js");
+  CREATE_STUDENT,
+  LOGIN_STUDENT,
+  UPDATE_STUDENT,
 
-describe("users JOI tests", () => {
-  describe("CREATE_USER JOI", () => {
+  CREATE_RELATION,
+  DELETE_RELATION,
+} = require("../students.joi.js");
+
+describe("Students Joi Tests", () => {
+  describe("CREATE_STUDENT JOI", () => {
     it("give error when password is null", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
@@ -16,7 +17,7 @@ describe("users JOI tests", () => {
         userName : "Async Research Institute"
       };
 
-      const { error } = CREATE_USER.validate(body);
+      const { error } = CREATE_STUDENT.validate(body);
 
       expect(error.details[0].message).toBe('"password" must be a string');
     });
@@ -28,20 +29,20 @@ describe("users JOI tests", () => {
         userName : "Async Research Institute"
       };
 
-      const { error } = CREATE_USER.validate(body);
+      const { error } = CREATE_STUDENT.validate(body);
 
       expect(error.details[0].message).toBe('"email" must be a string');
     });
   });
 
-  describe("UPDATE_USER JOI", () => {
+  describe("UPDATE_STUDENT JOI", () => {
     it("give error when no uuid given", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
         userName : "Async Research Institute"
       };
 
-      const { error } = UPDATE_USER.validate(body);
+      const { error } = UPDATE_STUDENT.validate(body);
 
       expect(error.details[0].message).toBe('"uuid" is required');
     });
@@ -52,20 +53,20 @@ describe("users JOI tests", () => {
         totalExp : "Hey123"
       };
 
-      const { error } = UPDATE_USER.validate(body);
+      const { error } = UPDATE_STUDENT.validate(body);
 
       expect(error.details[0].message).toBe('"totalExp" must be a number');
     });
   });
 
-  describe("LOGIN_USER JOI", () => {
+  describe("LOGIN_STUDENT JOI", () => {
     it("give error when email is empty", () => {
       const body = {
         email    : "",
         password : "1234",
       };
 
-      const { error } = LOGIN_USER.validate(body);
+      const { error } = LOGIN_STUDENT.validate(body);
 
       expect(error.details[0].message).toBe('"email" is not allowed to be empty');
     });
@@ -76,7 +77,7 @@ describe("users JOI tests", () => {
         password : "",
       };
 
-      const { error } = LOGIN_USER.validate(body);
+      const { error } = LOGIN_STUDENT.validate(body);
 
       expect(error.details[0].message).toBe('"password" is not allowed to be empty');
     });
@@ -136,5 +137,3 @@ describe("users JOI tests", () => {
     });
   });
 });
-
-

@@ -1,17 +1,17 @@
 const {
-    findRegisteredEmail,
     signUpQuery,
     logInQuery,
-    getUserQuery,
-    updateUserQuery,
-    deleteUserQuery,
+    findRegisteredEmailQuery,
+    getStudentQuery,
+    updateStudentQuery,
+    deleteStudentQuery,
 
     createRelQuery,
     deleteRelQuery
-} = require("../users.query.js");
+} = require("../students.query.js");
 
-describe("users query tests", () => {
-    it("createUserQuery", () => {
+describe("Student Query Tests", () => {
+    it("signUpQuery Test", () => {
         const body = {
             email    : "AsyncResearch@mail.org",
             password : "password",
@@ -28,27 +28,6 @@ describe("users query tests", () => {
         expect(query).toContain(`"${body.userName}"`);
     });
 
-    it("deleteUserQuery", () => {
-        const params = {
-            uuid: "1c12d3x-123d1232c13",
-        };
-
-        const query = deleteUserQuery(params);
-
-        expect(query).toContain(`MATCH (u:Student {uuid: "${params.uuid}"})`);
-        expect(query).toContain(`SET u:softDeleted;`);
-    });
-
-    it("findRegisteredEmail", () => {
-        const body = {
-            email: "AsyncResearch@mail.org",
-        };
-
-        const query = findRegisteredEmail(body);
-
-        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"}) RETURN u;`);
-    });
-
     it("logInQuery", () => {
         const body = {
             email: "AsyncResearch@mail.org",
@@ -60,18 +39,28 @@ describe("users query tests", () => {
         expect(query).toContain(`WHERE NOT u:softDeleted`);
     });
 
-    it("getUserQuery", () => {
+    it("findRegisteredEmailQuery", () => {
+        const body = {
+            email: "AsyncResearch@mail.org",
+        };
+
+        const query = findRegisteredEmailQuery(body);
+
+        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"}) RETURN u;`);
+    });
+
+    it("getStudentQuery", () => {
         const params = {
             uuid: "1c12d3x-123d1232c13",
         };
 
-        const query = getUserQuery(params);
+        const query = getStudentQuery(params);
 
         expect(query).toContain(`MATCH (u:Student {uuid: "${params.uuid}"})`);
         expect(query).toContain(`WHERE NOT u:softDeleted`);
     });
 
-    it("updateUserQuery", () => {
+    it("updateStudentQuery", () => {
         const body = {
             uuid     : "1c12d3x-123d1232c13",
             email    : "AsyncResearch@mail.org",
@@ -79,13 +68,24 @@ describe("users query tests", () => {
             userName : "Async Research Institute"
         };
 
-        const query = updateUserQuery(body);
+        const query = updateStudentQuery(body);
 
         expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"})`);
         expect(query).toContain(`SET`);
         expect(query).toContain(`u.email = "${body.email}"`);
         expect(query).toContain(`u.password = "${body.password}"`);
         expect(query).toContain(`u.userName = "${body.userName}"`);
+    });
+
+    it("deleteStudentQuery", () => {
+        const params = {
+            uuid: "1c12d3x-123d1232c13",
+        };
+
+        const query = deleteStudentQuery(params);
+
+        expect(query).toContain(`MATCH (u:Student {uuid: "${params.uuid}"})`);
+        expect(query).toContain(`SET u:softDeleted;`);
     });
 
     it("createRelQuery", () => {

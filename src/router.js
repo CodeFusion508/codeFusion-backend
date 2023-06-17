@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
 const routes = {
-    "/users"    : require("./routes/users.js"),
+    "/students" : require("./routes/students.js"),
     "/sprints"  : require("./routes/sprints.js"),
     "/days"     : require("./routes/days.js"),
     "/contents" : require("./routes/content.js"),

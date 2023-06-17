@@ -1,20 +1,20 @@
 const Joi = require("joi");
 
 module.exports = {
-    // Student CRUD
+    // CRUD Joi
     GET_UUID: Joi.object({
         uuid: Joi.required(),
     }),
-    CREATE_USER: Joi.object({
+    CREATE_STUDENT: Joi.object({
         userName : Joi.string().required(),
         email    : Joi.string().required(),
         password : Joi.string().required()
     }),
-    LOGIN_USER: Joi.object({
+    LOGIN_STUDENT: Joi.object({
         email    : Joi.string().required(),
         password : Joi.string().required()
     }),
-    UPDATE_USER: Joi.object({
+    UPDATE_STUDENT: Joi.object({
         uuid      : Joi.string().required(),
         totalExp  : Joi.number().optional(),
         weeklyExp : Joi.number().optional(),

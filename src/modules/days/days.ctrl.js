@@ -39,7 +39,6 @@ const createDay = async ({ services }, body) => {
 
 const getAllDays = async ({ services }) => {
     const query = getAllDaysQuery();
-
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length === 0) throw { err: 404, message: "No hay resultados para su búsqueda." };
@@ -52,8 +51,8 @@ const getAllDays = async ({ services }) => {
 
 const updatedDay = async ({ services }, body) => {
     if (!body.desc && !body.exp) throw { err: 400, message: "Debe proporcionar una descripción o un valor de experiencia." };
-    const query = updateDayQuery(body);
 
+    const query = updateDayQuery(body);
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length === 0) throw { err: 404, message: "Este día no existe, verifique si tiene un uuid válido." };
@@ -66,7 +65,6 @@ const updatedDay = async ({ services }, body) => {
 
 const getDay = async ({ services }, params) => {
     const query = getDayQuery(params);
-
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length === 0) throw { err: 404, message: "Este día no existe, verifique si tiene un uuid válido." };
@@ -89,7 +87,6 @@ const deleteDay = async ({ services }, params) => {
 // Day Relationships
 const getDaysRels = async ({ services }, params) => {
     const query = getDaysRelsQuery(params);
-
     let data = await services.neo4j.session.run(query);
 
     if (data.records.length === 0) throw { err: 404, message: "No existen relaciones para este nodo." };

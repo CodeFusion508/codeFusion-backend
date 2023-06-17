@@ -12,7 +12,7 @@ module.exports = (deps) => {
         // Content CRUD
         .post("/", endPoint(body, CREATE_CONTENT, createContent))
         .put("/", endPoint(body, UPDATE_CONTENT, updateContent))
-        .get("/:uuid", endPoint(params, GET_UUID, getContent))
+        .get("/:uuid/info", endPoint(params, GET_UUID, getContent))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteContent));
 };
 

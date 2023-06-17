@@ -50,10 +50,7 @@ const createGUser = async ({ services }, body) => {
   cleanRecord(data);
 
   const { email, userName } = data.node;
-  return {
-    data,
-    token: jwt.createToken({ userName, email, uuid })
-  };
+  return { data,token: jwt.createToken({ userName, email, uuid })};
 };
 
 const loginGUser = async ({ services }, body) => {
