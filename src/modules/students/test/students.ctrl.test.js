@@ -9,8 +9,8 @@ const {
     deleteRel,
 
     WaitingForAccountConfirmation,
-    confirmAccount,
-    recoveryAccount
+    recoveryAccount,
+    confirmAccount
 } = require("../students.ctrl.js");
 
 const jwt = require("../../../config/jwt.js");
