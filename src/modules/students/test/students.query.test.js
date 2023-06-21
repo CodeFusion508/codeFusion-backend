@@ -2,6 +2,7 @@ const {
     signUpQuery,
     logInQuery,
     findRegisteredEmailQuery,
+    findDeletedStudentQuery,
     getStudentQuery,
     updateStudentQuery,
     deleteStudentQuery,
@@ -117,5 +118,17 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`WHERE NOT u:softDeleted AND NOT c:softDeleted`);
         expect(query).toContain(`WITH u, c`);
         expect(query).toContain(`MATCH (u)-[r:${body.relation}]->(c)`);
+    });
+
+    it("findDeletedStudentQuery", () => {
+        const body = {
+            email: "AsyncResearch@mail.org"
+        };
+
+        const query = findDeletedStudentQuery(body);
+
+        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"})`);
+        expect(query).toContain(`WHERE  u:softDeleted`);
+        expect(query).toContain(`RETURN u;`);
     });
 });

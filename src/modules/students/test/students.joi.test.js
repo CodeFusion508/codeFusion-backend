@@ -6,6 +6,9 @@ const {
 
   CREATE_RELATION,
   DELETE_RELATION,
+
+  CONFIRM_ACCOUNT,
+  RECOVERY_ACCOUNT
 } = require("../students.joi.js");
 
 describe("Students Joi Tests", () => {
@@ -134,6 +137,28 @@ describe("Students Joi Tests", () => {
       const { error } = DELETE_RELATION.validate(body);
 
       expect(error.details[0].message).toBe('"contentUuid" is required');
+    });
+  });
+
+  describe("CONFIRM_ACCOUNT JOI", () => {
+    it("give error when no token given", () => {
+      const params = {};
+
+      const { error } = CONFIRM_ACCOUNT.validate(params);
+
+      expect(error.details[0].message).toBe('"token" is required');
+    });
+  });
+
+  describe("RECOVERY_ACCOUNT JOI", () => {
+    it("give error when email is a number", () => {
+      const body = {
+        email: 123831
+      };
+
+      const { error } = RECOVERY_ACCOUNT.validate(body);
+
+      expect(error.details[0].message).toBe('"email" must be a string');
     });
   });
 });
