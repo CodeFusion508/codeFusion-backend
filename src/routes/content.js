@@ -11,6 +11,11 @@ module.exports = (deps) => {
     return Router()
         // Content CRUD
         .post("/", endPoint(body, CREATE_CONTENT, createContent))
+        .post("/problem", endPoint(body, CREATE_CONTENT, createContent))
+        .post("/quiz", endPoint(body, CREATE_CONTENT, createContent))
+        .post("/video", endPoint(body, CREATE_CONTENT, createContent))
+        .post("/text", endPoint(body, CREATE_CONTENT, createContent))
+
         .put("/", endPoint(body, UPDATE_CONTENT, updateContent))
         .get("/:uuid/info", endPoint(params, GET_UUID, getContent))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteContent));
