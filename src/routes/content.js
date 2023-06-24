@@ -2,7 +2,14 @@ const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
 const { params, body } = require("../utils/reqData.js");
-const { GET_UUID, CREATE_CONTENT, UPDATE_CONTENT } = require("../modules/content/content.joi.js");
+const {
+    GET_UUID,
+    CREATE_PROBLEM,
+    CREATE_QUIZ,
+    CREATE_VIDEO,
+    CREATE_TEXT,
+    UPDATE_CONTENT
+} = require("../modules/content/content.joi.js");
 
 
 module.exports = (deps) => {
@@ -10,11 +17,10 @@ module.exports = (deps) => {
 
     return Router()
         // Content CRUD
-        .post("/", endPoint(body, CREATE_CONTENT, createContent))
-        .post("/problem", endPoint(body, CREATE_CONTENT, createContent))
-        .post("/quiz", endPoint(body, CREATE_CONTENT, createContent))
-        .post("/video", endPoint(body, CREATE_CONTENT, createContent))
-        .post("/text", endPoint(body, CREATE_CONTENT, createContent))
+        .post("/problem", endPoint(body, CREATE_PROBLEM, createContent))
+        .post("/quiz", endPoint(body, CREATE_QUIZ, createContent))
+        .post("/video", endPoint(body, CREATE_VIDEO, createContent))
+        .post("/text", endPoint(body, CREATE_TEXT, createContent))
 
         .put("/", endPoint(body, UPDATE_CONTENT, updateContent))
         .get("/:uuid/info", endPoint(params, GET_UUID, getContent))

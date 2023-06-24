@@ -1,13 +1,14 @@
 const createContentQuery = (uuid, body) => {
     const query = `
         CREATE (c:Content:${body.label} {
-            uuid  : "${uuid}", 
-            path  : "${body.path}",
-            desc  : "${body.desc}",
+            uuid  : "${uuid}",
             exp   : ${body.exp},
             title : "${body.title}",
+            desc  : "${body.desc}",
+            time  : ${body.time},
+
+            ${body.path ? `path  : "${body.path}",` : ""}
             ${body.link ? `link  : "${body.link}",` : ""}
-            time  : ${body.time}
         })
         WITH c
         MATCH (d:Day {uuid: "${body.dayUuid}"})

@@ -29,12 +29,9 @@ module.exports = {
         path: Joi.string().required()
     }),
     UPDATE_CONTENT: Joi.object({
-        uuid  : Joi.string().required(),
-        desc  : Joi.string().optional(),
-        path  : Joi.string().optional(),
-        exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
-        time  : Joi.number().optional(),
-        link  : Joi.string().optional()
+        ...baseSchema,
+        uuid : Joi.string().required(),
+        path : Joi.string().optional(),
+        link : Joi.string().optional()
     })
 };
