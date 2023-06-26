@@ -7,8 +7,13 @@ const createContentQuery = (uuid, body) => {
             desc  : "${body.desc}",
             time  : ${body.time},
 
-            ${body.path ? `path  : "${body.path}",` : ""}
-            ${body.link ? `link  : "${body.link}",` : ""}
+            ${body.element ? `element : "${body.element}",` : ""}
+            ${body.content ? `content : "${body.content}",` : ""}
+            ${body.language ? `language : "${body.language}",` : ""}
+
+            ${body.path ? `path : "${body.path}",` : ""}
+
+            ${body.link ? `link : "${body.link}",` : ""}
         })
         WITH c
         MATCH (d:Day {uuid: "${body.dayUuid}"})

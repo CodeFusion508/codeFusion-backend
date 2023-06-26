@@ -14,7 +14,10 @@ module.exports = {
         uuid: Joi.required()
     }),
     CREATE_PROBLEM: Joi.object({
-        ...baseSchema
+        ...baseSchema,
+        element  : Joi.string().required(),
+        content  : Joi.string().required(),
+        language : Joi.string().required()
     }),
     CREATE_QUIZ: Joi.object({
         ...baseSchema,
