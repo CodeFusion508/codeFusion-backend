@@ -16,7 +16,7 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        // Content CRUD
+        // Content Creation
         .post("/problem", endPoint(body, CREATE_PROBLEM, createContent))
         .post("/quiz", endPoint(body, CREATE_QUIZ, createContent))
         .post("/video", endPoint(body, CREATE_VIDEO, createContent))
