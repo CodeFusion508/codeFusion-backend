@@ -31,6 +31,7 @@ describe("content joi tests", () => {
   describe("joi create PROBLEM", () => {
     it("give back value when body is correct", () => {
       const body = {
+        label     : "Problem",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -52,6 +53,7 @@ describe("content joi tests", () => {
 
     it("give error when no dayUuid given", () => {
       const body = {
+        label     : "Problem",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -73,6 +75,7 @@ describe("content joi tests", () => {
   describe("joi create QUIZ", () => {
     it("give back value when body is correct", () => {
       const body = {
+        label     : "Quiz",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -92,6 +95,7 @@ describe("content joi tests", () => {
 
     it("give error when no dayUuid given", () => {
       const body = {
+        label     : "Quiz",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -111,6 +115,7 @@ describe("content joi tests", () => {
   describe("joi create VIDEO", () => {
     it("give back value when body is correct", () => {
       const body = {
+        label     : "Video",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -130,6 +135,7 @@ describe("content joi tests", () => {
 
     it("give error when no dayUuid given", () => {
       const body = {
+        label     : "Video",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -149,6 +155,7 @@ describe("content joi tests", () => {
   describe("joi create TEXT", () => {
     it("give back value when body is correct", () => {
       const body = {
+        label     : "Text",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
@@ -168,6 +175,7 @@ describe("content joi tests", () => {
 
     it("give error when no dayUuid given", () => {
       const body = {
+        label     : "Text",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",

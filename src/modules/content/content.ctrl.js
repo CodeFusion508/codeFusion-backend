@@ -8,6 +8,13 @@ const {
     deletedContentQuery
 } = require("./content.query.js");
 
+const {
+    UPDATE_PROBLEM,
+    UPDATE_QUIZ,
+    UPDATE_VIDEO,
+    UPDATE_TEXT
+} = require("./content.joi.js");
+
 
 module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
     return {
@@ -29,9 +36,10 @@ const createContent = async ({ services }, body) => {
     return data;
 };
 
-const updateContent = async ({ services }, body) => {
-    if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
-    const query = updatedContentQuery(body);
+const updateContent = async ({ services }, bodyAndParam) => {
+    const cleanData = contentUpdateVerification(bodyAndParam);
+
+    const query = updatedContentQuery(cleanData);
 
     let data = await services.neo4j.session.run(query);
 
@@ -72,3 +80,25 @@ Object.assign(module.exports, {
     getContent,
     deleteContent
 });
+
+// Helper Functions
+const contentUpdateVerification = (bodyAndParam) => {
+    if (Object.keys(bodyAndParam).length < 3) throw { err: 400, message: "Debe indicar al menos un cambio." };
+
+    switch (bodyAndParam.label) {
+        case "Problem":
+           return UPDATE_PROBLEM(bodyAndParam).value;
+
+        case "Quiz":
+            return UPDATE_QUIZ(bodyAndParam).value;
+
+        case "Text":
+            return UPDATE_TEXT(bodyAndParam).value;
+
+        case "Video":
+            return UPDATE_VIDEO(bodyAndParam).value;
+
+        default:
+            throw { err: 400, message: "No tiene el label correcto." };
+    }
+};

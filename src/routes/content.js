@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
-const { params, body } = require("../utils/reqData.js");
+const { params, body, bodyAndParams } = require("../utils/reqData.js");
 const {
     GET_UUID,
     CREATE_PROBLEM,
@@ -22,7 +22,7 @@ module.exports = (deps) => {
         .post("/video", endPoint(body, CREATE_VIDEO, createContent))
         .post("/text", endPoint(body, CREATE_TEXT, createContent))
 
-        .put("/", endPoint(body, UPDATE_CONTENT, updateContent))
+        .put("/:label", endPoint(bodyAndParams, UPDATE_CONTENT, updateContent))
         .get("/:uuid/info", endPoint(params, GET_UUID, getContent))
         .delete("/:uuid", endPoint(params, GET_UUID, deleteContent));
 };
