@@ -11,6 +11,15 @@ const baseSchema = {
     contentNo : Joi.number().required(),
 };
 
+const baseUpdateSchema = {
+    label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
+    uuid  : Joi.string().required(),
+    exp   : Joi.number().optional(),
+    title : Joi.string().optional(),
+    desc  : Joi.string().optional(),
+    time  : Joi.number().optional(),
+};
+
 module.exports = {
     GET_UUID: Joi.object({
         uuid: Joi.required()
@@ -34,12 +43,7 @@ module.exports = {
         path: Joi.string().required()
     }),
     UPDATE_CONTENT: Joi.object({
-        label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
-        uuid  : Joi.string().required(),
-        exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
-        desc  : Joi.string().optional(),
-        time  : Joi.number().optional(),
+       ...baseUpdateSchema,
 
         // Problem
         element  : Joi.string().optional(),
@@ -54,45 +58,26 @@ module.exports = {
     }),
 
 
+    // For controller verification
     UPDATE_PROBLEM: Joi.object({
-        label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
-        uuid  : Joi.string().required(),
-        exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
-        desc  : Joi.string().optional(),
-        time  : Joi.number().optional(),
+        ...baseUpdateSchema,
 
         element  : Joi.string().optional(),
         content  : Joi.string().optional(),
         language : Joi.string().optional()
     }),
     UPDATE_QUIZ: Joi.object({
-        label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
-        uuid  : Joi.string().required(),
-        exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
-        desc  : Joi.string().optional(),
-        time  : Joi.number().optional(),
+        ...baseUpdateSchema,
 
         path: Joi.string().optional()
     }),
     UPDATE_VIDEO: Joi.object({
-        label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
-        uuid  : Joi.string().required(),
-        exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
-        desc  : Joi.string().optional(),
-        time  : Joi.number().optional(),
+        ...baseUpdateSchema,
 
         link: Joi.string().optional()
     }),
     UPDATE_TEXT: Joi.object({
-        label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
-        uuid  : Joi.string().required(),
-        exp   : Joi.number().optional(),
-        title : Joi.string().optional(),
-        desc  : Joi.string().optional(),
-        time  : Joi.number().optional(),
+        ...baseUpdateSchema,
 
         path: Joi.string().optional()
     })
