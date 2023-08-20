@@ -1,11 +1,24 @@
 const {
   GET_UUID,
-  CREATE_CONTENT,
+  CREATE_PROBLEM,
+  CREATE_QUIZ,
+  CREATE_VIDEO,
+  CREATE_TEXT,
   UPDATE_CONTENT
 } = require("../content.joi.js");
 
 describe("content joi tests", () => {
   describe("content joi uuid", () => {
+    it("Give Value when UUID given", () => {
+      const params = {
+        uuid: "1234567890abcdef"
+      };
+
+      const { value } = GET_UUID.validate(params);
+
+      expect(value).toHaveProperty("uuid", params.uuid);
+    });
+
     it("give error when no UUID given", () => {
       const params = {};
 
@@ -15,64 +28,222 @@ describe("content joi tests", () => {
     });
   });
 
-  describe("joi create CONTENT", () => {
+  describe("joi create PROBLEM", () => {
     it("give back value when body is correct", () => {
       const body = {
-        label     : "d0,e",
-        path      : "/3d3d3/",
+        label     : "Problem",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
         dayUuid   : "2k3-d4l42-3d-l4d23",
         contentNo : 6,
         time      : 100,
+
+        element  : "H1",
+        content  : "String content",
+        language : "Javascript"
       };
 
-      const { value } = CREATE_CONTENT.validate(body);
+      const { value } = CREATE_PROBLEM.validate(body);
 
-      expect(value).toHaveProperty("label");
-      expect(value).toHaveProperty("path");
-      expect(value).toHaveProperty("dayUuid");
+      expect(value).toHaveProperty("desc", body.desc);
+      expect(value).toHaveProperty("element", body.element);
+      expect(value).toHaveProperty("language", body.language);
     });
 
     it("give error when no dayUuid given", () => {
       const body = {
-        label     : "d0,e",
-        path      : "/3d3d3/",
+        label     : "Problem",
         exp       : 10,
         title     : "something 1",
         desc      : "something 1/.",
         dayUuid   : "",
         contentNo : 6,
-        time      : 100
+        time      : 100,
+
+        element  : "H1",
+        content  : "String content",
+        language : "Javascript"
       };
 
-      const { error } = CREATE_CONTENT.validate(body);
+      const { error } = CREATE_PROBLEM.validate(body);
 
       expect(error.details[0].message).toBe('"dayUuid" is not allowed to be empty');
     });
   });
 
-  describe("joi update CONTENT", () => {
-    it("give error when no uuid given", () => {
+  describe("joi create QUIZ", () => {
+    it("give back value when body is correct", () => {
       const body = {
-        desc  : "lorem asd",
-        path  : "3s/3s3s3srcfff",
-        exp   : 120,
-        title : "section 1",
-        time  : 1000
+        label     : "Quiz",
+        exp       : 10,
+        title     : "something 1",
+        desc      : "something 1/.",
+        dayUuid   : "2k3-d4l42-3d-l4d23",
+        contentNo : 6,
+        time      : 100,
+
+        path: "Camino al Cielo"
+      };
+
+      const { value } = CREATE_QUIZ.validate(body);
+
+      expect(value).toHaveProperty("path", body.path);
+      expect(value).toHaveProperty("title", body.title);
+      expect(value).toHaveProperty("time", body.time);
+    });
+
+    it("give error when no dayUuid given", () => {
+      const body = {
+        label     : "Quiz",
+        exp       : 10,
+        title     : "something 1",
+        desc      : "something 1/.",
+        dayUuid   : "2k3-d4l42-3d-l4d23",
+        contentNo : 6,
+        time      : 100,
+
+        path: ""
+      };
+
+      const { error } = CREATE_QUIZ.validate(body);
+
+      expect(error.details[0].message).toBe('"path" is not allowed to be empty');
+    });
+  });
+
+  describe("joi create VIDEO", () => {
+    it("give back value when body is correct", () => {
+      const body = {
+        label     : "Video",
+        exp       : 10,
+        title     : "something 1",
+        desc      : "something 1/.",
+        dayUuid   : "2k3-d4l42-3d-l4d23",
+        contentNo : 6,
+        time      : 100,
+
+        link: "http://example.com"
+      };
+
+      const { value } = CREATE_VIDEO.validate(body);
+
+      expect(value).toHaveProperty("link", body.link);
+      expect(value).toHaveProperty("contentNo", body.contentNo);
+      expect(value).toHaveProperty("exp", body.exp);
+    });
+
+    it("give error when no dayUuid given", () => {
+      const body = {
+        label     : "Video",
+        exp       : 10,
+        title     : "something 1",
+        desc      : "something 1/.",
+        dayUuid   : "2k3-d4l42-3d-l4d23",
+        contentNo : 6,
+        time      : 100,
+
+        link: ""
+      };
+
+      const { error } = CREATE_VIDEO.validate(body);
+
+      expect(error.details[0].message).toBe('"link" is not allowed to be empty');
+    });
+  });
+
+  describe("joi create TEXT", () => {
+    it("give back value when body is correct", () => {
+      const body = {
+        label     : "Text",
+        exp       : 10,
+        title     : "something 1",
+        desc      : "something 1/.",
+        dayUuid   : "2k3-d4l42-3d-l4d23",
+        contentNo : 6,
+        time      : 100,
+
+        path: "Camino al Cielo"
+      };
+
+      const { value } = CREATE_TEXT.validate(body);
+
+      expect(value).toHaveProperty("path", body.path);
+      expect(value).toHaveProperty("desc", body.desc);
+      expect(value).toHaveProperty("exp", body.exp);
+    });
+
+    it("give error when no dayUuid given", () => {
+      const body = {
+        label     : "Text",
+        exp       : 10,
+        title     : "something 1",
+        desc      : "something 1/.",
+        dayUuid   : "2k3-d4l42-3d-l4d23",
+        contentNo : 6,
+        time      : 100
+      };
+
+      const { error } = CREATE_TEXT.validate(body);
+
+      expect(error.details[0].message).toBe('"path" is required');
+    });
+  });
+
+  describe("joi update CONTENT", () => {
+    it("give error when label lowercase", () => {
+      const body = {
+        label : "problem",
+        uuid  : "2k3-d4l42-3d-l4d",
+        exp   : 10,
+        title : "something 1",
+        desc  : "something 1/.",
+        time  : 100,
+
+        element  : "H1",
+        content  : "String content",
+        language : "Javascript"
       };
 
       const { error } = UPDATE_CONTENT.validate(body);
 
-      expect(error.details[0].message).toBe('"uuid" is required');
+      expect(error.details[0].message).toBe('"label" must be one of [Problem, Quiz, Text, Video]');
+    });
+
+    it("give value when body is correct", () => {
+      const body = {
+        label : "Problem",
+        uuid  : "2k3-d4l42-3d-l4d",
+        exp   : 10,
+        title : "something 1",
+        desc  : "something 1/.",
+        time  : 100,
+
+        element  : "H1",
+        content  : "String content",
+        language : "Javascript"
+      };
+
+      const { value } = UPDATE_CONTENT.validate(body);
+
+      expect(value).toHaveProperty("element", body.element);
+      expect(value).toHaveProperty("desc", body.desc);
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("label", body.label);
     });
 
     it("give error when uuid is empty", () => {
       const body = {
+        label : "Problem",
         uuid  : "",
-        title : "sakdlsakld",
-        time  : 39324932
+        exp   : 10,
+        title : "something 1",
+        desc  : "something 1/.",
+        time  : 100,
+
+        element  : "H1",
+        content  : "String content",
+        language : "Javascript"
       };
 
       const { error } = UPDATE_CONTENT.validate(body);

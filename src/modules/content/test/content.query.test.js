@@ -42,6 +42,7 @@ describe("content queries tests", () => {
 
     it("updatedContentQuery", () => {
         const body = {
+            label : "Text",
             uuid  : "1d3-d-312s3123s12-123s",
             desc  : "lorem asd",
             path  : "3s/3sasdsrcff",
@@ -52,9 +53,9 @@ describe("content queries tests", () => {
 
         const query = updatedContentQuery(body);
 
-        expect(query).toContain(`MATCH (c:Content {uuid: "${body.uuid}"})`);
+        expect(query).toContain(`MATCH (c:Content:Text {uuid: "${body.uuid}"})`);
         expect(query).toContain(`c.path = "${body.path}"`);
-        expect(query).toContain(`c.desc = "${body.title}"`);
+        expect(query).toContain(`c.title = "${body.title}"`);
         expect(query).toContain(`c.desc = "${body.desc}"`);
         expect(query).toContain("SET");
         expect(query).toContain("RETURN c;");
