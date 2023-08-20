@@ -10,7 +10,6 @@ const baseSchema = {
     dayUuid   : Joi.string().required(),
     contentNo : Joi.number().required(),
 };
-
 const baseUpdateSchema = {
     label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
     uuid  : Joi.string().required(),
@@ -19,6 +18,7 @@ const baseUpdateSchema = {
     desc  : Joi.string().optional(),
     time  : Joi.number().optional(),
 };
+
 
 module.exports = {
     GET_UUID: Joi.object({

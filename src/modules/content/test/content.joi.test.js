@@ -191,16 +191,15 @@ describe("content joi tests", () => {
   });
 
   describe("joi update CONTENT", () => {
-    it("give error when no uuid given", () => {
+    it("give error when label lowercase", () => {
       const body = {
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
+        label : "problem",
+        uuid  : "2k3-d4l42-3d-l4d",
+        exp   : 10,
+        title : "something 1",
+        desc  : "something 1/.",
+        time  : 100,
 
-        path     : "Camino al Cielo",
         element  : "H1",
         content  : "String content",
         language : "Javascript"
@@ -208,19 +207,40 @@ describe("content joi tests", () => {
 
       const { error } = UPDATE_CONTENT.validate(body);
 
-      expect(error.details[0].message).toBe('"uuid" is required');
+      expect(error.details[0].message).toBe('"label" must be one of [Problem, Quiz, Text, Video]');
+    });
+
+    it("give value when body is correct", () => {
+      const body = {
+        label : "Problem",
+        uuid  : "2k3-d4l42-3d-l4d",
+        exp   : 10,
+        title : "something 1",
+        desc  : "something 1/.",
+        time  : 100,
+
+        element  : "H1",
+        content  : "String content",
+        language : "Javascript"
+      };
+
+      const { value } = UPDATE_CONTENT.validate(body);
+
+      expect(value).toHaveProperty("element", body.element);
+      expect(value).toHaveProperty("desc", body.desc);
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("label", body.label);
     });
 
     it("give error when uuid is empty", () => {
       const body = {
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
+        label : "Problem",
+        uuid  : "",
+        exp   : 10,
+        title : "something 1",
+        desc  : "something 1/.",
+        time  : 100,
 
-        path     : "Camino al Cielo",
         element  : "H1",
         content  : "String content",
         language : "Javascript"
