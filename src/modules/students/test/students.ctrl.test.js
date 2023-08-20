@@ -51,7 +51,7 @@ describe("Students Controller Tests", () => {
             expect(result).toHaveProperty("message", "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión.");
         });
 
-        it("signUp should return back token and data", async () => {
+        it("signUp should return token and data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
 
             const body = {

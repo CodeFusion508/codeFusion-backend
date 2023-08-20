@@ -12,8 +12,8 @@ const {
 } = require("../students.joi.js");
 
 describe("Students Joi Tests", () => {
-  describe("CREATE_STUDENT JOI", () => {
-    it("give error when password is null", () => {
+  describe("CREATE_STUDENT Joi", () => {
+    it("Throw error when password is null", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
         password : null,
@@ -25,7 +25,7 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"password" must be a string');
     });
 
-    it("give error when email is null", () => {
+    it("Throw error when email is null", () => {
       const body = {
         email    : null,
         password : "1234",
@@ -38,8 +38,8 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("UPDATE_STUDENT JOI", () => {
-    it("give error when no uuid given", () => {
+  describe("UPDATE_STUDENT Joi", () => {
+    it("Throw error when no uuid given", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
         userName : "Async Research Institute"
@@ -50,7 +50,7 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when exp is not a number", () => {
+    it("Throw error when exp is not a number", () => {
       const body = {
         uuid     : "03aef53a-f14f-4405-b31f-24c10ca4d3e3",
         totalExp : "Hey123"
@@ -62,8 +62,8 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("LOGIN_STUDENT JOI", () => {
-    it("give error when email is empty", () => {
+  describe("LOGIN_STUDENT Joi", () => {
+    it("Throw error when email is empty", () => {
       const body = {
         email    : "",
         password : "1234",
@@ -74,7 +74,7 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"email" is not allowed to be empty');
     });
 
-    it("give error when password is empty", () => {
+    it("Throw error when password is empty", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
         password : "",
@@ -86,8 +86,8 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("GET_UUID JOI", () => {
-    it("give error when no UUID given", () => {
+  describe("GET_UUID Joi", () => {
+    it("Throw error when no UUID given", () => {
       const params = {};
 
       const { error } = GET_UUID.validate(params);
@@ -96,8 +96,8 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("CREATE_RELATION JOI", () => {
-    it("give error when no uuid is given", () => {
+  describe("CREATE_RELATION Joi", () => {
+    it("Throw error when no uuid is given", () => {
       const body = {
         contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
       };
@@ -107,7 +107,7 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when no contentUuid is given", () => {
+    it("Throw error when no contentUuid is given", () => {
       const body = {
         uuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
       };
@@ -118,8 +118,8 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("DELETE_RELATION JOI", () => {
-    it("give error when no uuid is given", () => {
+  describe("DELETE_RELATION Joi", () => {
+    it("Throw error when no uuid is given", () => {
       const body = {
         contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
       };
@@ -129,7 +129,7 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when no contentUuid is given", () => {
+    it("Throw error when no contentUuid is given", () => {
       const body = {
         uuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
       };
@@ -140,8 +140,8 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("CONFIRM_ACCOUNT JOI", () => {
-    it("give error when no token given", () => {
+  describe("CONFIRM_ACCOUNT Joi", () => {
+    it("Throw error when no token given", () => {
       const params = {};
 
       const { error } = CONFIRM_ACCOUNT.validate(params);
@@ -150,7 +150,7 @@ describe("Students Joi Tests", () => {
     });
   });
 
-  describe("RECOVERY_ACCOUNT JOI", () => {
+  describe("RECOVERY_ACCOUNT Joi", () => {
     it("give error when email is a number", () => {
       const body = {
         email: 123831
