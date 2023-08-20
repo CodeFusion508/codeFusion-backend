@@ -25,7 +25,7 @@ module.exports = async () => {
                 });
         };
 
-        // Schedule the keep alive query to run every 30 minutes
+        // Schedule the keep alive query to run every hour
         const keepAliveInterval = 60 * 60 * 1000; // 1 hour in milliseconds
         setInterval(executeKeepAliveQuery, keepAliveInterval);
 
