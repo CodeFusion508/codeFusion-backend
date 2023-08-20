@@ -87,16 +87,16 @@ const contentUpdateVerification = (bodyAndParam) => {
 
     switch (bodyAndParam.label) {
         case "Problem":
-           return UPDATE_PROBLEM(bodyAndParam).value;
+           return UPDATE_PROBLEM.validate(bodyAndParam).value;
 
         case "Quiz":
-            return UPDATE_QUIZ(bodyAndParam).value;
+            return UPDATE_QUIZ.validate(bodyAndParam).value;
 
         case "Text":
-            return UPDATE_TEXT(bodyAndParam).value;
+            return UPDATE_TEXT.validate(bodyAndParam).value;
 
         case "Video":
-            return UPDATE_VIDEO(bodyAndParam).value;
+            return UPDATE_VIDEO.validate(bodyAndParam).value;
 
         default:
             throw { err: 400, message: "No tiene el label correcto." };

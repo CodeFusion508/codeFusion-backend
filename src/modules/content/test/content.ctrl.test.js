@@ -50,19 +50,26 @@ describe("users controller tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                uuid  : "d45f5f-g654g645-f5f53",
-                label : "SECTION_1",
-                path  : "/3d3d3/",
-                title : "something 1",
-                desc  : "something here1."
+                label : "Problem",
+                uuid  : "123ks21-d21d2e31-d21d21",
+                exp   : 420,
+                title : "How to noClip",
+                desc  : "This is how to noClip and go to the backrooms",
+                time  : 2023,
+
+                element  : "div",
+                language : "Javascript"
             };
 
             const result = await updateContent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("stats");
+            expect(result.stats).toHaveProperty("nodesCreated");
+            expect(result.stats).toHaveProperty("propertiesSet");
             expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("labels");
+            expect(result.node).toHaveProperty("time");
         });
     });
 
