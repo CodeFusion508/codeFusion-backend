@@ -8,7 +8,7 @@ const {
     getSprintRels
 } = require("../sprints.ctrl.js");
 
-describe("users controller tests", () => {
+describe("Sprint Controller Tests", () => {
     let deps;
 
     beforeAll(() => {
@@ -24,8 +24,8 @@ describe("users controller tests", () => {
 
     });
 
-    describe("createSprint", () => {
-        it("createSprint should return data", async () => {
+    describe("createSprint Tests", () => {
+        it("createSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
@@ -44,8 +44,8 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("getAllSprints", () => {
-        it("getAllSprints should return data", async () => {
+    describe("getAllSprints Tests", () => {
+        it("getAllSprints should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockAllSprints);
 
             const result = await getAllSprints(deps)
@@ -57,8 +57,8 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("updateSprint", () => {
-        it("updateSprint should throw an error", async () => {
+    describe("updateSprint Tests", () => {
+        it("updateSprint should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
@@ -73,7 +73,7 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("message", "Debe indicar al menos un cambio.");
         });
 
-        it("updateSprint should return correct data", async () => {
+        it("updateSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
@@ -92,8 +92,8 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("getSprint", () => {
-        it("getSprint should return data", async () => {
+    describe("getSprint Tests", () => {
+        it("getSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const params = {
@@ -108,7 +108,7 @@ describe("users controller tests", () => {
             expect(result.node).toHaveProperty("title");
         });
 
-        it("getSprint should throw an error", async () => {
+        it("getSprint should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {
@@ -124,8 +124,8 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("deleteSprint", () => {
-        it("deleteSprint should return data", async () => {
+    describe("deleteSprint Tests", () => {
+        it("deleteSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const body = {
@@ -141,8 +141,8 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("getSprintRels", () => {
-        it("getSprintRels should return data", async () => {
+    describe("getSprintRels Tests", () => {
+        it("getSprintRels should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockSprinRels);
 
             const params = {
@@ -158,7 +158,7 @@ describe("users controller tests", () => {
             expect(result.node[1]).toHaveProperty("rels");
         });
 
-        it("getSprintRels should throw an error", async () => {
+        it("getSprintRels should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {

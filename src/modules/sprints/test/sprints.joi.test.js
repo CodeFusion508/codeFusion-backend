@@ -4,9 +4,9 @@ const {
   UPDATE_SPRINT
 } = require("../sprints.joi.js");
 
-describe("sprints joi tests", () => {
-  describe("create sprint joi", () => {
-    it("give error when title is number", () => {
+describe("Sprints Joi Tests", () => {
+  describe("CREATE_SPRINT Joi", () => {
+    it("Throw error when title is number", () => {
       const body = {
         path  : "something",
         title : 123,
@@ -19,7 +19,7 @@ describe("sprints joi tests", () => {
       expect(error.details[0].message).toBe('"title" must be a string');
     });
 
-    it("give error when path is number", () => {
+    it("Throw error when path is number", () => {
       const body = {
         path  : 8403129,
         title : "something",
@@ -33,8 +33,8 @@ describe("sprints joi tests", () => {
     });
   });
 
-  describe("sprint joi uuid", () => {
-    it("give error when no UUID given", () => {
+  describe("GET_UUID Joi", () => {
+    it("Throw error when no UUID given", () => {
       const params = {};
 
       const { error } = GET_UUID.validate(params);
@@ -43,8 +43,8 @@ describe("sprints joi tests", () => {
     });
   });
 
-  describe("update sprint joi", () => {
-    it("give error when no uuid given", () => {
+  describe("UPDATE_SPRINT Joi", () => {
+    it("Throw error when no uuid given", () => {
       const body = {
         totalExp : 11,
         title    : "some1",
@@ -57,7 +57,7 @@ describe("sprints joi tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when path is number", () => {
+    it("Throw error when path is number", () => {
       const body = {
         uuid     : "d93k240d-d94k032i",
         totalExp : 11,

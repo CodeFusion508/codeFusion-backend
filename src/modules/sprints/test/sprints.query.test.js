@@ -8,8 +8,8 @@ const {
     getSprintsRelsQuery
 } = require("../sprints.query.js");
 
-describe("users query tests", () => {
-    it("createSprintQuery", () => {
+describe("Sprints Query Tests", () => {
+    it("createSprintQuery should have proper query", () => {
         const body = {
             title : "something1!here",
             desc  : "something1!here"
@@ -25,7 +25,7 @@ describe("users query tests", () => {
         expect(query).toContain("RETURN s;");
     });
 
-    it("getAllSprintsQuery", () => {
+    it("getAllSprintsQuery should have proper query", () => {
         const query = getAllSprintsQuery();
 
         expect(query).toContain("MATCH (s:Sprint)");
@@ -33,7 +33,7 @@ describe("users query tests", () => {
         expect(query).toContain("RETURN s;");
     });
 
-    it("updateSprintQuery", () => {
+    it("updateSprintQuery should have proper query", () => {
         const body = {
             uuid  : "1c12d3x-123d1232c13",
             title : "something1!here",
@@ -49,7 +49,7 @@ describe("users query tests", () => {
         expect(query).toContain(`s.desc = "${body.desc}"`);
     });
 
-    it("getSprintQuery", () => {
+    it("getSprintQuery should have proper query", () => {
         const params = {
             uuid: "1c12d3x-123d1232c13"
         };
@@ -61,7 +61,7 @@ describe("users query tests", () => {
         expect(query).toContain("RETURN s;");
     });
 
-    it("deleteSprintQuery", () => {
+    it("deleteSprintQuery should have proper query", () => {
         const params = {
             uuid: "1c12d3x-123d1232c13"
         };
@@ -72,7 +72,7 @@ describe("users query tests", () => {
         expect(query).toContain("SET s:softDeleted;");
     });
 
-    it("getSprintsRelsQuery", () => {
+    it("getSprintsRelsQuery should have proper query", () => {
         const params = {
             uuid: "1c12d3x-123d1232c13"
         };
