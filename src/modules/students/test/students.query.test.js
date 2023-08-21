@@ -31,7 +31,7 @@ describe("Student Query Tests", () => {
 
     it("logInQuery Test", () => {
         const body = {
-            email: "AsyncResearch@mail.org",
+            email: "AsyncResearch@mail.org"
         };
 
         const query = logInQuery(body);
@@ -42,7 +42,7 @@ describe("Student Query Tests", () => {
 
     it("findRegisteredEmailQuery Test", () => {
         const body = {
-            email: "AsyncResearch@mail.org",
+            email: "AsyncResearch@mail.org"
         };
 
         const query = findRegisteredEmailQuery(body);
@@ -52,7 +52,7 @@ describe("Student Query Tests", () => {
 
     it("getStudentQuery Test", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13",
+            uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7"
         };
 
         const query = getStudentQuery(params);
@@ -63,7 +63,7 @@ describe("Student Query Tests", () => {
 
     it("updateStudentQuery Test", () => {
         const body = {
-            uuid     : "1c12d3x-123d1232c13",
+            uuid     : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
             email    : "AsyncResearch@mail.org",
             password : "password",
             userName : "Async Research Institute"
@@ -80,7 +80,7 @@ describe("Student Query Tests", () => {
 
     it("deleteStudentQuery Test", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13",
+            uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
         };
 
         const query = deleteStudentQuery(params);
@@ -91,10 +91,10 @@ describe("Student Query Tests", () => {
 
     it("createRelQuery Test", () => {
         const body = {
-            uuid        : "73d45f70-2f67-46ba-9609-1302f454065a",
-            contentUuid : "4b0e6156-cb5b-4c6a-9cf0-fdf98e1c24b8",
+            uuid        : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+            contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
             op          : "Day",
-            relation    : "COMPLETED",
+            relation    : "COMPLETED"
         };
 
         const query = createRelQuery(body);
@@ -106,8 +106,8 @@ describe("Student Query Tests", () => {
 
     it("deleteRelQuery Test", () => {
         const body = {
-            uuid        : "73d45f70-2f67-46ba-9609-1302f454065a",
-            contentUuid : "4b0e6156-cb5b-4c6a-9cf0-fdf98e1c24b8",
+            uuid        : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+            contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
             op          : "Day",
             relation    : "COMPLETED",
         };

@@ -24,7 +24,7 @@ describe("Sprint Controller Tests", () => {
 
     });
 
-    describe("createSprint Tests", () => {
+    describe("createSprint Controller", () => {
         it("createSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
@@ -44,7 +44,7 @@ describe("Sprint Controller Tests", () => {
         });
     });
 
-    describe("getAllSprints Tests", () => {
+    describe("getAllSprints Controller", () => {
         it("getAllSprints should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockAllSprints);
 
@@ -57,7 +57,7 @@ describe("Sprint Controller Tests", () => {
         });
     });
 
-    describe("updateSprint Tests", () => {
+    describe("updateSprint Controller", () => {
         it("updateSprint should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
@@ -92,7 +92,7 @@ describe("Sprint Controller Tests", () => {
         });
     });
 
-    describe("getSprint Tests", () => {
+    describe("getSprint Controller", () => {
         it("getSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
@@ -124,7 +124,7 @@ describe("Sprint Controller Tests", () => {
         });
     });
 
-    describe("deleteSprint Tests", () => {
+    describe("deleteSprint Controller", () => {
         it("deleteSprint should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
@@ -141,7 +141,7 @@ describe("Sprint Controller Tests", () => {
         });
     });
 
-    describe("getSprintRels Tests", () => {
+    describe("getSprintRels Controller", () => {
         it("getSprintRels should return proper data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockSprinRels);
 

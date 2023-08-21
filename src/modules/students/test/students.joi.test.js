@@ -28,7 +28,7 @@ describe("Students Joi Tests", () => {
     it("Throw error when email is null", () => {
       const body = {
         email    : null,
-        password : "1234",
+        password : "password",
         userName : "Async Research Institute"
       };
 
@@ -52,8 +52,8 @@ describe("Students Joi Tests", () => {
 
     it("Throw error when exp is not a number", () => {
       const body = {
-        uuid     : "03aef53a-f14f-4405-b31f-24c10ca4d3e3",
-        totalExp : "Hey123"
+        uuid     : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+        totalExp : "Totally not malicious"
       };
 
       const { error } = UPDATE_STUDENT.validate(body);
@@ -66,7 +66,7 @@ describe("Students Joi Tests", () => {
     it("Throw error when email is empty", () => {
       const body = {
         email    : "",
-        password : "1234",
+        password : "password",
       };
 
       const { error } = LOGIN_STUDENT.validate(body);
@@ -99,7 +99,7 @@ describe("Students Joi Tests", () => {
   describe("CREATE_RELATION Joi", () => {
     it("Throw error when no uuid is given", () => {
       const body = {
-        contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        contentUuid: "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4"
       };
 
       const { error } = CREATE_RELATION.validate(body);
@@ -109,7 +109,7 @@ describe("Students Joi Tests", () => {
 
     it("Throw error when no contentUuid is given", () => {
       const body = {
-        uuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7"
       };
 
       const { error } = CREATE_RELATION.validate(body);
@@ -121,7 +121,7 @@ describe("Students Joi Tests", () => {
   describe("DELETE_RELATION Joi", () => {
     it("Throw error when no uuid is given", () => {
       const body = {
-        contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        contentUuid: "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4"
       };
 
       const { error } = DELETE_RELATION.validate(body);
@@ -131,7 +131,7 @@ describe("Students Joi Tests", () => {
 
     it("Throw error when no contentUuid is given", () => {
       const body = {
-        uuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7"
       };
 
       const { error } = DELETE_RELATION.validate(body);
@@ -153,7 +153,7 @@ describe("Students Joi Tests", () => {
   describe("RECOVERY_ACCOUNT Joi", () => {
     it("give error when email is a number", () => {
       const body = {
-        email: 123831
+        email: 1993
       };
 
       const { error } = RECOVERY_ACCOUNT.validate(body);

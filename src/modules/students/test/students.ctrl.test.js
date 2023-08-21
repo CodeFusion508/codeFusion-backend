@@ -34,12 +34,12 @@ describe("Students Controller Tests", () => {
     });
 
     describe("signUp Controller", () => {
-        it("signUp should throw an error", async () => {
+        it("signUp should throw an error if email has been registered", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
                 email    : "AsyncResearch@mail.org",
-                password : "1234",
+                password : "password",
                 userName : "Async Research Institute"
             };
 
@@ -56,7 +56,7 @@ describe("Students Controller Tests", () => {
 
             const body = {
                 email    : "AsyncResearch@mail.org",
-                password : "1234",
+                password : "password",
                 userName : "Async Research Institute"
             };
 
@@ -70,12 +70,12 @@ describe("Students Controller Tests", () => {
     });
 
     describe("logIn Controller", () => {
-        it("logIn should throw an error", async () => {
+        it("logIn should throw an error if password is incorrect", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
                 email    : "AsyncResearch@mail.org",
-                password : "12345",
+                password : "incorrectPassword",
                 userName : "Async Research Institute"
             };
 
@@ -113,7 +113,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
             };
 
             const result = await deleteStudent(deps, param)
@@ -126,11 +126,11 @@ describe("Students Controller Tests", () => {
     });
 
     describe("getStudent Controller", () => {
-        it("getStudent should throw an error", async () => {
+        it("getStudent should throw an error if user doesn't exist", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "!C0RRUPT-1D23-F&KE-5678-!D3ADBU66",
             };
 
             const result = await getStudent(deps, param)
@@ -141,11 +141,11 @@ describe("Students Controller Tests", () => {
             expect(result).toHaveProperty("message", "Este usuario no existe, verifique si tiene el uuid válido.");
         });
 
-        it("getStudent should return formatted result and records", async () => {
+        it("getStudent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const param = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
             };
 
             const result = await getStudent(deps, param)
@@ -158,11 +158,11 @@ describe("Students Controller Tests", () => {
     });
 
     describe("updateStudent Controller", () => {
-        it("updateStudent should throw an error if body has no changes", async () => {
+        it("updateStudent should throw an error if body has less than one change", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
             };
 
             const result = await updateStudent(deps, body)
@@ -177,7 +177,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid  : "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid  : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
                 email : "AsyncResearch@mail.org"
             };
 
@@ -191,14 +191,14 @@ describe("Students Controller Tests", () => {
     });
 
     describe("createRel Controller", () => {
-        it("createRel should throw an error", async () => {
+        it("createRel should throw an error if user doesn't exist", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const body = {
-                "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
-                "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
-                "op"          : "Sprint",
-                "relation"    : "related"
+                uuid        : "!C0RRUPT-1D23-F&KE-5678-!D3ADBU66",
+                contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
+                op          : "Sprint",
+                relation    : "COMPLETED"
             };
 
             const result = await createRel(deps, body)
@@ -213,10 +213,10 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreateRel);
 
             const body = {
-                "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
-                "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
-                "op"          : "Sprint",
-                "relation"    : "related"
+                uuid        : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+                contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
+                op          : "Sprint",
+                relation    : "COMPLETED"
             };
 
             const result = await createRel(deps, body)
@@ -234,10 +234,10 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreateRel);
 
             const body = {
-                "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
-                "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
-                "op"          : "Sprint",
-                "relation"    : "related"
+                uuid       : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+                contentUui : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
+                op         : "Sprint",
+                relation   : "COMPLETED"
             };
 
             const result = await deleteRel(deps, body)
@@ -411,7 +411,7 @@ let mockValue = {
                         },
                         "password" : "1234",
                         "userName" : "Async Research Institute",
-                        "uuid"     : "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                        "uuid"     : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
                         "totalExp" : {
                             "low"  : 0,
                             "high" : 0
@@ -608,7 +608,7 @@ let mockCreateRel = {
                         "low"  : 33,
                         "high" : 0
                     },
-                    "type"               : "related",
+                    "type"               : "COMPLETED",
                     "properties"         : {},
                     "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:31",
                     "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:30",
@@ -622,7 +622,7 @@ let mockCreateRel = {
     ],
     "summary": {
         "query": {
-            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:related]->(c)\n            RETURN r;\n        ",
+            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:COMPLETED]->(c)\n            RETURN r;\n        ",
             "parameters" : {}
         },
         "queryType" : "rw",
