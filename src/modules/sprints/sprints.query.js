@@ -32,9 +32,6 @@ const updateSprintQuery = (body) => {
     if (body.desc) {
         propsToUpdate.push(`s.desc = "${body.desc}"`);
     }
-    if (body.path) {
-        propsToUpdate.push(`s.path = "${body.path}"`);
-    }
 
     const updateQuery = `
         MATCH (s:Sprint {uuid: "${body.uuid}"})
