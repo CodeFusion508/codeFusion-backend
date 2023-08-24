@@ -1,11 +1,12 @@
 // Sprint CRUD
 const createSprintQuery = (uuid, body) => {
     const query = `
-        CREATE (s:Sprint:${body.label} {
-            uuid     : "${uuid}", 
-            totalExp : 0,
+        CREATE (s:Sprint {
+            uuid     : "${uuid}",
+            sprintNo : ${body.sprintNo},
             title    : "${body.title}",
-            desc     : "${body.desc}"
+            desc     : "${body.desc}",
+            totalExp : 0
         })
         RETURN s;
     `;

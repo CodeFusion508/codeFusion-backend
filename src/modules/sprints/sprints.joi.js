@@ -5,14 +5,15 @@ module.exports = {
         uuid: Joi.required()
     }),
     CREATE_SPRINT: Joi.object({
-        label : Joi.string().required(),
-        title : Joi.string().required(),
-        desc  : Joi.string().required()
+        sprintNo : Joi.string().required(),
+        title    : Joi.string().required(),
+        desc     : Joi.string().required()
     }),
     UPDATE_SPRINT: Joi.object({
         uuid     : Joi.string().required(),
-        totalExp : Joi.number().optional(),
+        sprintNo : Joi.string().optional(),
         title    : Joi.string().optional(),
-        desc     : Joi.string().optional()
+        desc     : Joi.string().optional(),
+        totalExp : Joi.number().optional()
     })
 };
