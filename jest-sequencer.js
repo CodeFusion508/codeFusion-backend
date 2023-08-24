@@ -8,10 +8,13 @@ class FolderSequencer extends Sequencer {
         // Group tests by their directory
         const testsByFolder = tests.reduce((result, test) => {
             const folder = path.dirname(test.path);
+
             if (!result[folder]) {
                 result[folder] = [];
             }
+
             result[folder].push(test);
+
             return result;
         }, {});
 
