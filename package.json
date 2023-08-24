@@ -5,12 +5,12 @@
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node src/index.js",
+    "node:start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore",
-    "test": "jest --colors --runInBand",
-    "coverage": "jest --colors --coverage",
-    "clear": "jest --clearCache"
+    "test:run": "jest --colors --runInBand",
+    "test:coverage": "jest --colors --coverage",
+    "test:clear": "jest --clearCache"
   },
   "repository": {
     "type": "git",
