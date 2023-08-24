@@ -11,7 +11,7 @@ const {
 describe("Sprint Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {

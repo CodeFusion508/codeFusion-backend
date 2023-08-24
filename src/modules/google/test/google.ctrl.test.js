@@ -10,7 +10,7 @@ const jwt = require("../../../config/jwt.js");
 describe("Google Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {

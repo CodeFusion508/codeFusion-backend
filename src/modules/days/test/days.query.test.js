@@ -11,14 +11,17 @@ const {
 describe("day querys tests", () => {
     it("createDayQuery", () => {
         const body = {
-            desc: "something1!here"
+            desc       : 12,
+            dayNo      : 4,
+            sprintUuid : "356a0665-e499-408b-95d9-93aec11a9544"
         };
-        const uuid = "1c12d3x-123d1232c13";
+        const uuid = "e1fa1541-a533-4936-bcbd-19221ad5da9e";
 
         const query = createDayQuery(uuid, body);
 
         expect(query).toContain(`CREATE (d:Day`);
         expect(query).toContain(`"${uuid}"`);
+        expect(query).toContain(`"${body.sprintUuid}"`);
         expect(query).toContain(`CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)`);
     });
 
@@ -32,9 +35,9 @@ describe("day querys tests", () => {
 
     it("updateDayQuery", () => {
         const body = {
-            uuid : "1c12d3x-123d1232c13",
-            desc : "something1!here",
-            exp  : 10
+            uuid : "e1fa1541-a533-4936-bcbd-19221ad5da9e",
+            exp  : 1994,
+            desc : "Hell on Earth"
         };
 
         const query = updateDayQuery(body);
@@ -47,7 +50,7 @@ describe("day querys tests", () => {
 
     it("getDayQuery", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
 
         const query = getDayQuery(params);
@@ -59,7 +62,7 @@ describe("day querys tests", () => {
 
     it("deleteDayQuery", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
 
         const query = deleteDayQuery(params);
@@ -70,7 +73,7 @@ describe("day querys tests", () => {
 
     it("getDaysRelsQuery", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
 
         const query = getDaysRelsQuery(params);

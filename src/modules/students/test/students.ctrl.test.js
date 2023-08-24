@@ -19,7 +19,7 @@ const jwt = require("../../../config/jwt.js");
 describe("Students Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {
