@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix --ignore-path .eslintignore",
-    "test": "jest --colors",
+    "test": "jest --colors --runInBand",
     "coverage": "jest --colors --coverage",
     "clearCache": "jest --clearCache"
   },
