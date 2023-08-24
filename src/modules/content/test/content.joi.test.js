@@ -230,7 +230,7 @@ describe("Content Joi Tests", () => {
 
       expect(value).toHaveProperty("element", body.element);
       expect(value).toHaveProperty("desc", body.desc);
-      expect(value).toHaveProperty("dayUuid", body.dayUuid);
+      expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("label", body.label);
     });
   });

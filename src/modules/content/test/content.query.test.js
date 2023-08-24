@@ -27,7 +27,7 @@ describe("Content Query Tests", () => {
         expect(query).toContain(`CREATE (c:Content:${body.label}`);
         expect(query).toContain(`"${uuid}"`);
         expect(query).toContain(`"${body.title}"`);
-        expect(query).toContain(`"${body.path}"`);
+        expect(query).toContain(`"${body.content}"`);
         expect(query).toContain(`CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)`);
     });
 
@@ -60,8 +60,8 @@ describe("Content Query Tests", () => {
 
         const query = updatedContentQuery(body);
 
-        expect(query).toContain(`MATCH (c:Content:Text {uuid: "${body.uuid}"})`);
-        expect(query).toContain(`c.path = "${body.path}"`);
+        expect(query).toContain(`MATCH (c:Content:${body.label} {uuid: "${body.uuid}"})`);
+        expect(query).toContain(`c.content = "${body.content}"`);
         expect(query).toContain(`c.title = "${body.title}"`);
         expect(query).toContain(`c.desc = "${body.desc}"`);
         expect(query).toContain("SET");
