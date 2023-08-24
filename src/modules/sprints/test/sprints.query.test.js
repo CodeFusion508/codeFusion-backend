@@ -11,15 +11,17 @@ const {
 describe("Sprints Query Tests", () => {
     it("createSprintQuery should have proper query", () => {
         const body = {
-            title : "something1!here",
-            desc  : "something1!here"
+            sprintNo : 1993,
+            title    : "The Backrooms",
+            desc     : "If you're not careful and you noclip out of reality in the wrong areas"
         };
-        const uuid = "1c12d3x-123d1232c13";
+        const uuid = "MOCK-0e32-486c-9205-cc6c2b87eaf0";
 
         const query = createSprintQuery(uuid, body);
 
-        expect(query).toContain(`CREATE (s:Sprint:${body.label}`);
+        expect(query).toContain(`CREATE (s:Sprint`);
         expect(query).toContain(`"${uuid}"`);
+        expect(query).toContain(`${body.sprintNo}`);
         expect(query).toContain(`"${body.title}"`);
         expect(query).toContain(`"${body.desc}"`);
         expect(query).toContain("RETURN s;");
@@ -35,9 +37,11 @@ describe("Sprints Query Tests", () => {
 
     it("updateSprintQuery should have proper query", () => {
         const body = {
-            uuid  : "1c12d3x-123d1232c13",
-            title : "something1!here",
-            desc  : "something1!here"
+            uuid     : "MOCK-0e32-486c-9205-cc6c2b87eaf0",
+            sprintNo : 1993,
+            title    : "Doom",
+            desc     : "Avenge Daisy",
+            totalExp : 1993
         };
 
         const query = updateSprintQuery(body);
@@ -45,13 +49,15 @@ describe("Sprints Query Tests", () => {
         expect(query).toContain(`MATCH (s:Sprint {uuid: "${body.uuid}"})`);
         expect(query).toContain("WHERE NOT s:softDeleted");
         expect(query).toContain("SET");
+        expect(query).toContain(`s.sprintNo = ${body.sprintNo}`);
         expect(query).toContain(`s.title = "${body.title}"`);
         expect(query).toContain(`s.desc = "${body.desc}"`);
+        expect(query).toContain(`s.totalExp = ${body.totalExp}`);
     });
 
     it("getSprintQuery should have proper query", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
         };
 
         const query = getSprintQuery(params);
@@ -63,7 +69,7 @@ describe("Sprints Query Tests", () => {
 
     it("deleteSprintQuery should have proper query", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
         };
 
         const query = deleteSprintQuery(params);
@@ -74,7 +80,7 @@ describe("Sprints Query Tests", () => {
 
     it("getSprintsRelsQuery should have proper query", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
         };
 
         const query = getSprintsRelsQuery(params);

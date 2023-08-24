@@ -24,14 +24,17 @@ const getAllSprintsQuery = () => `
 const updateSprintQuery = (body) => {
     let propsToUpdate = [];
 
-    if (body.totalExp) {
-        propsToUpdate.push(`s.totalExp = ${body.totalExp}`);
+    if (body.sprintNo) {
+        propsToUpdate.push(`s.sprintNo = ${body.sprintNo}`);
     }
     if (body.title) {
         propsToUpdate.push(`s.title = "${body.title}"`);
     }
     if (body.desc) {
         propsToUpdate.push(`s.desc = "${body.desc}"`);
+    }
+    if (body.totalExp) {
+        propsToUpdate.push(`s.totalExp = ${body.totalExp}`);
     }
 
     const updateQuery = `

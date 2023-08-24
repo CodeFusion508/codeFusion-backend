@@ -8,10 +8,9 @@ describe("Sprints Joi Tests", () => {
   describe("CREATE_SPRINT Joi", () => {
     it("Throw error when title is number", () => {
       const body = {
-        path  : "something",
-        title : 123,
-        desc  : "something",
-        label : "something"
+        sprintNo : 1993,
+        title    : 1993,
+        desc     : "If you're not careful and you noclip out of reality in the wrong areas"
       };
 
       const { error } = CREATE_SPRINT.validate(body);
@@ -19,17 +18,18 @@ describe("Sprints Joi Tests", () => {
       expect(error.details[0].message).toBe('"title" must be a string');
     });
 
-    it("Throw error when path is number", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        path  : 8403129,
-        title : "something",
-        desc  : "something",
-        label : "something"
+        sprintNo : 1993,
+        title    : "The Backrooms",
+        desc     : "If you're not careful and you noclip out of reality in the wrong areas"
       };
 
-      const { error } = CREATE_SPRINT.validate(body);
+      const { value } = CREATE_SPRINT.validate(body);
 
-      expect(error.details[0].message).toBe('"path" must be a string');
+      expect(value).toHaveProperty("sprintNo", body.sprintNo);
+      expect(value).toHaveProperty("title", body.title);
+      expect(value).toHaveProperty("desc", body.desc);
     });
   });
 
@@ -41,15 +41,26 @@ describe("Sprints Joi Tests", () => {
 
       expect(error.details[0].message).toBe('"uuid" is required');
     });
+
+    it("Give value when body is correct", () => {
+      const params = {
+        uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+      };
+
+      const { value } = CREATE_SPRINT.validate(params);
+
+      expect(value).toHaveProperty("uuid", params.uuid);
+    });
   });
 
   describe("UPDATE_SPRINT Joi", () => {
     it("Throw error when no uuid given", () => {
       const body = {
-        totalExp : 11,
-        title    : "some1",
-        desc     : "thing.1",
-        path     : "here/"
+        uuid     : undefined,
+        sprintNo : 1993,
+        title    : "Doom",
+        desc     : "Avenge Daisy",
+        totalExp : 1993
       };
 
       const { error } = UPDATE_SPRINT.validate(body);
@@ -57,18 +68,22 @@ describe("Sprints Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("Throw error when path is number", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        uuid     : "d93k240d-d94k032i",
-        totalExp : 11,
-        title    : "some1",
-        desc     : "thing.1",
-        path     : 494321
+        uuid     : "MOCK-0e32-486c-9205-cc6c2b87eaf0",
+        sprintNo : 1993,
+        title    : "Doom",
+        desc     : "Avenge Daisy",
+        totalExp : 1993
       };
 
-      const { error } = UPDATE_SPRINT.validate(body);
+      const { value } = CREATE_SPRINT.validate(body);
 
-      expect(error.details[0].message).toBe('"path" must be a string');
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("sprintNo", body.sprintNo);
+      expect(value).toHaveProperty("title", body.title);
+      expect(value).toHaveProperty("desc", body.desc);
+      expect(value).toHaveProperty("totalExp", body.totalExp);
     });
   });
 

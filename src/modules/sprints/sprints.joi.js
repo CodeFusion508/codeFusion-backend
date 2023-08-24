@@ -5,13 +5,13 @@ module.exports = {
         uuid: Joi.required()
     }),
     CREATE_SPRINT: Joi.object({
-        sprintNo : Joi.string().required(),
+        sprintNo : Joi.number().required(),
         title    : Joi.string().required(),
         desc     : Joi.string().required()
     }),
     UPDATE_SPRINT: Joi.object({
         uuid     : Joi.string().required(),
-        sprintNo : Joi.string().optional(),
+        sprintNo : Joi.number().optional(),
         title    : Joi.string().optional(),
         desc     : Joi.string().optional(),
         totalExp : Joi.number().optional()
