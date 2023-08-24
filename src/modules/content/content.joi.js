@@ -7,12 +7,12 @@ const baseSchema = {
     desc  : Joi.string().required(),
     time  : Joi.number().required(),
 
-    dayUuid   : Joi.string().required(),
+    dayUuid   : Joi.string().uuid().required(),
     contentNo : Joi.number().required(),
 };
 const baseUpdateSchema = {
     label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
-    uuid  : Joi.string().required(),
+    uuid  : Joi.string().uuid().required(),
     exp   : Joi.number().optional(),
     title : Joi.string().optional(),
     desc  : Joi.string().optional(),

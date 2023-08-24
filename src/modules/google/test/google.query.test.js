@@ -4,7 +4,7 @@ const {
 } = require("../google.query.js");
 
 describe("Google Query Tests", () => {
-    it("googleSignUpQuery Test", () => {
+    it("googleSignUpQuery should have proper query", () => {
         const body = {
             email    : "AsyncResearch@mail.org",
             userName : "Async Research Institute"
@@ -19,7 +19,7 @@ describe("Google Query Tests", () => {
         expect(query).toContain(`"${body.userName}"`);
     });
 
-    it("findRegisteredEmail Test", () => {
+    it("findRegisteredEmail should have proper query", () => {
         const body = {
             email: "AsyncResearch@mail.org",
         };

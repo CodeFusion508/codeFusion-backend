@@ -8,8 +8,8 @@ const {
     getDaysRelsQuery
 } = require("../days.query.js");
 
-describe("day querys tests", () => {
-    it("createDayQuery", () => {
+describe("Day Query Tests", () => {
+    it("createDayQuery should have proper query", () => {
         const body = {
             desc       : 12,
             dayNo      : 4,
@@ -25,7 +25,7 @@ describe("day querys tests", () => {
         expect(query).toContain(`CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)`);
     });
 
-    it("getAllDaysQuery", () => {
+    it("getAllDaysQuery should have proper query", () => {
         const query = getAllDaysQuery();
 
         expect(query).toContain("MATCH (d:Day)");
@@ -33,7 +33,7 @@ describe("day querys tests", () => {
         expect(query).toContain("RETURN d;");
     });
 
-    it("updateDayQuery", () => {
+    it("updateDayQuery should have proper query", () => {
         const body = {
             uuid : "e1fa1541-a533-4936-bcbd-19221ad5da9e",
             exp  : 1994,
@@ -48,7 +48,7 @@ describe("day querys tests", () => {
         expect(query).toContain(`d.desc = "${body.desc}"`);
     });
 
-    it("getDayQuery", () => {
+    it("getDayQuery should have proper query", () => {
         const params = {
             uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
@@ -60,7 +60,7 @@ describe("day querys tests", () => {
         expect(query).toContain("RETURN d;");
     });
 
-    it("deleteDayQuery", () => {
+    it("deleteDayQuery should have proper query", () => {
         const params = {
             uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
@@ -71,7 +71,7 @@ describe("day querys tests", () => {
         expect(query).toContain("SET d:softDeleted;");
     });
 
-    it("getDaysRelsQuery", () => {
+    it("getDaysRelsQuery should have proper query", () => {
         const params = {
             uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };

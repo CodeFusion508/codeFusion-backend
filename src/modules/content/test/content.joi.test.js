@@ -7,41 +7,61 @@ const {
   UPDATE_CONTENT
 } = require("../content.joi.js");
 
-describe("content joi tests", () => {
-  describe("content joi uuid", () => {
-    it("Give Value when UUID given", () => {
-      const params = {
-        uuid: "1234567890abcdef"
-      };
-
-      const { value } = GET_UUID.validate(params);
-
-      expect(value).toHaveProperty("uuid", params.uuid);
-    });
-
-    it("give error when no UUID given", () => {
+describe("Content Joi Tests", () => {
+  describe("GET_UUID Joi", () => {
+    it("Throw error when no UUID given", () => {
       const params = {};
 
       const { error } = GET_UUID.validate(params);
 
       expect(error.details[0].message).toBe('"uuid" is required');
     });
+
+    it("Give value when body is correct", () => {
+      const params = {
+        uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
+      };
+
+      const { value } = GET_UUID.validate(params);
+
+      expect(value).toHaveProperty("uuid", params.uuid);
+    });
   });
 
-  describe("joi create PROBLEM", () => {
-    it("give back value when body is correct", () => {
+  describe("CREATE_PROBLEM Joi", () => {
+    it("Throw error when no dayUuid given", () => {
       const body = {
         label     : "Problem",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "",
+        contentNo : 2009,
+        time      : 2009,
 
-        element  : "H1",
-        content  : "String content",
-        language : "Javascript"
+        element  : "div",
+        content  : "Gaming",
+        language : "Java"
+      };
+
+      const { error } = CREATE_PROBLEM.validate(body);
+
+      expect(error.details[0].message).toBe('"dayUuid" is not allowed to be empty');
+    });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        label     : "Problem",
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009,
+
+        element  : "div",
+        content  : "Gaming",
+        language : "Java"
       };
 
       const { value } = CREATE_PROBLEM.validate(body);
@@ -50,38 +70,36 @@ describe("content joi tests", () => {
       expect(value).toHaveProperty("element", body.element);
       expect(value).toHaveProperty("language", body.language);
     });
-
-    it("give error when no dayUuid given", () => {
-      const body = {
-        label     : "Problem",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "",
-        contentNo : 6,
-        time      : 100,
-
-        element  : "H1",
-        content  : "String content",
-        language : "Javascript"
-      };
-
-      const { error } = CREATE_PROBLEM.validate(body);
-
-      expect(error.details[0].message).toBe('"dayUuid" is not allowed to be empty');
-    });
   });
 
-  describe("joi create QUIZ", () => {
-    it("give back value when body is correct", () => {
+  describe("CREATE_QUIZ Joi", () => {
+    it("Throw error when no path given", () => {
       const body = {
         label     : "Quiz",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009,
+
+        path: ""
+      };
+
+      const { error } = CREATE_QUIZ.validate(body);
+
+      expect(error.details[0].message).toBe('"path" is not allowed to be empty');
+    });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        label     : "Quiz",
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009,
 
         path: "Camino al Cielo"
       };
@@ -92,56 +110,18 @@ describe("content joi tests", () => {
       expect(value).toHaveProperty("title", body.title);
       expect(value).toHaveProperty("time", body.time);
     });
-
-    it("give error when no dayUuid given", () => {
-      const body = {
-        label     : "Quiz",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
-
-        path: ""
-      };
-
-      const { error } = CREATE_QUIZ.validate(body);
-
-      expect(error.details[0].message).toBe('"path" is not allowed to be empty');
-    });
   });
 
-  describe("joi create VIDEO", () => {
-    it("give back value when body is correct", () => {
+  describe("CREATE_VIDEO Joi", () => {
+    it("Throw error when no link given", () => {
       const body = {
         label     : "Video",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
-
-        link: "http://example.com"
-      };
-
-      const { value } = CREATE_VIDEO.validate(body);
-
-      expect(value).toHaveProperty("link", body.link);
-      expect(value).toHaveProperty("contentNo", body.contentNo);
-      expect(value).toHaveProperty("exp", body.exp);
-    });
-
-    it("give error when no dayUuid given", () => {
-      const body = {
-        label     : "Video",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009,
 
         link: ""
       };
@@ -150,18 +130,54 @@ describe("content joi tests", () => {
 
       expect(error.details[0].message).toBe('"link" is not allowed to be empty');
     });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        label     : "Video",
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009,
+
+        link: "https://phind.com"
+      };
+
+      const { value } = CREATE_VIDEO.validate(body);
+
+      expect(value).toHaveProperty("link", body.link);
+      expect(value).toHaveProperty("contentNo", body.contentNo);
+      expect(value).toHaveProperty("exp", body.exp);
+    });
   });
 
-  describe("joi create TEXT", () => {
-    it("give back value when body is correct", () => {
+  describe("CREATE_TEXT Joi", () => {
+    it("Throw error when no path given", () => {
       const body = {
         label     : "Text",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100,
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009
+      };
+
+      const { error } = CREATE_TEXT.validate(body);
+
+      expect(error.details[0].message).toBe('"path" is required');
+    });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        label     : "Text",
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+        contentNo : 2009,
+        time      : 2009,
 
         path: "Camino al Cielo"
       };
@@ -172,37 +188,22 @@ describe("content joi tests", () => {
       expect(value).toHaveProperty("desc", body.desc);
       expect(value).toHaveProperty("exp", body.exp);
     });
-
-    it("give error when no dayUuid given", () => {
-      const body = {
-        label     : "Text",
-        exp       : 10,
-        title     : "something 1",
-        desc      : "something 1/.",
-        dayUuid   : "2k3-d4l42-3d-l4d23",
-        contentNo : 6,
-        time      : 100
-      };
-
-      const { error } = CREATE_TEXT.validate(body);
-
-      expect(error.details[0].message).toBe('"path" is required');
-    });
   });
 
-  describe("joi update CONTENT", () => {
-    it("give error when label lowercase", () => {
+  describe("UPDATE_CONTENT Joi", () => {
+    it("Throw error when label lowercase", () => {
       const body = {
-        label : "problem",
-        uuid  : "2k3-d4l42-3d-l4d",
-        exp   : 10,
-        title : "something 1",
-        desc  : "something 1/.",
-        time  : 100,
+        uuid      : "f40eeba5-392d-464f-8c3f-f246d13658bd",
+        label     : "problem",
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        contentNo : 2009,
+        time      : 2009,
 
-        element  : "H1",
-        content  : "String content",
-        language : "Javascript"
+        element  : "div",
+        content  : "Gaming",
+        language : "Java"
       };
 
       const { error } = UPDATE_CONTENT.validate(body);
@@ -210,45 +211,27 @@ describe("content joi tests", () => {
       expect(error.details[0].message).toBe('"label" must be one of [Problem, Quiz, Text, Video]');
     });
 
-    it("give value when body is correct", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        label : "Problem",
-        uuid  : "2k3-d4l42-3d-l4d",
-        exp   : 10,
-        title : "something 1",
-        desc  : "something 1/.",
-        time  : 100,
+        uuid      : "f40eeba5-392d-464f-8c3f-f246d13658bd",
+        label     : "Problem",
+        exp       : 2009,
+        title     : "Minecraft",
+        desc      : "The creeper was a bug!",
+        contentNo : 2009,
+        time      : 2009,
 
-        element  : "H1",
-        content  : "String content",
-        language : "Javascript"
+        element  : "div",
+        content  : "Gaming",
+        language : "Java"
       };
 
       const { value } = UPDATE_CONTENT.validate(body);
 
       expect(value).toHaveProperty("element", body.element);
       expect(value).toHaveProperty("desc", body.desc);
-      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("dayUuid", body.dayUuid);
       expect(value).toHaveProperty("label", body.label);
-    });
-
-    it("give error when uuid is empty", () => {
-      const body = {
-        label : "Problem",
-        uuid  : "",
-        exp   : 10,
-        title : "something 1",
-        desc  : "something 1/.",
-        time  : 100,
-
-        element  : "H1",
-        content  : "String content",
-        language : "Javascript"
-      };
-
-      const { error } = UPDATE_CONTENT.validate(body);
-
-      expect(error.details[0].message).toBe('"uuid" is not allowed to be empty');
     });
   });
 });

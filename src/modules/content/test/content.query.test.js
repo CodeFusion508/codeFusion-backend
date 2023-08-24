@@ -5,19 +5,22 @@ const {
     deletedContentQuery
 } = require("../content.query.js");
 
-describe("content queries tests", () => {
-    it("createContentQuery", () => {
+describe("Content Query Tests", () => {
+    it("createContentQuery should have proper query", () => {
         const body = {
-            label     : "d0,e",
-            path      : "/3d3d3/",
-            exp       : 10,
-            title     : "something 1",
-            desc      : "something 1/.",
-            dayUuid   : "2k3-d4l42-3d-l4d23",
-            contentNo : 6,
-            time      : 100
+            label     : "Problem",
+            exp       : 2009,
+            title     : "Minecraft",
+            desc      : "The creeper was a bug!",
+            dayUuid   : "",
+            contentNo : 2009,
+            time      : 2009,
+
+            element  : "div",
+            content  : "Gaming",
+            language : "Java"
         };
-        const uuid = "1c12d3x-123d1232c13";
+        const uuid = "f40eeba5-392d-464f-8c3f-f246d13658bd";
 
         const query = createContentQuery(uuid, body);
 
@@ -28,9 +31,9 @@ describe("content queries tests", () => {
         expect(query).toContain(`CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)`);
     });
 
-    it("getContentQuery", () => {
+    it("getContentQuery should have proper query", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
         };
 
         const query = getContentQuery(params);
@@ -40,15 +43,19 @@ describe("content queries tests", () => {
         expect(query).toContain("RETURN c;");
     });
 
-    it("updatedContentQuery", () => {
+    it("updatedContentQuery should have proper query", () => {
         const body = {
-            label : "Text",
-            uuid  : "1d3-d-312s3123s12-123s",
-            desc  : "lorem asd",
-            path  : "3s/3sasdsrcff",
-            exp   : 120,
-            title : "section 1",
-            time  : 1000
+            uuid      : "f40eeba5-392d-464f-8c3f-f246d13658bd",
+            label     : "Problem",
+            exp       : 2009,
+            title     : "Minecraft",
+            desc      : "The creeper was a bug!",
+            contentNo : 2009,
+            time      : 2009,
+
+            element  : "div",
+            content  : "Gaming",
+            language : "Java"
         };
 
         const query = updatedContentQuery(body);
@@ -61,9 +68,9 @@ describe("content queries tests", () => {
         expect(query).toContain("RETURN c;");
     });
 
-    it("deletedContentQuery", () => {
+    it("deletedContentQuery should have proper query", () => {
         const params = {
-            uuid: "1c12d3x-123d1232c13"
+            uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd",
         };
 
         const query = deletedContentQuery(params);

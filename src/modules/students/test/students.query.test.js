@@ -12,7 +12,7 @@ const {
 } = require("../students.query.js");
 
 describe("Student Query Tests", () => {
-    it("signUpQuery Test", () => {
+    it("signUpQuery should have proper query", () => {
         const body = {
             email    : "AsyncResearch@mail.org",
             password : "password",
@@ -29,7 +29,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`"${body.userName}"`);
     });
 
-    it("logInQuery Test", () => {
+    it("logInQuery should have proper query", () => {
         const body = {
             email: "AsyncResearch@mail.org"
         };
@@ -40,7 +40,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`WHERE NOT u:softDeleted`);
     });
 
-    it("findRegisteredEmailQuery Test", () => {
+    it("findRegisteredEmailQuery should have proper query", () => {
         const body = {
             email: "AsyncResearch@mail.org"
         };
@@ -50,7 +50,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`MATCH (u:Student {email: "${body.email}"}) RETURN u;`);
     });
 
-    it("getStudentQuery Test", () => {
+    it("getStudentQuery should have proper query", () => {
         const params = {
             uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f"
         };
@@ -61,7 +61,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`WHERE NOT u:softDeleted`);
     });
 
-    it("updateStudentQuery Test", () => {
+    it("updateStudentQuery should have proper query", () => {
         const body = {
             uuid     : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             email    : "AsyncResearch@mail.org",
@@ -78,7 +78,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`u.userName = "${body.userName}"`);
     });
 
-    it("deleteStudentQuery Test", () => {
+    it("deleteStudentQuery should have proper query", () => {
         const params = {
             uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
         };
@@ -89,7 +89,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`SET u:softDeleted;`);
     });
 
-    it("createRelQuery Test", () => {
+    it("createRelQuery should have proper query", () => {
         const body = {
             uuid        : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             contentUuid : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
@@ -104,7 +104,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`CREATE (u)-[r:${body.relation}]->(c)`);
     });
 
-    it("deleteRelQuery Test", () => {
+    it("deleteRelQuery should have proper query", () => {
         const body = {
             uuid        : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             contentUuid : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
@@ -120,7 +120,7 @@ describe("Student Query Tests", () => {
         expect(query).toContain(`MATCH (u)-[r:${body.relation}]->(c)`);
     });
 
-    it("findDeletedStudentQuery Test", () => {
+    it("findDeletedStudentQuery should have proper query", () => {
         const body = {
             email: "AsyncResearch@mail.org"
         };

@@ -54,7 +54,7 @@ const updatedContentQuery = (body) => {
 
     // Problem
     if (body.element) {
-        propsToUpdate.push(`c.element = ${body.element}`);
+        propsToUpdate.push(`c.element = :${body.element}"`);
     }
     if (body.content) {
         propsToUpdate.push(`c.content = "${body.content}"`);
