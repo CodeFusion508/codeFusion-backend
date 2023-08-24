@@ -52,7 +52,7 @@ describe("Student Query Tests", () => {
 
     it("getStudentQuery Test", () => {
         const params = {
-            uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7"
+            uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f"
         };
 
         const query = getStudentQuery(params);
@@ -63,7 +63,7 @@ describe("Student Query Tests", () => {
 
     it("updateStudentQuery Test", () => {
         const body = {
-            uuid     : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+            uuid     : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             email    : "AsyncResearch@mail.org",
             password : "password",
             userName : "Async Research Institute"
@@ -80,7 +80,7 @@ describe("Student Query Tests", () => {
 
     it("deleteStudentQuery Test", () => {
         const params = {
-            uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+            uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
         };
 
         const query = deleteStudentQuery(params);
@@ -91,30 +91,30 @@ describe("Student Query Tests", () => {
 
     it("createRelQuery Test", () => {
         const body = {
-            uuid        : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
-            contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
+            uuid        : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+            contentUuid : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
             op          : "Day",
             relation    : "COMPLETED"
         };
 
         const query = createRelQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})`);
+        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.contentLabel} {uuid: "${body.contentUuid}"})`);
         expect(query).toContain(`WHERE NOT u:softDeleted AND NOT c:softDeleted`);
-        expect(query).toContain(`CREATE (u)-[r:${body.relation}`);
+        expect(query).toContain(`CREATE (u)-[r:${body.relation}]->(c)`);
     });
 
     it("deleteRelQuery Test", () => {
         const body = {
-            uuid        : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
-            contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
+            uuid        : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+            contentUuid : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
             op          : "Day",
             relation    : "COMPLETED",
         };
 
         const query = deleteRelQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})`);
+        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.contentLabel} {uuid: "${body.contentUuid}"})`);
         expect(query).toContain(`WHERE NOT u:softDeleted AND NOT c:softDeleted`);
         expect(query).toContain(`WITH u, c`);
         expect(query).toContain(`MATCH (u)-[r:${body.relation}]->(c)`);

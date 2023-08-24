@@ -113,7 +113,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await deleteStudent(deps, param)
@@ -130,7 +130,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "!C0RRUPT-1D23-F&KE-5678-!D3ADBU66",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await getStudent(deps, param)
@@ -145,7 +145,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const param = {
-                uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await getStudent(deps, param)
@@ -162,7 +162,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid: "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await updateStudent(deps, body)
@@ -177,8 +177,11 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid  : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
-                email : "AsyncResearch@mail.org"
+                uuid      : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                totalExp  : 1993,
+                weeklyExp : 1993,
+                userName  : "Async Research Institute",
+                password  : "password"
             };
 
             const result = await updateStudent(deps, body)
@@ -195,10 +198,10 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const body = {
-                uuid        : "!C0RRUPT-1D23-F&KE-5678-!D3ADBU66",
-                contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
-                op          : "Sprint",
-                relation    : "COMPLETED"
+                uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+                contentLabel : "Problem",
+                relation     : "FAILED"
             };
 
             const result = await createRel(deps, body)
@@ -213,10 +216,10 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreateRel);
 
             const body = {
-                uuid        : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
-                contentUuid : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
-                op          : "Sprint",
-                relation    : "COMPLETED"
+                uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+                contentLabel : "Problem",
+                relation     : "FAILED"
             };
 
             const result = await createRel(deps, body)
@@ -234,10 +237,10 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreateRel);
 
             const body = {
-                uuid       : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
-                contentUui : "@B9D3F1-!XZ@QP-9876-PL0M9N-A#C2E4",
-                op         : "Sprint",
-                relation   : "COMPLETED"
+                uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+                contentLabel : "Problem",
+                relation     : "FAILED"
             };
 
             const result = await deleteRel(deps, body)
