@@ -10,7 +10,7 @@ module.exports = {
         desc     : Joi.string().required()
     }),
     UPDATE_SPRINT: Joi.object({
-        uuid     : Joi.string().required(),
+        uuid     : Joi.string().uuid().required(),
         sprintNo : Joi.number().optional(),
         title    : Joi.string().optional(),
         desc     : Joi.string().optional(),

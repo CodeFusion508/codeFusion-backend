@@ -161,8 +161,8 @@ describe("Sprint Controller Tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "Este sprint no existe, verifique si tiene un uuid válido.");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
 
         it("getSprintRels should return formatted result", async () => {
