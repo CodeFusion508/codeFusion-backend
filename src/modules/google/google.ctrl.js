@@ -50,7 +50,7 @@ const createGUser = async ({ services }, body) => {
   cleanRecord(data);
 
   const { email, userName } = data.node;
-  return { data,token: jwt.createToken({ userName, email, uuid })};
+  return { data, token: jwt.createToken({ userName, email, uuid }) };
 };
 
 const loginGUser = async ({ services }, body) => {
@@ -64,27 +64,21 @@ const loginGUser = async ({ services }, body) => {
 };
 
 const getUserAnswers = async ({ services }, body) => {
-  const data = await getAllAnswersQuery(services.google, body.sheet_id)
-    .catch((error) => {
-      throw { err: 400, message: `${error}` };
-    });
+  const data = await getAllAnswersQuery(services.google, body.sheet_id);
 
   return data;
 };
 
 const getEvaluation = async ({ services }, body) => {
-  const data = await getEvaluationQuery(services.google, body.sheet_id, body.email)
-    .catch((error) => {
-      throw { err: 400, message: `${error}` };
-    });
+  const data = await getEvaluationQuery(services.google, body.sheet_id, body.email);
 
   return data;
 };
 
 
 Object.assign(module.exports, {
-  getUserAnswers,
-  getEvaluation,
   createGUser,
-  loginGUser
+  loginGUser,
+  getUserAnswers,
+  getEvaluation
 });

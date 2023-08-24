@@ -3,7 +3,7 @@ const Joi = require("joi");
 module.exports = {
     CREATE_G_USER: Joi.object({
         userName : Joi.string().required(),
-        email    : Joi.string().required(),
+        email    : Joi.string().email().required(),
         idToken  : Joi.string().required()
     }),
     LOGIN_G_USER: Joi.object({
@@ -14,6 +14,6 @@ module.exports = {
     }),
     GET_USER_ANSWERS: Joi.object({
         sheet_id : Joi.string().required(),
-        email    : Joi.string().required()
+        email    : Joi.string().email().required()
     })
 };
