@@ -49,8 +49,8 @@ const getAllDays = async ({ services }) => {
     return data;
 };
 
-const updatedDay = async ({ services }, body) => {
-    if (!body.desc && !body.exp) throw { err: 400, message: "Debe proporcionar una descripción o un valor de experiencia." };
+const updateDay = async ({ services }, body) => {
+    if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
     const query = updateDayQuery(body);
     let data = await services.neo4j.session.run(query);
@@ -101,7 +101,7 @@ const getDaysRels = async ({ services }, params) => {
 Object.assign(module.exports, {
     createDay,
     getAllDays,
-    updatedDay,
+    updateDay,
     getDay,
     deleteDay,
 

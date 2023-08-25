@@ -10,23 +10,27 @@ async function getAllAnswersQuery({ service, authClient }, sheet_id) {
 
         return rows;
     } catch (error) {
-        return error;
+        throw { err: 400, message: `${error}` };
     }
 }
 
 async function getEvaluationQuery({ service, authClient }, sheet_id, email) {
-    const res = await service.spreadsheets.values.get({
-        auth          : authClient,
-        spreadsheetId : sheet_id,
-        range         : "B:C",
-    });
+    try {
+        const res = await service.spreadsheets.values.get({
+            auth          : authClient,
+            spreadsheetId : sheet_id,
+            range         : "B:C",
+        });
 
-    const rows = res.data.values;
+        const rows = res.data.values;
 
-    for (let i = 0; i < rows.length; i++) {
-        if (rows[i][0] === email) {
-            return rows[i][1];
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i][0] === email) {
+                return rows[i][1];
+            }
         }
+    } catch (error) {
+        throw { err: 400, message: `${error}` };
     }
 }
 

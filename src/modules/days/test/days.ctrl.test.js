@@ -1,17 +1,17 @@
 const {
     createDay,
     getAllDays,
-    updatedDay,
+    updateDay,
     getDay,
     deleteDay,
 
     getDaysRels
 } = require("../days.ctrl.js");
 
-describe("users controller tests", () => {
+describe("Days Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {
@@ -24,12 +24,12 @@ describe("users controller tests", () => {
 
     });
 
-    describe("createDay", () => {
-        it("createDay should return data", async () => {
+    describe("createDay Controller", () => {
+        it("createDay should return formatted result", async () => {
             const body = {
-                desc       : "something 123 g!",
-                dayNo      : 4,
-                sprintUuid : "d54jd3-d58k543-83k45d8-9dd84"
+                desc       : "BFG",
+                dayNo      : 1993,
+                sprintUuid : "356a0665-e499-408b-95d9-93aec11a9544"
             };
 
             const result = await createDay(deps, body)
@@ -41,25 +41,19 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("deleteDay", () => {
-        it("deleteDay should return data", async () => {
+    describe("getAllDays Controller", () => {
+        it("getAllDays should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
-            const params = {
-                uuid: "d54jd3-d58k543-83k45d8-9dd84"
-            };
-
-            const result = await deleteDay(deps, params)
+            const result = await getAllDays(deps)
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("stats");
-            expect(result).toHaveProperty("node");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
-    });
 
-    describe("getAllDays", () => {
-        it("getAllDays should return data", async () => {
+        it("getAllDays should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockAllDays);
 
             const result = await getAllDays(deps)
@@ -71,27 +65,59 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("updatedDay", () => {
-        it("updatedDay should return data", async () => {
+    describe("updateDay Controller", () => {
+        it("updateDay should throw an error and message", async () => {
             const body = {
-                uuid : "28k9-d490dk-2md94k-903d",
-                exp  : 12,
-                desc : "It's all in your head."
+                uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
             };
 
-            const result = await updatedDay(deps, body)
+            const result = await updateDay(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("updateDay should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
+
+            const body = {
+                uuid : "e1fa1541-a533-4936-bcbd-19221ad5da9e",
+                exp  : 1994,
+                desc : "Hell on Earth"
+            };
+
+            const result = await updateDay(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
             expect(result).toHaveProperty("stats");
             expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("exp");
+            expect(result.node).toHaveProperty("desc");
         });
     });
 
-    describe("getDay", () => {
-        it("getDay should return data", async () => {
+    describe("getDay Controller", () => {
+        it("getDay should throw an error and message", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
             const params = {
-                uuid: "d54jd3-d58k543-83k45d8-9dd84"
+                uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
+            };
+
+            const result = await getDay(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("getDay should return formatted result", async () => {
+            const params = {
+                uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
             };
 
             const result = await getDay(deps, params)
@@ -100,15 +126,49 @@ describe("users controller tests", () => {
 
             expect(result).toHaveProperty("stats");
             expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("exp");
+            expect(result.node).toHaveProperty("desc");
+        });
+    });
+
+    describe("deleteDay Controller", () => {
+        it("deleteDay should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const params = {
+                uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
+            };
+
+            const result = await deleteDay(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("stats");
+            expect(result).toHaveProperty("node");
         });
     });
 
     describe("getDaysRels", () => {
-        it("getDaysRels should return data", async () => {
+        it("getDaysRels should throw an error and message", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const params = {
+                uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
+            };
+
+            const result = await getDaysRels(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("getDaysRels should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockDayRels);
 
             const params = {
-                uuid: "d54jd3-d58k543-83k45d8-9dd84"
+                uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
             };
 
             const result = await getDaysRels(deps, params)
@@ -116,8 +176,10 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("stats");
-            expect(result.node[0]).toHaveProperty("node");
-            expect(result.node[0]).toHaveProperty("rels");
+            expect(result.node[0].node).toHaveProperty("labels");
+            expect(result.node[0].node).toHaveProperty("uuid");
+            expect(result.node[0].rels).toHaveProperty("type");
+            expect(result.node[0].rels).toHaveProperty("properties");
         });
     });
 

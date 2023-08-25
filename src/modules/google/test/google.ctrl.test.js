@@ -1,27 +1,31 @@
 const {
     createGUser,
-    loginGUser
+    loginGUser,
+    getUserAnswers,
+    getEvaluation
 } = require("../google.ctrl.js");
 
-describe("google controller tests", () => {
+const jwt = require("../../../config/jwt.js");
+
+describe("Google Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {
                     session: {
-                        run: jest.fn().mockResolvedValue(mockValue)
+                        run: null
                     }
                 },
                 google: {
                     client: {
-                        verifyIdToken: jest.fn().mockResolvedValue({ getPayload: () => undefined })
+                        verifyIdToken: null
                     },
                     service: {
                         spreadsheets: {
                             values: {
-                                get: jest.fn().mockResolvedValue(true)
+                                get: null
                             }
                         }
                     },
@@ -29,31 +33,18 @@ describe("google controller tests", () => {
                 }
             }
         };
+
+        jest.spyOn(jwt, "createToken").mockReturnValue("mockedToken");
     });
 
-
-    describe("loginGUser", () => {
-        it("loginGUser should throw an error", async () => {
-            const body = {
-                token: "214nxcndfskhfdsf98349qxsihcsdbi"
-            };
-
-            const result = await loginGUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("err", 400);
-            expect(result).toHaveProperty("message", "Token Invalido");
-        });
-    });
-
-    describe("createGUser", () => {
+    describe("createGUser Controller", () => {
         it("createGUser should throw an error", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
             deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
 
             const body = {
-                email    : "testing10390@gmail.com",
-                userName : "testing800"
+                email    : "AsyncResearch@mail.org",
+                userName : "Async Research Institute",
             };
 
             const result = await createGUser(deps, body)
@@ -61,8 +52,102 @@ describe("google controller tests", () => {
                 .catch((err) => err);
 
 
-            expect(result).toHaveProperty("err", 403);
-            expect(result).toHaveProperty("message", "Autenticación de Google falló");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("createGUser should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
+
+            const body = {
+                email    : "AsyncResearch@mail.org",
+                userName : "Async Research Institute",
+            };
+
+            const result = await createGUser(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("token", "mockedToken");
+            expect(result.data.node).toHaveProperty("email");
+            expect(result.data.node).toHaveProperty("userName");
+            expect(result.data.node).toHaveProperty("uuid");
+        });
+    });
+
+    describe("loginGUser Controller", () => {
+        it("loginGUser should throw an error if token fails", async () => {
+            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue({
+                getPayload: jest.fn().mockReturnValue(undefined)
+            });
+
+            const body = {
+                token: "Super Secret Token"
+            };
+
+            const result = await loginGUser(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("loginGUser should return formatted result", async () => {
+            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue({
+                getPayload: jest.fn().mockReturnValue(true)
+            });
+
+            const body = {
+                token: "Super Secret Token"
+            };
+
+            const result = await loginGUser(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toBe(true);
+        });
+    });
+
+    describe("getUserAnswers Controller", () => {
+        it("getUserAnswers should throw an error if spreadsheets throw an error", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
+            deps.services.google.service.spreadsheets.values.get = jest.fn().mockImplementation(() => {
+                throw new Error("Corrupted!");
+            });
+
+            const body = {
+                sheet_id: "Sheet ID"
+            };
+
+            const result = await getUserAnswers(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+    });
+
+    describe("getEvaluation Controller", () => {
+        it("getEvaluation should throw an error", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
+            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
+
+            const body = {
+                sheet_id : "Sheet ID",
+                email    : "AsyncResearch@mail.org"
+            };
+
+            const result = await getEvaluation(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
     });
 });
@@ -108,6 +193,68 @@ let mockValue = {
     "summary": {
         "query": {
             "text"       : "MATCH (u: Student {email: \"testing10390@gmail.com\"}) RETURN u;",
+            "parameters" : {}
+        },
+        "queryType" : "r",
+        "counters"  : {
+            "_stats": {
+                "nodesCreated"         : 0,
+                "nodesDeleted"         : 0,
+                "relationshipsCreated" : 0,
+                "relationshipsDeleted" : 0,
+                "propertiesSet"        : 0,
+                "labelsAdded"          : 0,
+                "labelsRemoved"        : 0,
+                "indexesAdded"         : 0,
+                "indexesRemoved"       : 0,
+                "constraintsAdded"     : 0,
+                "constraintsRemoved"   : 0
+            },
+            "_systemUpdates": 0
+        },
+        "updateStatistics": {
+            "_stats": {
+                "nodesCreated"         : 0,
+                "nodesDeleted"         : 0,
+                "relationshipsCreated" : 0,
+                "relationshipsDeleted" : 0,
+                "propertiesSet"        : 0,
+                "labelsAdded"          : 0,
+                "labelsRemoved"        : 0,
+                "indexesAdded"         : 0,
+                "indexesRemoved"       : 0,
+                "constraintsAdded"     : 0,
+                "constraintsRemoved"   : 0
+            },
+            "_systemUpdates": 0
+        },
+        "plan"          : false,
+        "profile"       : false,
+        "notifications" : [],
+        "server"        : {
+            "address"         : "470f45fb.databases.neo4j.io:7687",
+            "agent"           : "Neo4j/5.6-aura",
+            "protocolVersion" : 5
+        },
+        "resultConsumedAfter": {
+            "low"  : 2,
+            "high" : 0
+        },
+        "resultAvailableAfter": {
+            "low"  : 35,
+            "high" : 0
+        },
+        "database": {
+            "name": "neo4j"
+        }
+    }
+};
+
+let mockEmptyRecords = {
+    "records" : [],
+    "summary" : {
+        "query": {
+            "text"       : "MATCH (u: Student {email: \"AsyncResearch@mail.org\"}) RETURN u;",
             "parameters" : {}
         },
         "queryType" : "r",

@@ -4,8 +4,8 @@ const {
   UPDATE_DAY
 } = require("../days.joi.js");
 
-describe("days joi tests", () => {
-  describe("day joi uuid", () => {
+describe("Days Joi Tests", () => {
+  describe("GET_UUID Joi", () => {
     it("give error when no UUID given", () => {
       const params = {};
 
@@ -13,14 +13,24 @@ describe("days joi tests", () => {
 
       expect(error.details[0].message).toBe('"uuid" is required');
     });
+
+    it("Give value when body is correct", () => {
+      const params = {
+        uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
+      };
+
+      const { value } = GET_UUID.validate(params);
+
+      expect(value).toHaveProperty("uuid", params.uuid);
+    });
   });
 
-  describe("joi create day", () => {
+  describe("CREATE_DAY Joi", () => {
     it("give error when desc is number", () => {
       const body = {
-        desc       : 143,
+        desc       : 12,
         dayNo      : 4,
-        sprintUuid : "2312321dd34-d423135d34"
+        sprintUuid : "356a0665-e499-408b-95d9-93aec11a9544"
       };
 
       const { error } = CREATE_DAY.validate(body);
@@ -28,23 +38,26 @@ describe("days joi tests", () => {
       expect(error.details[0].message).toBe('"desc" must be a string');
     });
 
-    it("give error when no sprintUuid given", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        desc  : "something1 here.",
-        dayNo : 4
+        desc       : "BFG",
+        dayNo      : 1993,
+        sprintUuid : "356a0665-e499-408b-95d9-93aec11a9544"
       };
 
-      const { error } = CREATE_DAY.validate(body);
+      const { value } = CREATE_DAY.validate(body);
 
-      expect(error.details[0].message).toBe('"sprintUuid" is required');
+      expect(value).toHaveProperty("dayNo", body.dayNo);
+      expect(value).toHaveProperty("sprintUuid", body.sprintUuid);
+      expect(value).toHaveProperty("desc", body.desc);
     });
   });
 
-  describe("joi update day", () => {
+  describe("UPDATE_DAY Joi", () => {
     it("give error when desc is number", () => {
       const body = {
-        uuid : "0kdi29k-89d4uj239d4",
-        desc : 213
+        uuid : "e1fa1541-a533-4936-bcbd-19221ad5da9e",
+        desc : 1994
       };
 
       const { error } = UPDATE_DAY.validate(body);
@@ -52,15 +65,18 @@ describe("days joi tests", () => {
       expect(error.details[0].message).toBe('"desc" must be a string');
     });
 
-    it("give error when no uuid given", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        exp  : "0kdi29k-89d4uj239d4",
-        desc : "hey I am trying to change it"
+        uuid : "e1fa1541-a533-4936-bcbd-19221ad5da9e",
+        exp  : 1994,
+        desc : "Hell on Earth"
       };
 
-      const { error } = UPDATE_DAY.validate(body);
+      const { value } = UPDATE_DAY.validate(body);
 
-      expect(error.details[0].message).toBe('"uuid" is required');
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("exp", body.exp);
+      expect(value).toHaveProperty("desc", body.desc);
     });
   });
 });

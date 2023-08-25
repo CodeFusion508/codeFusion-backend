@@ -5,10 +5,10 @@ const {
     deleteContent
 } = require("../content.ctrl.js");
 
-describe("users controller tests", () => {
+describe("Content Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {
@@ -21,19 +21,22 @@ describe("users controller tests", () => {
 
     });
 
-    describe("createContent", () => {
-        it("createContent should return data", async () => {
+    describe("createContent Controller", () => {
+        it("createContent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                label     : "d0,e",
-                path      : "/3d3d3/",
-                exp       : 10,
-                title     : "something 1",
-                desc      : "something 1/.",
-                dayUuid   : "2k3-d4l42-3d-l4d23",
-                contentNo : 6,
-                time      : 100,
+                label     : "Problem",
+                exp       : 2009,
+                title     : "Minecraft",
+                desc      : "The creeper was a bug!",
+                dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
+                contentNo : 2009,
+                time      : 2009,
+
+                element  : "div",
+                content  : "Gaming",
+                language : "Java"
             };
 
             const result = await createContent(deps, body)
@@ -42,23 +45,52 @@ describe("users controller tests", () => {
 
             expect(result).toHaveProperty("stats");
             expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("labels");
+            expect(result.node).toHaveProperty("desc");
         });
     });
 
-    describe("updateContent", () => {
-        it("updateContent should return data", async () => {
+    describe("updateContent Controller", () => {
+        it("getContent should throw an error and message", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const body = {
+                uuid      : "f40eeba5-392d-464f-8c3f-f246d13658bd",
+                label     : "Problem",
+                exp       : 2009,
+                title     : "Minecraft",
+                desc      : "The creeper was a bug!",
+                contentNo : 2009,
+                time      : 2009,
+
+                element  : "div",
+                content  : "Gaming",
+                language : "Java"
+            };
+
+            const result = await updateContent(deps, body)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("updateContent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                label : "Problem",
-                uuid  : "123ks21-d21d2e31-d21d21",
-                exp   : 420,
-                title : "How to noClip",
-                desc  : "This is how to noClip and go to the backrooms",
-                time  : 2023,
+                uuid      : "f40eeba5-392d-464f-8c3f-f246d13658bd",
+                label     : "Problem",
+                exp       : 2009,
+                title     : "Minecraft",
+                desc      : "The creeper was a bug!",
+                contentNo : 2009,
+                time      : 2009,
 
                 element  : "div",
-                language : "Javascript"
+                content  : "Gaming",
+                language : "Java"
             };
 
             const result = await updateContent(deps, body)
@@ -73,12 +105,27 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("getContent", () => {
-        it("getContent should return data", async () => {
+    describe("getContent Controller", () => {
+        it("getContent should throw an error and message", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const params = {
+                uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
+            };
+
+            const result = await getContent(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("getContent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const params = {
-                uuid: "d54jd3-d58k543-83k45d8-9dd84"
+                uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
             };
 
             const result = await getContent(deps, params)
@@ -87,15 +134,17 @@ describe("users controller tests", () => {
 
             expect(result).toHaveProperty("stats");
             expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("labels");
+            expect(result.node).toHaveProperty("desc");
         });
     });
 
-    describe("deleteContent", () => {
-        it("deleteContent should return data", async () => {
+    describe("deleteContent Controller", () => {
+        it("deleteContent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {
-                uuid: "d54jd3-d58k543-83k45d8-9dd84"
+                uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
             };
 
             const result = await deleteContent(deps, params)

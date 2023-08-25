@@ -1,11 +1,12 @@
 // Sprint CRUD
 const createSprintQuery = (uuid, body) => {
     const query = `
-        CREATE (s:Sprint:${body.label} {
-            uuid     : "${uuid}", 
-            totalExp : 0,
+        CREATE (s:Sprint {
+            uuid     : "${uuid}",
+            sprintNo : ${body.sprintNo},
             title    : "${body.title}",
-            desc     : "${body.desc}"
+            desc     : "${body.desc}",
+            totalExp : 0
         })
         RETURN s;
     `;
@@ -23,8 +24,8 @@ const getAllSprintsQuery = () => `
 const updateSprintQuery = (body) => {
     let propsToUpdate = [];
 
-    if (body.totalExp) {
-        propsToUpdate.push(`s.totalExp = ${body.totalExp}`);
+    if (body.sprintNo) {
+        propsToUpdate.push(`s.sprintNo = ${body.sprintNo}`);
     }
     if (body.title) {
         propsToUpdate.push(`s.title = "${body.title}"`);
@@ -32,8 +33,8 @@ const updateSprintQuery = (body) => {
     if (body.desc) {
         propsToUpdate.push(`s.desc = "${body.desc}"`);
     }
-    if (body.path) {
-        propsToUpdate.push(`s.path = "${body.path}"`);
+    if (body.totalExp) {
+        propsToUpdate.push(`s.totalExp = ${body.totalExp}`);
     }
 
     const updateQuery = `

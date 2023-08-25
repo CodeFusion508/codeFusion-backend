@@ -5,35 +5,37 @@ const {
   GET_USER_ANSWERS
 } = require("../google.joi");
 
-describe("google joi tests", () => {
-  describe("create google user joi", () => {
-    it("give error when email is null", () => {
+describe("Google Joi Tests", () => {
+  describe("CREATE_G_USER Joi", () => {
+    it("Throw error when email is not valid", () => {
       const body = {
-        email    : null,
-        userName : "testing800",
-        idToken  : "asdasdasdasdasdadasd"
+        email    : "Something Malicious",
+        userName : "Async Research Institute",
+        idToken  : "Super Secret Token"
       };
 
       const { error } = CREATE_G_USER.validate(body);
 
-      expect(error.details[0].message).toBe('"email" must be a string');
+      expect(error.details[0].message).toBe('"email" must be a valid email');
     });
 
-    it("give error when idToken is a number", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        email    : "JuanDoe@mail.com",
-        userName : "testing800",
-        idToken  : 918274108
+        email    : "AsyncResearch@mail.org",
+        userName : "Async Research Institute",
+        idToken  : "Super Secret Token"
       };
 
-      const { error } = CREATE_G_USER.validate(body);
+      const { value } = CREATE_G_USER.validate(body);
 
-      expect(error.details[0].message).toBe('"idToken" must be a string');
+      expect(value).toHaveProperty("email", body.email);
+      expect(value).toHaveProperty("userName", body.userName);
+      expect(value).toHaveProperty("idToken", body.idToken);
     });
   });
 
-  describe("google user login joi", () => {
-    it("give error when idToken is not provided", () => {
+  describe("LOGIN_G_USER Joi", () => {
+    it("Throw error when idToken is not provided", () => {
       const body = {};
 
       const { error } = LOGIN_G_USER.validate(body);
@@ -41,19 +43,19 @@ describe("google joi tests", () => {
       expect(error.details[0].message).toBe('"idToken" is required');
     });
 
-    it("give error when idToken is not a string", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        idToken: 489405,
+        idToken: "Super Secret Token"
       };
 
-      const { error } = LOGIN_G_USER.validate(body);
+      const { value } = LOGIN_G_USER.validate(body);
 
-      expect(error.details[0].message).toBe('"idToken" must be a string');
+      expect(value).toHaveProperty("idToken", body.idToken);
     });
   });
 
-  describe("get all answers joi", () => {
-    it("give error when idToken is not provided", () => {
+  describe("GET_ALL_ANSWERS Joi", () => {
+    it("Throw error when sheet_id is not provided", () => {
       const body = {};
 
       const { error } = GET_ALL_ANSWERS.validate(body);
@@ -61,34 +63,39 @@ describe("google joi tests", () => {
       expect(error.details[0].message).toBe('"sheet_id" is required');
     });
 
-    it("give error when idToken is not a string", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        sheet_id: 949494,
+        sheet_id: "Sheet ID"
       };
 
-      const { error } = GET_ALL_ANSWERS.validate(body);
+      const { value } = GET_ALL_ANSWERS.validate(body);
+
+      expect(value).toHaveProperty("sheet_id", body.sheet_id);
+    });
+  });
+
+  describe("GET_USER_ANSWERS Joi", () => {
+    it("Throw error when sheet_id is a number", () => {
+      const body = {
+        sheet_id : 1993,
+        email    : "AsyncResearch@mail.org"
+      };
+
+      const { error } = GET_USER_ANSWERS.validate(body);
 
       expect(error.details[0].message).toBe('"sheet_id" must be a string');
     });
-  });
 
-  describe("get user answers joi", () => {
-    it("give error when idToken is not provided", () => {
-      const body = {};
-
-      const { error } = GET_USER_ANSWERS.validate(body);
-
-      expect(error.details[0].message).toBe('"sheet_id" is required');
-    });
-
-    it("give error when idToken is not a string", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        sheet_id: "something123",
+        sheet_id : "Sheet ID",
+        email    : "AsyncResearch@mail.org"
       };
 
-      const { error } = GET_USER_ANSWERS.validate(body);
+      const { value } = GET_ALL_ANSWERS.validate(body);
 
-      expect(error.details[0].message).toBe('"email" is required');
+      expect(value).toHaveProperty("sheet_id", body.sheet_id);
+      expect(value).toHaveProperty("email", body.email);
     });
   });
 });

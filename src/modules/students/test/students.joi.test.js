@@ -12,8 +12,8 @@ const {
 } = require("../students.joi.js");
 
 describe("Students Joi Tests", () => {
-  describe("CREATE_STUDENT JOI", () => {
-    it("give error when password is null", () => {
+  describe("CREATE_STUDENT Joi", () => {
+    it("Throw error when password is null", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
         password : null,
@@ -25,21 +25,23 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"password" must be a string');
     });
 
-    it("give error when email is null", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        email    : null,
-        password : "1234",
+        email    : "AsyncResearch@mail.org",
+        password : "password",
         userName : "Async Research Institute"
       };
 
-      const { error } = CREATE_STUDENT.validate(body);
+      const { value } = CREATE_STUDENT.validate(body);
 
-      expect(error.details[0].message).toBe('"email" must be a string');
+      expect(value).toHaveProperty("email", body.email);
+      expect(value).toHaveProperty("password", body.password);
+      expect(value).toHaveProperty("userName", body.userName);
     });
   });
 
-  describe("UPDATE_STUDENT JOI", () => {
-    it("give error when no uuid given", () => {
+  describe("UPDATE_STUDENT Joi", () => {
+    it("Throw error when no uuid given", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
         userName : "Async Research Institute"
@@ -50,23 +52,32 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when exp is not a number", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        uuid     : "03aef53a-f14f-4405-b31f-24c10ca4d3e3",
-        totalExp : "Hey123"
+        uuid      : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+        totalExp  : 1993,
+        weeklyExp : 1993,
+        userName  : "Async Research Institute",
+        email     : "AsyncResearch@mail.org",
+        password  : "password"
       };
 
-      const { error } = UPDATE_STUDENT.validate(body);
+      const { value } = UPDATE_STUDENT.validate(body);
 
-      expect(error.details[0].message).toBe('"totalExp" must be a number');
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("totalExp", body.totalExp);
+      expect(value).toHaveProperty("weeklyExp", body.weeklyExp);
+      expect(value).toHaveProperty("userName", body.userName);
+      expect(value).toHaveProperty("email", body.email);
+      expect(value).toHaveProperty("password", body.password);
     });
   });
 
-  describe("LOGIN_STUDENT JOI", () => {
-    it("give error when email is empty", () => {
+  describe("LOGIN_STUDENT Joi", () => {
+    it("Throw error when email is empty", () => {
       const body = {
         email    : "",
-        password : "1234",
+        password : "password",
       };
 
       const { error } = LOGIN_STUDENT.validate(body);
@@ -74,32 +85,43 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"email" is not allowed to be empty');
     });
 
-    it("give error when password is empty", () => {
+    it("Give value when body is correct", () => {
       const body = {
         email    : "AsyncResearch@mail.org",
-        password : "",
+        password : "password"
       };
 
-      const { error } = LOGIN_STUDENT.validate(body);
+      const { value } = LOGIN_STUDENT.validate(body);
 
-      expect(error.details[0].message).toBe('"password" is not allowed to be empty');
+      expect(value).toHaveProperty("email", body.email);
+      expect(value).toHaveProperty("password", body.password);
     });
   });
 
-  describe("GET_UUID JOI", () => {
-    it("give error when no UUID given", () => {
+  describe("GET_UUID Joi", () => {
+    it("Throw error when no UUID given", () => {
       const params = {};
 
       const { error } = GET_UUID.validate(params);
 
       expect(error.details[0].message).toBe('"uuid" is required');
     });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f"
+      };
+
+      const { value } = GET_UUID.validate(body);
+
+      expect(value).toHaveProperty("uuid", body.uuid);
+    });
   });
 
-  describe("CREATE_RELATION JOI", () => {
-    it("give error when no uuid is given", () => {
+  describe("CREATE_RELATION Joi", () => {
+    it("Throw error when no uuid is given", () => {
       const body = {
-        contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        contentUuid: "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43"
       };
 
       const { error } = CREATE_RELATION.validate(body);
@@ -107,21 +129,27 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when no contentUuid is given", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        uuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+        contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+        contentLabel : "Problem",
+        relation     : "FAILED"
       };
 
-      const { error } = CREATE_RELATION.validate(body);
+      const { value } = CREATE_RELATION.validate(body);
 
-      expect(error.details[0].message).toBe('"contentUuid" is required');
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("contentUuid", body.contentUuid);
+      expect(value).toHaveProperty("contentLabel", body.contentLabel);
+      expect(value).toHaveProperty("relation", body.relation);
     });
   });
 
-  describe("DELETE_RELATION JOI", () => {
-    it("give error when no uuid is given", () => {
+  describe("DELETE_RELATION Joi", () => {
+    it("Throw error when no uuid is given", () => {
       const body = {
-        contentUuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        contentUuid: "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43"
       };
 
       const { error } = DELETE_RELATION.validate(body);
@@ -129,36 +157,62 @@ describe("Students Joi Tests", () => {
       expect(error.details[0].message).toBe('"uuid" is required');
     });
 
-    it("give error when no contentUuid is given", () => {
+    it("Give value when body is correct", () => {
       const body = {
-        uuid: "4963c5ca-fe26-4c5e-b302-d2c134be29a0"
+        uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+        contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+        contentLabel : "Problem",
+        relation     : "FAILED"
       };
 
-      const { error } = DELETE_RELATION.validate(body);
+      const { value } = DELETE_RELATION.validate(body);
 
-      expect(error.details[0].message).toBe('"contentUuid" is required');
+      expect(value).toHaveProperty("uuid", body.uuid);
+      expect(value).toHaveProperty("contentUuid", body.contentUuid);
+      expect(value).toHaveProperty("contentLabel", body.contentLabel);
+      expect(value).toHaveProperty("relation", body.relation);
     });
   });
 
-  describe("CONFIRM_ACCOUNT JOI", () => {
-    it("give error when no token given", () => {
+  describe("CONFIRM_ACCOUNT Joi", () => {
+    it("Throw error when no token given", () => {
       const params = {};
 
       const { error } = CONFIRM_ACCOUNT.validate(params);
 
       expect(error.details[0].message).toBe('"token" is required');
     });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+      };
+
+      const { value } = CONFIRM_ACCOUNT.validate(body);
+
+      expect(value).toHaveProperty("token", body.token);
+    });
   });
 
-  describe("RECOVERY_ACCOUNT JOI", () => {
+  describe("RECOVERY_ACCOUNT Joi", () => {
     it("give error when email is a number", () => {
       const body = {
-        email: 123831
+        email: 1993
       };
 
       const { error } = RECOVERY_ACCOUNT.validate(body);
 
       expect(error.details[0].message).toBe('"email" must be a string');
+    });
+
+    it("Give value when body is correct", () => {
+      const body = {
+        email: "AsyncResearch@mail.org",
+      };
+
+      const { value } = RECOVERY_ACCOUNT.validate(body);
+
+      expect(value).toHaveProperty("email", body.email);
     });
   });
 });

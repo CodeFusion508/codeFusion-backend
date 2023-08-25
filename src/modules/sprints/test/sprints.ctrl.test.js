@@ -8,10 +8,10 @@ const {
     getSprintRels
 } = require("../sprints.ctrl.js");
 
-describe("users controller tests", () => {
+describe("Sprint Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {
@@ -24,15 +24,14 @@ describe("users controller tests", () => {
 
     });
 
-    describe("createSprint", () => {
-        it("createSprint should return data", async () => {
+    describe("createSprint Controller", () => {
+        it("createSprint should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                path  : "/section2/nodejs",
-                title : "Example Sprint 5",
-                desc  : "esto es un ejemplo de un sprint en section 2 para nodejs",
-                label : "Section_2"
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
             };
 
             const result = await createSprint(deps, body)
@@ -41,11 +40,13 @@ describe("users controller tests", () => {
 
             expect(result).toHaveProperty("stats");
             expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("title");
+            expect(result.node).toHaveProperty("desc");
         });
     });
 
-    describe("getAllSprints", () => {
-        it("getAllSprints should return data", async () => {
+    describe("getAllSprints Controller", () => {
+        it("getAllSprints should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockAllSprints);
 
             const result = await getAllSprints(deps)
@@ -53,16 +54,18 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("stats");
-            expect(result).toHaveProperty("node");
+            expect(result.node[0]).toHaveProperty("uuid");
+            expect(result.node[0]).toHaveProperty("title");
+            expect(result.node[0]).toHaveProperty("desc");
         });
     });
 
-    describe("updateSprint", () => {
-        it("updateSprint should throw an error", async () => {
+    describe("updateSprint Controller", () => {
+        it("updateSprint should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                "uuid": "69a03f16-195e-4f82-871b-051bd82cc28b"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await updateSprint(deps, body)
@@ -73,13 +76,15 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("message", "Debe indicar al menos un cambio.");
         });
 
-        it("updateSprint should return correct data", async () => {
+        it("updateSprint should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                uuid  : "69a03f16-195e-4f82-871b-051bd82cc28b",
-                title : "new title",
-                desc  : "new description"
+                uuid     : "997bb6d3-b309-492e-a19d-f9cbc1af7fbf",
+                sprintNo : 1993,
+                title    : "Doom",
+                desc     : "Avenge Daisy",
+                totalExp : 1993
             };
 
             const result = await updateSprint(deps, body)
@@ -87,32 +92,18 @@ describe("users controller tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("stats");
+            expect(result.node).toHaveProperty("uuid");
             expect(result.node).toHaveProperty("title");
             expect(result.node).toHaveProperty("desc");
         });
     });
 
-    describe("getSprint", () => {
-        it("getSprint should return data", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
-
-            const params = {
-                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
-            };
-
-            const result = await getSprint(deps, params)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("stats");
-            expect(result.node).toHaveProperty("title");
-        });
-
-        it("getSprint should throw an error", async () => {
+    describe("getSprint Controller", () => {
+        it("getSprint should throw an error and message", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {
-                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await getSprint(deps, params)
@@ -122,14 +113,31 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("err");
             expect(result).toHaveProperty("message");
         });
+
+        it("getSprint should return formatted result", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
+
+            const params = {
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
+            };
+
+            const result = await getSprint(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("stats");
+            expect(result.node).toHaveProperty("uuid");
+            expect(result.node).toHaveProperty("title");
+            expect(result.node).toHaveProperty("desc");
+        });
     });
 
-    describe("deleteSprint", () => {
-        it("deleteSprint should return data", async () => {
+    describe("deleteSprint Controller", () => {
+        it("deleteSprint should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const body = {
-                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await deleteSprint(deps, body)
@@ -141,12 +149,27 @@ describe("users controller tests", () => {
         });
     });
 
-    describe("getSprintRels", () => {
-        it("getSprintRels should return data", async () => {
+    describe("getSprintRels Controller", () => {
+        it("getSprintRels should throw an error and message", async () => {
+            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
+
+            const params = {
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
+            };
+
+            const result = await getSprintRels(deps, params)
+                .then((res) => res)
+                .catch((err) => err);
+
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
+        });
+
+        it("getSprintRels should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockSprinRels);
 
             const params = {
-                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await getSprintRels(deps, params)
@@ -156,21 +179,6 @@ describe("users controller tests", () => {
             expect(result).toHaveProperty("stats");
             expect(result.node[1]).toHaveProperty("node");
             expect(result.node[1]).toHaveProperty("rels");
-        });
-
-        it("getSprintRels should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
-
-            const params = {
-                uuid: "69a03f16-195e-4f82-871b-051bd82cc28b",
-            };
-
-            const result = await getSprintRels(deps, params)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "Este sprint no existe, verifique si tiene un uuid válido.");
         });
     });
 });

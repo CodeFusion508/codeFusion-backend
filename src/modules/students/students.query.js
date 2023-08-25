@@ -70,20 +70,16 @@ const deleteStudentQuery = (params) => `
 `;
 
 // Relation Queries
-const createRelQuery = (body) => {
-    const evalClause = body.eval ? `{eval: "${body.eval}"}` : "";
-
-    return `
-        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
-        WHERE NOT u:softDeleted AND NOT c:softDeleted
-        CREATE (u)-[r:${body.relation}${evalClause}]->(c)
-        RETURN r;
-    `;
-};
+const createRelQuery = (body) => `
+    MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.contentLabel} {uuid: "${body.contentUuid}"})
+    WHERE NOT u:softDeleted AND NOT c:softDeleted
+    CREATE (u)-[r:${body.relation}]->(c)
+    RETURN r;
+`;
 
 const deleteRelQuery = (body) => {
     const query = `
-        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.op} {uuid: "${body.contentUuid}"})
+        MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.contentLabel} {uuid: "${body.contentUuid}"})
         WHERE NOT u:softDeleted AND NOT c:softDeleted
         WITH u, c
         MATCH (u)-[r:${body.relation}]->(c)

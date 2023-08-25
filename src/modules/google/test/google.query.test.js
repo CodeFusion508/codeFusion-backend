@@ -3,13 +3,13 @@ const {
     googleSignUpQuery,
 } = require("../google.query.js");
 
-describe("google users query tests", () => {
-    it("googleSignUpQuery", () => {
+describe("Google Query Tests", () => {
+    it("googleSignUpQuery should have proper query", () => {
         const body = {
-            email    : "testing10390@gmail.com",
-            userName : "testing800",
+            email    : "AsyncResearch@mail.org",
+            userName : "Async Research Institute"
         };
-        const uuid = "1c12d3x-123d1232c13";
+        const uuid = "9e35cf4f-3caf-41e6-bd7e-ed4efa5c031c";
 
         const query = googleSignUpQuery(uuid, body);
 
@@ -19,9 +19,9 @@ describe("google users query tests", () => {
         expect(query).toContain(`"${body.userName}"`);
     });
 
-    it("findRegisteredEmail", () => {
+    it("findRegisteredEmail should have proper query", () => {
         const body = {
-            email: "JohnnyAppleSeed@mail.com"
+            email: "AsyncResearch@mail.org",
         };
 
         const query = findRegisteredEmail(body);

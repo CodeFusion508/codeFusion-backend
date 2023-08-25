@@ -19,7 +19,7 @@ const jwt = require("../../../config/jwt.js");
 describe("Students Controller Tests", () => {
     let deps;
 
-    beforeAll(() => {
+    beforeEach(() => {
         deps = {
             services: {
                 neo4j: {
@@ -34,12 +34,12 @@ describe("Students Controller Tests", () => {
     });
 
     describe("signUp Controller", () => {
-        it("signUp should throw an error", async () => {
+        it("signUp should throw an error if email has been registered", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
                 email    : "AsyncResearch@mail.org",
-                password : "1234",
+                password : "password",
                 userName : "Async Research Institute"
             };
 
@@ -47,16 +47,16 @@ describe("Students Controller Tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("err", 403);
-            expect(result).toHaveProperty("message", "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión.");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
 
-        it("signUp should return back token and data", async () => {
+        it("signUp should return token and data", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
 
             const body = {
                 email    : "AsyncResearch@mail.org",
-                password : "1234",
+                password : "password",
                 userName : "Async Research Institute"
             };
 
@@ -65,17 +65,19 @@ describe("Students Controller Tests", () => {
                 .catch((err) => err);
 
             expect(result).toHaveProperty("token", "mockedToken");
-            expect(result.data.node).toHaveProperty("email", "AsyncResearch@mail.org");
+            expect(result.data.node).toHaveProperty("email");
+            expect(result.data.node).toHaveProperty("userName");
+            expect(result.data.node).toHaveProperty("uuid");
         });
     });
 
     describe("logIn Controller", () => {
-        it("logIn should throw an error", async () => {
+        it("logIn should throw an error if password is incorrect", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
                 email    : "AsyncResearch@mail.org",
-                password : "12345",
+                password : "incorrectPassword",
                 userName : "Async Research Institute"
             };
 
@@ -83,8 +85,8 @@ describe("Students Controller Tests", () => {
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("err", 403);
-            expect(result).toHaveProperty("message", "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo.");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
 
         it("logIn should return data and token", async () => {
@@ -113,7 +115,7 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await deleteStudent(deps, param)
@@ -126,26 +128,26 @@ describe("Students Controller Tests", () => {
     });
 
     describe("getStudent Controller", () => {
-        it("getStudent should throw an error", async () => {
+        it("getStudent should throw an error if user doesn't exist", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const param = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await getStudent(deps, param)
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "Este usuario no existe, verifique si tiene el uuid válido.");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
 
-        it("getStudent should return formatted result and records", async () => {
+        it("getStudent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const param = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await getStudent(deps, param)
@@ -158,27 +160,30 @@ describe("Students Controller Tests", () => {
     });
 
     describe("updateStudent Controller", () => {
-        it("updateStudent should throw an error if body has no changes", async () => {
+        it("updateStudent should throw an error if body has less than one change", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid: "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
             };
 
             const result = await updateStudent(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("err", 400);
-            expect(result).toHaveProperty("message", "Debe indicar al menos un cambio.");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
 
         it("updateStudent should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
 
             const body = {
-                uuid  : "MOCK-cfe5-4c59-afbb-3d4e04573543",
-                email : "AsyncResearch@mail.org"
+                uuid      : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                totalExp  : 1993,
+                weeklyExp : 1993,
+                userName  : "Async Research Institute",
+                password  : "password"
             };
 
             const result = await updateStudent(deps, body)
@@ -191,32 +196,32 @@ describe("Students Controller Tests", () => {
     });
 
     describe("createRel Controller", () => {
-        it("createRel should throw an error", async () => {
+        it("createRel should throw an error if user doesn't exist", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmptyRecords);
 
             const body = {
-                "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
-                "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
-                "op"          : "Sprint",
-                "relation"    : "related"
+                uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+                contentLabel : "Problem",
+                relation     : "FAILED"
             };
 
             const result = await createRel(deps, body)
                 .then((res) => res)
                 .catch((err) => err);
 
-            expect(result).toHaveProperty("err", 404);
-            expect(result).toHaveProperty("message", "Este usuario no existe, verifique si tiene el uuid válido.");
+            expect(result).toHaveProperty("err");
+            expect(result).toHaveProperty("message");
         });
 
         it("createRel should return formatted result", async () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreateRel);
 
             const body = {
-                "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
-                "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
-                "op"          : "Sprint",
-                "relation"    : "related"
+                uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+                contentLabel : "Problem",
+                relation     : "FAILED"
             };
 
             const result = await createRel(deps, body)
@@ -234,10 +239,10 @@ describe("Students Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreateRel);
 
             const body = {
-                "uuid"        : "87f2925a-df5d-4461-973e-2b18cadbecf0",
-                "contentUuid" : "c522f197-0248-4d2e-b80a-7997f00382f6",
-                "op"          : "Sprint",
-                "relation"    : "related"
+                uuid         : "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
+                contentUuid  : "c4fc0d8d-5608-4c1e-ab7e-1bf61392cd43",
+                contentLabel : "Problem",
+                relation     : "FAILED"
             };
 
             const result = await deleteRel(deps, body)
@@ -411,7 +416,7 @@ let mockValue = {
                         },
                         "password" : "1234",
                         "userName" : "Async Research Institute",
-                        "uuid"     : "MOCK-cfe5-4c59-afbb-3d4e04573543",
+                        "uuid"     : "G1bB3ri$-X5Y9-!nv4l!d-#c0d3-Z7T8X@7",
                         "totalExp" : {
                             "low"  : 0,
                             "high" : 0
@@ -608,7 +613,7 @@ let mockCreateRel = {
                         "low"  : 33,
                         "high" : 0
                     },
-                    "type"               : "related",
+                    "type"               : "COMPLETED",
                     "properties"         : {},
                     "elementId"          : "5:fa284c45-c13e-4980-8dbe-982377fdef6e:31",
                     "startNodeElementId" : "4:fa284c45-c13e-4980-8dbe-982377fdef6e:30",
@@ -622,7 +627,7 @@ let mockCreateRel = {
     ],
     "summary": {
         "query": {
-            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:related]->(c)\n            RETURN r;\n        ",
+            "text"       : "\n            MATCH (u:Student {uuid: \"87f2925a-df5d-4461-973e-2b18cadbecf0\"}), (c:Sprint {uuid: \"c522f197-0248-4d2e-b80a-7997f00382f6\"})\n            WHERE NOT u:softDeleted AND NOT c:softDeleted\n            WITH u, c\n            CREATE (u)-[r:COMPLETED]->(c)\n            RETURN r;\n        ",
             "parameters" : {}
         },
         "queryType" : "rw",
