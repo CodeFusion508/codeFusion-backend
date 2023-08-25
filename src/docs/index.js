@@ -1,6 +1,5 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 
-const package = require("../../package.json");
 
 // this line is for our actions-runner, if the docs don't appear consider changing this line to suit your needs.
 const yPath = process.env.USER === "ubuntu" ? "/home/ubuntu/actions-runner/_work/codeFusion-backend/codeFusion-backend/src/docs/*.yaml" : "./src/docs/*.yaml";
@@ -8,9 +7,9 @@ const yPath = process.env.USER === "ubuntu" ? "/home/ubuntu/actions-runner/_work
 const options = {
     definition: {
         info: {
-            description : package.description,
-            title       : package.name,
-            version     : package.version
+            description : "This is the documentation for our endpoints. This will tell you how to use a endpoint, what is required or what you can expect back.",
+            title       : "CodeFusion508 Backend",
+            version     : "1.0.0"
         },
         openapi: "3.0.0"
 

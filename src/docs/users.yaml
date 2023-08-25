@@ -1,11 +1,11 @@
 tags:
-  - name: Users
-    description: an example of how to do a swagger doc using yaml
+  - name: Students
+    description: This is the endpoints for out student nodes, which includes CRUD operations and others such as relationships and confirming their email.
 paths:
   /users/{uuid}:
     get:
       tags:
-        - Users
+        - Students
       summary: Get user by uuid
       description: Get user by uuid
       operationId: getUser
@@ -27,7 +27,7 @@ paths:
     post:
       summary: Create new user
       tags:
-        - Users
+        - Students
       description: Create new user if email hasn't been registered.
       operationId: createUser
       requestBody:
@@ -51,7 +51,7 @@ paths:
     put:
       summary: Update user information
       tags:
-        - Users
+        - Students
       description: Update user information based on uuid given.
       operationId: updateUser
       requestBody:
@@ -75,7 +75,7 @@ paths:
     post:
       summary: LogIn User
       tags:
-        - Users
+        - Students
       description: Log in user if email and password are correct.
       operationId: logInUser
       requestBody:
@@ -99,7 +99,7 @@ paths:
     delete:
       summary: Delete a user.
       tags:
-        - Users
+        - Students
       description: Gives a softDelete label to a user.
       operationId: deleteUser
       parameters:
