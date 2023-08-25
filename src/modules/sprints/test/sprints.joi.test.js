@@ -44,7 +44,7 @@ describe("Sprints Joi Tests", () => {
 
     it("Give value when body is correct", () => {
       const params = {
-        uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+        uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
       };
 
       const { value } = CREATE_SPRINT.validate(params);
@@ -70,7 +70,7 @@ describe("Sprints Joi Tests", () => {
 
     it("Give value when body is correct", () => {
       const body = {
-        uuid     : "MOCK-0e32-486c-9205-cc6c2b87eaf0",
+        uuid     : "997bb6d3-b309-492e-a19d-f9cbc1af7fbf",
         sprintNo : 1993,
         title    : "Doom",
         desc     : "Avenge Daisy",

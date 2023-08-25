@@ -15,7 +15,7 @@ describe("Sprints Query Tests", () => {
             title    : "The Backrooms",
             desc     : "If you're not careful and you noclip out of reality in the wrong areas"
         };
-        const uuid = "MOCK-0e32-486c-9205-cc6c2b87eaf0";
+        const uuid = "997bb6d3-b309-492e-a19d-f9cbc1af7fbf";
 
         const query = createSprintQuery(uuid, body);
 
@@ -37,7 +37,7 @@ describe("Sprints Query Tests", () => {
 
     it("updateSprintQuery should have proper query", () => {
         const body = {
-            uuid     : "MOCK-0e32-486c-9205-cc6c2b87eaf0",
+            uuid     : "997bb6d3-b309-492e-a19d-f9cbc1af7fbf",
             sprintNo : 1993,
             title    : "Doom",
             desc     : "Avenge Daisy",
@@ -57,7 +57,7 @@ describe("Sprints Query Tests", () => {
 
     it("getSprintQuery should have proper query", () => {
         const params = {
-            uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+            uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
         };
 
         const query = getSprintQuery(params);
@@ -69,7 +69,7 @@ describe("Sprints Query Tests", () => {
 
     it("deleteSprintQuery should have proper query", () => {
         const params = {
-            uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+            uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
         };
 
         const query = deleteSprintQuery(params);
@@ -80,7 +80,7 @@ describe("Sprints Query Tests", () => {
 
     it("getSprintsRelsQuery should have proper query", () => {
         const params = {
-            uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+            uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
         };
 
         const query = getSprintsRelsQuery(params);

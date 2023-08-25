@@ -65,7 +65,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await updateSprint(deps, body)
@@ -80,7 +80,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const body = {
-                uuid     : "MOCK-0e32-486c-9205-cc6c2b87eaf0",
+                uuid     : "997bb6d3-b309-492e-a19d-f9cbc1af7fbf",
                 sprintNo : 1993,
                 title    : "Doom",
                 desc     : "Avenge Daisy",
@@ -103,7 +103,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {
-                uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await getSprint(deps, params)
@@ -118,7 +118,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockCreate);
 
             const params = {
-                uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await getSprint(deps, params)
@@ -137,7 +137,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const body = {
-                uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await deleteSprint(deps, body)
@@ -154,7 +154,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockEmpty);
 
             const params = {
-                uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await getSprintRels(deps, params)
@@ -169,7 +169,7 @@ describe("Sprint Controller Tests", () => {
             deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockSprinRels);
 
             const params = {
-                uuid: "MOCK-0e32-486c-9205-cc6c2b87eaf0"
+                uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
             };
 
             const result = await getSprintRels(deps, params)
