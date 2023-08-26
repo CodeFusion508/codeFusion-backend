@@ -107,3 +107,6 @@ dist
 
 # pnpm lock
 pnpm-lock.yaml
+
+# package lock
+package-lock.json
