@@ -2,7 +2,7 @@ const swaggerJSDoc = require("swagger-jsdoc");
 
 const package = require("../../package.json");
 
-// this line is for our actions-runner, if the docs don't appear consider changing this line to suit your needs.
+// This line is for our actions-runner, if the docs don't appear consider changing this line to suit your needs.
 const yPath = process.env.USER === "ubuntu" ? "/home/ubuntu/actions-runner/_work/codeFusion-backend/codeFusion-backend/src/docs/*.yaml" : "./src/docs/*.yaml";
 
 const options = {
