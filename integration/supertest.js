@@ -1,7 +1,7 @@
-const supertest = require("supertest");
 const { config } = require("dotenv");
 config();
 
-const path = `http://localhost:${process.env.PORT || 3000}`;
+const supertest = require("supertest");
+const path = `http://localhost:${process.env.PORT}`;
 
-module.exports = () => supertest(path);
+module.exports = supertest(path);
