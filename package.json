@@ -18,6 +18,9 @@
     "url": "git+https://github.com/CodeFusion508/codeFusion-backend"
   },
   "author": "CodeFusion508",
+  "engines": {
+    "node": ">=18"
+  },
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/CodeFusion508/codeFusion-backend/issues"
