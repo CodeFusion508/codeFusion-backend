@@ -2,7 +2,11 @@ const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
 const { params, body } = require("../utils/reqData.js");
-const { GET_UUID, CREATE_SPRINT, UPDATE_SPRINT } = require("../modules/sprints/sprints.joi.js");
+const {
+    GET_UUID,
+    CREATE_SPRINT,
+    UPDATE_SPRINT
+} = require("../modules/sprints/sprints.joi.js");
 
 
 module.exports = (deps) => {
@@ -14,9 +18,11 @@ module.exports = (deps) => {
         .get("/", endPoint(undefined, undefined, getAllSprints))
         .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
         .get("/:uuid/info", endPoint(params, GET_UUID, getSprint))
-        .delete("/:uuid", endPoint(params, GET_UUID, deleteSprint))
+        .delete("/:uuid/node", endPoint(params, GET_UUID, deleteSprint))
         // Sprints Relationships
-        .get("/:uuid/rel", endPoint(params, GET_UUID, getSprintRels));
+        .get("/:uuid/rel", endPoint(params, GET_UUID, getSprintRels))
+        // Internal Use Only
+        .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };
 
 
@@ -27,3 +33,5 @@ const getSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, 
 const deleteSprint = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.deleteSprint(data));
 
 const getSprintRels = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.getSprintRels(data));
+
+const bulkTestDelete = ({ ctrls }) => (_, res, next) => endpointResponse(res, next)(ctrls.sprintsCtrl.bulkTestDelete());
