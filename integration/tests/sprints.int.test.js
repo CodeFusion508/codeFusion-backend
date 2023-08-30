@@ -1,5 +1,8 @@
 const request = require("../supertest.js");
-const helpers = require("../helpers.js");
+const {
+    makeDummySprint,
+    bulkDeleteDummySprints
+} = require("../helpers.js");
 
 
 describe("Sprints Integration Tests", () => {
@@ -11,10 +14,10 @@ describe("Sprints Integration Tests", () => {
             title    : "The Backrooms",
             desc     : "If you're not careful and you noclip out of reality in the wrong areas"
         };
-        await helpers.makeSprint(dummyData);
-        await helpers.makeSprint(dummyData);
-        await helpers.makeSprint(dummyData);
-        await helpers.makeSprint(dummyData);
+        await makeDummySprint(dummyData);
+        await makeDummySprint(dummyData);
+        await makeDummySprint(dummyData);
+        await makeDummySprint(dummyData);
     });
 
     describe("GET /", () => {
@@ -28,20 +31,25 @@ describe("Sprints Integration Tests", () => {
         });
     });
 
-    // describe("POST /", () => {
-    //     it("Should create a sprint node", async () => {
-    //         const reqData = {
-    //             sprintNo : 1993,
-    //             title    : "The Backrooms",
-    //             desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-    //         };
+    describe("POST /", () => {
+        it("Should create a sprint node", async () => {
+            const reqData = {
+                sprintNo : 1993,
+                title    : "Test - The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            };
 
-    //         const { body } = await request
-    //             .post(path)
-    //             .send(reqData);
+            const { body } = await request
+                .post("/sprints/")
+                .send(reqData)
+                .expect(200);
 
-    //         expect(body).toHaveProperty("stats");
-    //         expect(body).toHaveProperty("node");
-    //     });
-    // });
+            expect(body).toHaveProperty("stats");
+            expect(body).toHaveProperty("node");
+        });
+    });
+
+    afterAll(async () => {
+        await bulkDeleteDummySprints();
+    });
 });

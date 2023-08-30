@@ -25,20 +25,29 @@ const keepTrackOfUuids = async (UUID) => {
 };
 */
 
-const makeSprint = async ({ sprintNo, title, desc }) => {
+const makeDummySprint = async ({ sprintNo, title, desc }) => {
     const reqData = {
         sprintNo,
-        title: "Test -" + title,
+        title: "Test - " + title,
         desc
     };
 
-    await request
+    const { body } = await request
         .post("/sprints/")
         .send(reqData)
+        .expect(200);
+
+    return body;
+};
+
+const bulkDeleteDummySprints = async () => {
+    await request
+        .delete("/sprints/bulk-test/")
         .expect(200);
 };
 
 
 module.exports = {
-    makeSprint
+    makeDummySprint,
+    bulkDeleteDummySprints
 };
