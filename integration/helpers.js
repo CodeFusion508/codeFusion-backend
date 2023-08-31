@@ -1,6 +1,23 @@
 const request = require("./supertest.js");
 
 
+// Day Helpers
+const makeDummyDay = async ({ dayNo, sprintUuid, desc }) => {
+    const reqData = {
+        desc: "Test - " + desc,
+        dayNo,
+        sprintUuid,
+    };
+
+    const { body } = await request
+        .post("/days/")
+        .send(reqData)
+        .expect(200);
+
+    return body;
+};
+
+// Sprint Helpers
 const makeDummySprint = async ({ sprintNo, title, desc }) => {
     const reqData = {
         sprintNo,
@@ -18,12 +35,13 @@ const makeDummySprint = async ({ sprintNo, title, desc }) => {
 
 const bulkDeleteDummySprints = async () => {
     await request
-        .delete("/sprints/bulk-test/")
+        .delete("/sprints/bulk-test")
         .expect(200);
 };
 
 
 module.exports = {
+    makeDummyDay,
     makeDummySprint,
     bulkDeleteDummySprints
 };

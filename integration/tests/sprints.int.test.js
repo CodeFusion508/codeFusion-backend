@@ -1,5 +1,6 @@
 const request = require("../supertest.js");
 const {
+    makeDummyDay,
     makeDummySprint,
     bulkDeleteDummySprints
 } = require("../helpers.js");
@@ -127,6 +128,36 @@ describe("Sprints Integration Tests", () => {
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);
+            expect(body).toHaveProperty("node");
+        });
+    });
+
+    describe("GET /:uuid/rel", () => {
+        let UUID;
+
+        beforeAll(async () => {
+            const dummySprint = {
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            };
+            const body = await makeDummySprint(dummySprint);
+            UUID = body.node.uuid;
+
+            const dummyDay = {
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : UUID,
+            };
+            await makeDummyDay(dummyDay);
+        });
+
+        it("Should get days and relationships of sprint node", async () => {
+            const { body } = await request
+                .get(path + `/${UUID}/rel`)
+                .expect(200);
+
+            console.log(body.node[0].rels);
             expect(body).toHaveProperty("node");
         });
     });

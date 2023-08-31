@@ -66,7 +66,13 @@ const getSprintsRelsQuery = (params) => `
 `;
 
 // Delete Test Data
-const bulkTestDeleteQuery = () => `
+const deleteTestRels = () => `
+    MATCH (d)-[r:BELONGS_TO]->(s:Sprint)
+    WHERE s.title STARTS WITH "Test -"
+    DELETE r;
+`;
+
+const deleteTestSprints = () => `
     MATCH (s:Sprint) 
     WHERE s.title STARTS WITH "Test -"
     DELETE s;
@@ -81,5 +87,6 @@ module.exports = {
 
     getSprintsRelsQuery,
 
-    bulkTestDeleteQuery
+    deleteTestRels,
+    deleteTestSprints
 };
