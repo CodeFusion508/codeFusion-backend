@@ -135,6 +135,7 @@ describe("Sprints Integration Tests", () => {
 
     describe("GET /:uuid/rel", () => {
         let UUID;
+        let dummyDay;
 
         beforeAll(async () => {
             const dummySprint = {
@@ -145,7 +146,7 @@ describe("Sprints Integration Tests", () => {
             const body = await makeDummySprint(dummySprint);
             UUID = body.node.uuid;
 
-            const dummyDay = {
+            dummyDay = {
                 desc       : "If you're not careful and you noclip out of reality in the wrong areas",
                 dayNo      : 1,
                 sprintUuid : UUID,
@@ -158,8 +159,10 @@ describe("Sprints Integration Tests", () => {
                 .get(path + `/${UUID}/rel`)
                 .expect(200);
 
-            console.log(body);
-            expect(body).toHaveProperty("node");
+            expect(body.node[0].node.uuid).not.toBe(UUID);
+            expect(body.node[0].node).toHaveProperty("desc", "Test - " + dummyDay.desc);
+            expect(body.node[0].rels).toHaveProperty("type", "BELONGS_TO");
+            expect(body.node[0].rels.properties).toHaveProperty("dayNo", dummyDay.dayNo);
         });
     });
 
