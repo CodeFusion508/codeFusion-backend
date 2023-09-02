@@ -168,6 +168,7 @@ describe("Sprints Integration Tests", () => {
 
 
     afterAll(async () => {
+        // bulkDeleteDummySprints goes first because it deletes the relationships between sprints and days
         await bulkDeleteDummySprints();
         await bulkDeleteDummyDays();
     });
