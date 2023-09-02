@@ -61,6 +61,13 @@ const getDaysRelsQuery = (params) => `
     RETURN c, r;
 `;
 
+// Delete Test Data
+const deleteTestDaysQuery = () => `
+    MATCH (d:Day)
+    WHERE d.desc STARTS WITH "Test -"
+    DELETE d;
+`;
+
 module.exports = {
     createDayQuery,
     getAllDaysQuery,
@@ -68,5 +75,7 @@ module.exports = {
     getDayQuery,
     deleteDayQuery,
 
-    getDaysRelsQuery
+    getDaysRelsQuery,
+
+    deleteTestDaysQuery
 };

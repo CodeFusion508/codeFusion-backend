@@ -17,6 +17,13 @@ const makeDummyDay = async ({ dayNo, sprintUuid, desc }) => {
     return body;
 };
 
+const bulkDeleteDummyDays = async () => {
+    await request
+        .delete("/days/bulk-test")
+        .expect(200);
+};
+
+
 // Sprint Helpers
 const makeDummySprint = async ({ sprintNo, title, desc }) => {
     const reqData = {
@@ -42,6 +49,7 @@ const bulkDeleteDummySprints = async () => {
 
 module.exports = {
     makeDummyDay,
+    bulkDeleteDummyDays,
     makeDummySprint,
     bulkDeleteDummySprints
 };

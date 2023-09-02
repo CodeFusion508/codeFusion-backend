@@ -1,6 +1,7 @@
 const request = require("../supertest.js");
 const {
     makeDummyDay,
+    bulkDeleteDummyDays,
     makeDummySprint,
     bulkDeleteDummySprints
 } = require("../helpers.js");
@@ -157,7 +158,7 @@ describe("Sprints Integration Tests", () => {
                 .get(path + `/${UUID}/rel`)
                 .expect(200);
 
-            console.log(body.node[0].rels);
+            console.log(body);
             expect(body).toHaveProperty("node");
         });
     });
@@ -165,5 +166,6 @@ describe("Sprints Integration Tests", () => {
 
     afterAll(async () => {
         await bulkDeleteDummySprints();
+        await bulkDeleteDummyDays();
     });
 });

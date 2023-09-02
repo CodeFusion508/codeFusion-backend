@@ -14,9 +14,11 @@ module.exports = (deps) => {
         .get("/", endPoint(undefined, undefined, getAllDays))
         .put("/", endPoint(body, UPDATE_DAY, updateDay))
         .get("/:uuid/info", endPoint(params, GET_UUID, getDay))
-        .delete("/:uuid", endPoint(params, GET_UUID, deleteDay))
+        .delete("/:uuid/node", endPoint(params, GET_UUID, deleteDay))
         // Day Relationships
-        .get("/:uuid/rel", endPoint(params, GET_UUID, getDayRels));
+        .get("/:uuid/rel", endPoint(params, GET_UUID, getDayRels))
+        // Internal Use Only
+        .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };
 
 
@@ -27,3 +29,5 @@ const getDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, nex
 const deleteDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.deleteDay(data));
 
 const getDayRels = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDaysRels(data));
+
+const bulkTestDelete = ({ ctrls }) => (_, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.bulkTestDelete());

@@ -13,7 +13,9 @@ const {
     updateDayQuery,
     getAllDaysQuery,
 
-    getDaysRelsQuery
+    getDaysRelsQuery,
+
+    deleteTestDaysQuery
 } = require("./days.query.js");
 
 
@@ -97,6 +99,16 @@ const getDaysRels = async ({ services }, params) => {
     return data;
 };
 
+// Delete Test Data
+const bulkTestDelete = async ({ services }) => {
+    const query = deleteTestDaysQuery();
+
+    let data = await services.neo4j.session.run(query);
+
+    data = cleanNeo4j(data);
+
+    return data;
+};
 
 Object.assign(module.exports, {
     createDay,
@@ -105,5 +117,7 @@ Object.assign(module.exports, {
     getDay,
     deleteDay,
 
-    getDaysRels
+    getDaysRels,
+
+    bulkTestDelete
 });
