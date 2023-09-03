@@ -159,6 +159,9 @@ describe("Sprints Integration Tests", () => {
                 .get(path + `/${UUID}/rel`)
                 .expect(200);
 
+            for (const key in body.stats) {
+                expect(body.stats[key]).toBe(0);
+            }
             expect(body.node[0].node.uuid).not.toBe(UUID);
             expect(body.node[0].node).toHaveProperty("desc", "Test - " + dummyDay.desc);
             expect(body.node[0].rels).toHaveProperty("type", "BELONGS_TO");
