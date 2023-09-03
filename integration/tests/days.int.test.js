@@ -78,7 +78,7 @@ describe("Sprints Integration Tests", () => {
             UUID = result.node.uuid;
         });
 
-        it("Should get days and relationships of sprint node", async () => {
+        it("Should update specific day", async () => {
             const reqData = {
                 uuid : UUID,
                 exp  : 1993,
@@ -90,10 +90,77 @@ describe("Sprints Integration Tests", () => {
                 .send(reqData)
                 .expect(200);
 
-            expect(body.stats).toHaveProperty("propertiesSet",2);
+            expect(body.stats).toHaveProperty("propertiesSet", 2);
             expect(body.node).toHaveProperty("uuid", reqData.uuid);
             expect(body.node).toHaveProperty("exp", reqData.exp);
             expect(body.node).toHaveProperty("desc", reqData.desc);
+        });
+    });
+
+    describe("GET /:uuid/info", () => {
+        let result;
+        let dummyDay;
+
+        beforeAll(async () => {
+            const dummySprint = {
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            };
+            const body = await makeDummySprint(dummySprint);
+            const sprintUuid = body.node.uuid;
+
+            dummyDay = {
+                desc  : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo : 1,
+                sprintUuid,
+            };
+            result = await makeDummyDay(dummyDay);
+        });
+
+        it("Should get specific day", async () => {
+            const { body } = await request
+                .get(path + `/${result.node.uuid}/info`)
+                .expect(200);
+
+            for (const key in body.stats) {
+                expect(body.stats[key]).toBe(0);
+            }
+            expect(body.node).toHaveProperty("uuid", result.node.uuid);
+            expect(body.node).toHaveProperty("exp", result.node.exp);
+            expect(body.node).toHaveProperty("desc", result.node.desc);
+        });
+    });
+
+    describe("DELETE /:uuid/node", () => {
+        let result;
+        let dummyDay;
+
+        beforeAll(async () => {
+            const dummySprint = {
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            };
+            const body = await makeDummySprint(dummySprint);
+            const sprintUuid = body.node.uuid;
+
+            dummyDay = {
+                desc  : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo : 1,
+                sprintUuid,
+            };
+            result = await makeDummyDay(dummyDay);
+        });
+
+        it("Should delete specific day", async () => {
+            const { body } = await request
+                .delete(path + `/${result.node.uuid}/node`)
+                .expect(200);
+
+            expect(body.stats).toHaveProperty("labelsAdded", 1);
+            expect(body.node.length < 1).toBeTruthy();
+            expect(Array.isArray(body.node)).toBeTruthy();
         });
     });
 
