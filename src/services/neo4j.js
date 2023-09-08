@@ -26,7 +26,8 @@ module.exports = async () => {
         };
 
         // Schedule the keep alive query to run every 10 hours
-        const keepAliveInterval = 60 * 60 * 10; // 10 hour in seconds
+        const keepAliveInterval = 10 * 60 * 60 * 1000; // 10 hours in milliseconds
+
         setInterval(executeKeepAliveQuery, keepAliveInterval);
 
         const neo4j = { driver, session };
