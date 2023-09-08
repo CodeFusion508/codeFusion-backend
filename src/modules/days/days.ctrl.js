@@ -15,6 +15,7 @@ const {
 
     getDaysRelsQuery,
 
+    deleteTestRels,
     deleteTestDaysQuery
 } = require("./days.query.js");
 
@@ -101,10 +102,13 @@ const getDaysRels = async ({ services }, params) => {
 
 // Delete Test Data
 const bulkTestDelete = async ({ services }) => {
-    const query = deleteTestDaysQuery();
+    // First we have to delete relationships
+    const query1 = deleteTestRels();
+    await services.neo4j.session.run(query1);
 
-    let data = await services.neo4j.session.run(query);
-
+    // Then we have to delete the test nodes
+    const query2 = deleteTestDaysQuery();
+    let data = await services.neo4j.session.run(query2);
     data = cleanNeo4j(data);
 
     return data;

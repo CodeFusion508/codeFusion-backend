@@ -5,7 +5,9 @@ const {
     createContentQuery,
     updatedContentQuery,
     getContentQuery,
-    deletedContentQuery
+    deletedContentQuery,
+
+    deleteTestContentQuery
 } = require("./content.query.js");
 
 const {
@@ -73,12 +75,25 @@ const deleteContent = async ({ services }, params) => {
     return data;
 };
 
+// Delete Test Data
+const bulkTestDelete = async ({ services }) => {
+    const query = deleteTestContentQuery();
+
+    let data = await services.neo4j.session.run(query);
+    data = cleanNeo4j(data);
+
+    return data;
+};
+
+
 
 Object.assign(module.exports, {
     createContent,
     updateContent,
     getContent,
-    deleteContent
+    deleteContent,
+
+    bulkTestDelete
 });
 
 // Helper Functions

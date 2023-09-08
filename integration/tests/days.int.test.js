@@ -3,7 +3,9 @@ const {
     makeDummyDay,
     bulkDeleteDummyDays,
     makeDummySprint,
-    bulkDeleteDummySprints
+    bulkDeleteDummySprints,
+    makeDummyContent,
+    bulkDeleteDummyContents
 } = require("../helpers.js");
 
 
@@ -164,9 +166,57 @@ describe("Sprints Integration Tests", () => {
         });
     });
 
+    describe("GET /:uuid/rel", () => {
+        let UUID;
+        let dummyDay;
+
+        beforeAll(async () => {
+            const result = await makeDummySprint({
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            });
+
+            dummyDay = {
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : result.node.uuid
+            };
+            const body = await makeDummyDay(dummyDay);
+            UUID = body.node.uuid;
+
+            await makeDummyContent({
+                label     : "Text",
+                exp       : 1994,
+                title     : "Mallsoft",
+                desc      : "Anemoia",
+                time      : "Forever",
+                dayUuid   : UUID,
+                contentNo : 1,
+
+                path: "https://youtu.be/wJWksPWDKOc"
+            });
+        });
+
+        it("Should get days and relationships of sprint node", async () => {
+            const { body } = await request
+                .get(path + `/${UUID}/rel`)
+                .expect(200);
+
+            for (const key in body.stats) {
+                expect(body.stats[key]).toBe(0);
+            }
+            expect(body.node[0].node.uuid).not.toBe(UUID);
+            expect(body.node[0].node).toHaveProperty("desc", "Test - " + dummyDay.desc);
+            expect(body.node[0].rels).toHaveProperty("type", "BELONGS_TO");
+            expect(body.node[0].rels.properties).toHaveProperty("dayNo", dummyDay.dayNo);
+        });
+    });
+
     afterAll(async () => {
         // bulkDeleteDummySprints goes first because it deletes the relationships between sprints and days
         await bulkDeleteDummySprints();
         await bulkDeleteDummyDays();
+        await bulkDeleteDummyContents();
     });
 });

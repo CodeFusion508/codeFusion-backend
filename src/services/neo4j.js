@@ -12,7 +12,7 @@ module.exports = async () => {
             }
         );
 
-        if (!await driver.verifyAuthentication()) throw ({ message: "Auth neo4j error" });
+        if (!await driver.verifyAuthentication()) throw ({ message: "Authentication for Neo4J Failed" });
         const session = driver.session();
 
         const executeKeepAliveQuery = () => {

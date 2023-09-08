@@ -1,5 +1,32 @@
 const request = require("./supertest.js");
 
+// Content Helpers
+const makeDummyContent = async (reqBody) => {
+    const reqData = {
+        label     : reqBody.label,
+        exp       : reqBody.exp,
+        title     : "Test - " + reqBody.title,
+        desc      : reqBody.desc,
+        time      : reqBody.time,
+        dayUuid   : reqBody.dayUuid,
+        contentNo : reqBody.contentNo,
+
+        path: reqBody.path
+    };
+
+    const { body } = await request
+        .post("/contents/" + reqBody.label.toLowerCase())
+        .send(reqData)
+        .expect(200);
+
+    return body;
+};
+
+const bulkDeleteDummyContents = async () => {
+    await request
+        .delete("/contents/bulk-test")
+        .expect(200);
+};
 
 // Day Helpers
 const makeDummyDay = async ({ dayNo, sprintUuid, desc }) => {
@@ -10,7 +37,7 @@ const makeDummyDay = async ({ dayNo, sprintUuid, desc }) => {
     };
 
     const { body } = await request
-        .post("/days/")
+        .post("/days")
         .send(reqData)
         .expect(200);
 
@@ -33,7 +60,7 @@ const makeDummySprint = async ({ sprintNo, title, desc }) => {
     };
 
     const { body } = await request
-        .post("/sprints/")
+        .post("/sprints")
         .send(reqData)
         .expect(200);
 
@@ -51,7 +78,9 @@ module.exports = {
     makeDummyDay,
     bulkDeleteDummyDays,
     makeDummySprint,
-    bulkDeleteDummySprints
+    bulkDeleteDummySprints,
+    makeDummyContent,
+    bulkDeleteDummyContents
 };
 
 

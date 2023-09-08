@@ -5,7 +5,7 @@ const baseSchema = {
     exp   : Joi.number().required(),
     title : Joi.string().required(),
     desc  : Joi.string().required(),
-    time  : Joi.number().required(),
+    time  : Joi.string().required(),
 
     dayUuid   : Joi.string().uuid().required(),
     contentNo : Joi.number().required(),
@@ -16,7 +16,7 @@ const baseUpdateSchema = {
     exp   : Joi.number().optional(),
     title : Joi.string().optional(),
     desc  : Joi.string().optional(),
-    time  : Joi.number().optional(),
+    time  : Joi.string().optional(),
 };
 
 
