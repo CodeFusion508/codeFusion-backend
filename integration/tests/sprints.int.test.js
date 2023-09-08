@@ -47,13 +47,12 @@ describe("Sprints Integration Tests", () => {
         let UUID;
 
         beforeAll(async () => {
-            const dummyData = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
+            });
 
-            const body = await makeDummySprint(dummyData);
             UUID = body.node.uuid;
         });
 
@@ -110,16 +109,14 @@ describe("Sprints Integration Tests", () => {
 
     describe("DELETE /:uuid/node", () => {
         let UUID;
-        let dummyData;
 
         beforeAll(async () => {
-            dummyData = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
+            });
 
-            const body = await makeDummySprint(dummyData);
             UUID = body.node.uuid;
         });
 
@@ -138,12 +135,12 @@ describe("Sprints Integration Tests", () => {
         let dummyDay;
 
         beforeAll(async () => {
-            const dummySprint = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
-            const body = await makeDummySprint(dummySprint);
+            });
+
             UUID = body.node.uuid;
 
             dummyDay = {
@@ -171,7 +168,7 @@ describe("Sprints Integration Tests", () => {
 
 
     afterAll(async () => {
-        // bulkDeleteDummySprints goes first because it deletes the relationships between sprints and days
+        // We are executing this in this order because we are deleting relationships in order of the highest to lowest
         await bulkDeleteDummySprints();
         await bulkDeleteDummyDays();
     });

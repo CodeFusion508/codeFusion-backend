@@ -16,12 +16,12 @@ describe("Sprints Integration Tests", () => {
         let UUID;
 
         beforeAll(async () => {
-            const dummySprint = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
-            const body = await makeDummySprint(dummySprint);
+            });
+
             UUID = body.node.uuid;
         });
 
@@ -60,23 +60,20 @@ describe("Sprints Integration Tests", () => {
 
     describe("PUT /", () => {
         let UUID;
-        let dummyDay;
 
         beforeAll(async () => {
-            const dummySprint = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
-            const body = await makeDummySprint(dummySprint);
-            const sprintUuid = body.node.uuid;
+            });
 
-            dummyDay = {
-                desc  : "If you're not careful and you noclip out of reality in the wrong areas",
-                dayNo : 1,
-                sprintUuid,
-            };
-            const result = await makeDummyDay(dummyDay);
+            const result = await makeDummyDay({
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : body.node.uuid,
+            });
+
             UUID = result.node.uuid;
         });
 
@@ -101,23 +98,19 @@ describe("Sprints Integration Tests", () => {
 
     describe("GET /:uuid/info", () => {
         let result;
-        let dummyDay;
 
         beforeAll(async () => {
-            const dummySprint = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
-            const body = await makeDummySprint(dummySprint);
-            const sprintUuid = body.node.uuid;
+            });
 
-            dummyDay = {
-                desc  : "If you're not careful and you noclip out of reality in the wrong areas",
-                dayNo : 1,
-                sprintUuid,
-            };
-            result = await makeDummyDay(dummyDay);
+            result = await makeDummyDay({
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : body.node.uuid,
+            });
         });
 
         it("Should get specific day", async () => {
@@ -135,29 +128,27 @@ describe("Sprints Integration Tests", () => {
     });
 
     describe("DELETE /:uuid/node", () => {
-        let result;
-        let dummyDay;
+        let UUID;
 
         beforeAll(async () => {
-            const dummySprint = {
+            const body = await makeDummySprint({
                 sprintNo : 1993,
                 title    : "The Backrooms",
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
-            };
-            const body = await makeDummySprint(dummySprint);
-            const sprintUuid = body.node.uuid;
+            });
 
-            dummyDay = {
-                desc  : "If you're not careful and you noclip out of reality in the wrong areas",
-                dayNo : 1,
-                sprintUuid,
-            };
-            result = await makeDummyDay(dummyDay);
+            const result = await makeDummyDay({
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : body.node.uuid,
+            });
+
+            UUID = result.node.uuid;
         });
 
         it("Should delete specific day", async () => {
             const { body } = await request
-                .delete(path + `/${result.node.uuid}/node`)
+                .delete(path + `/${UUID}/node`)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);
@@ -168,7 +159,6 @@ describe("Sprints Integration Tests", () => {
 
     describe("GET /:uuid/rel", () => {
         let UUID;
-        let dummyDay;
 
         beforeAll(async () => {
             const result = await makeDummySprint({
@@ -177,12 +167,12 @@ describe("Sprints Integration Tests", () => {
                 desc     : "If you're not careful and you noclip out of reality in the wrong areas"
             });
 
-            dummyDay = {
+            const body = await makeDummyDay({
                 desc       : "If you're not careful and you noclip out of reality in the wrong areas",
                 dayNo      : 1,
                 sprintUuid : result.node.uuid
-            };
-            const body = await makeDummyDay(dummyDay);
+            });
+
             UUID = body.node.uuid;
 
             await makeDummyContent({
@@ -214,7 +204,7 @@ describe("Sprints Integration Tests", () => {
     });
 
     afterAll(async () => {
-        // bulkDeleteDummySprints goes first because it deletes the relationships between sprints and days
+        // We are executing this in this order because we are deleting relationships in order of the highest to lowest
         await bulkDeleteDummySprints();
         await bulkDeleteDummyDays();
         await bulkDeleteDummyContents();
