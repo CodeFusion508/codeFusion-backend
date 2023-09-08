@@ -207,9 +207,9 @@ describe("Sprints Integration Tests", () => {
                 expect(body.stats[key]).toBe(0);
             }
             expect(body.node[0].node.uuid).not.toBe(UUID);
-            expect(body.node[0].node).toHaveProperty("desc", "Test - " + dummyDay.desc);
+            expect(body.node[0].node).toHaveProperty("desc", "Anemoia");
             expect(body.node[0].rels).toHaveProperty("type", "BELONGS_TO");
-            expect(body.node[0].rels.properties).toHaveProperty("dayNo", dummyDay.dayNo);
+            expect(body.node[0].rels.properties).toHaveProperty("contentNo", 1);
         });
     });
 
