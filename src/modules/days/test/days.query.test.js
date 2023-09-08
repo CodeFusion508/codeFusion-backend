@@ -55,7 +55,7 @@ describe("Day Query Tests", () => {
 
         const query = getDayQuery(params);
 
-        expect(query).toContain(`MATCH (d: Day {uuid: "${params.uuid}"})`);
+        expect(query).toContain(`MATCH (d:Day {uuid: "${params.uuid}"})`);
         expect(query).toContain("WHERE NOT d:softDeleted");
         expect(query).toContain("RETURN d;");
     });
@@ -78,7 +78,7 @@ describe("Day Query Tests", () => {
 
         const query = getDaysRelsQuery(params);
 
-        expect(query).toContain(`MATCH (c)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})`);
+        expect(query).toContain(`MATCH (c:Content)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})`);
         expect(query).toContain("WHERE NOT d:softDeleted AND NOT c:softDeleted");
         expect(query).toContain("RETURN c, r;");
     });
