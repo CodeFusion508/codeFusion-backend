@@ -9,10 +9,30 @@ const makeDummyContent = async (reqBody) => {
         desc      : reqBody.desc,
         time      : reqBody.time,
         dayUuid   : reqBody.dayUuid,
-        contentNo : reqBody.contentNo,
-
-        path: reqBody.path
+        contentNo : reqBody.contentNo
     };
+    switch (reqBody.label) {
+        case "Text":
+            reqData.path = reqBody.path;
+
+            break;
+        case "Video":
+            reqData.link = reqBody.link;
+
+            break;
+        case "Problem":
+            reqData.element = reqBody.element;
+            reqData.content = reqBody.content;
+            reqData.language = reqBody.languag;
+
+            break;
+        case "Quiz":
+            reqData.path = reqBody.path;
+
+            break;
+        default:
+            throw new Error("Did not provide a label!");
+    }
 
     const { body } = await request
         .post("/contents/" + reqBody.label.toLowerCase())

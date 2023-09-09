@@ -4,7 +4,8 @@ const {
     bulkDeleteDummyDays,
     makeDummySprint,
     bulkDeleteDummySprints,
-    bulkDeleteDummyContents
+    bulkDeleteDummyContents,
+    makeDummyContent
 } = require("../helpers.js");
 
 
@@ -74,10 +75,10 @@ describe("Content Integration Tests", () => {
                 .send(reqData)
                 .expect(200);
 
-                expect(body.stats).toHaveProperty("nodesCreated", 1);
-                expect(body.node).toHaveProperty("path", reqData.path);
-                expect(body.node).toHaveProperty("title", reqData.title);
-                expect(body.node).toHaveProperty("desc", reqData.desc);
+            expect(body.stats).toHaveProperty("nodesCreated", 1);
+            expect(body.node).toHaveProperty("path", reqData.path);
+            expect(body.node).toHaveProperty("title", reqData.title);
+            expect(body.node).toHaveProperty("desc", reqData.desc);
         });
 
         it("Should create Video content", async () => {
@@ -98,10 +99,10 @@ describe("Content Integration Tests", () => {
                 .send(reqData)
                 .expect(200);
 
-                expect(body.stats).toHaveProperty("nodesCreated", 1);
-                expect(body.node).toHaveProperty("link", reqData.link);
-                expect(body.node).toHaveProperty("title", reqData.title);
-                expect(body.node).toHaveProperty("desc", reqData.desc);
+            expect(body.stats).toHaveProperty("nodesCreated", 1);
+            expect(body.node).toHaveProperty("link", reqData.link);
+            expect(body.node).toHaveProperty("title", reqData.title);
+            expect(body.node).toHaveProperty("desc", reqData.desc);
         });
 
         it("Should create Text content", async () => {
@@ -122,10 +123,157 @@ describe("Content Integration Tests", () => {
                 .send(reqData)
                 .expect(200);
 
-                expect(body.stats).toHaveProperty("nodesCreated", 1);
-                expect(body.node).toHaveProperty("path", reqData.path);
-                expect(body.node).toHaveProperty("title", reqData.title);
-                expect(body.node).toHaveProperty("desc", reqData.desc);
+            expect(body.stats).toHaveProperty("nodesCreated", 1);
+            expect(body.node).toHaveProperty("path", reqData.path);
+            expect(body.node).toHaveProperty("title", reqData.title);
+            expect(body.node).toHaveProperty("desc", reqData.desc);
+        });
+    });
+
+    describe("PUT /:label", () => {
+        let UUID;
+
+        beforeAll(async () => {
+            const body = await makeDummySprint({
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            });
+
+            const result = await makeDummyDay({
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : body.node.uuid
+            });
+
+            const response = await makeDummyContent({
+                label     : "Video",
+                exp       : 1994,
+                title     : "Mallsoft",
+                desc      : "Anemoia",
+                time      : "Forever",
+                dayUuid   : result.node.uuid,
+                contentNo : 1,
+
+                link: "https://youtu.be/wJWksPWDKOc"
+            });
+
+            UUID = response.node.uuid;
+        });
+
+        it("Should update Video content", async () => {
+            const reqData = {
+                label : "Video",
+                uuid  : UUID,
+                exp   : 1993,
+                title : "Test - " + "Mallsoft",
+                desc  : "Calming background music that emulates a mall. Along with some echo and slight distortion",
+                time  : "Forever",
+
+                link: "https://youtu.be/kovd7OzcU9s"
+            };
+
+            const { body } = await request
+                .put(path + "/Video")
+                .send(reqData)
+                .expect(200);
+
+
+            expect(body.stats).toHaveProperty("propertiesSet", 5);
+            expect(body.node).toHaveProperty("link", reqData.link);
+            expect(body.node).toHaveProperty("title", reqData.title);
+            expect(body.node).toHaveProperty("desc", reqData.desc);
+        });
+    });
+
+    describe("GET /:uuid/info", () => {
+        let UUID;
+        let response;
+
+        beforeAll(async () => {
+            const body = await makeDummySprint({
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            });
+
+            const result = await makeDummyDay({
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : body.node.uuid
+            });
+
+            response = await makeDummyContent({
+                label     : "Video",
+                exp       : 1994,
+                title     : "Mallsoft",
+                desc      : "Anemoia",
+                time      : "Forever",
+                dayUuid   : result.node.uuid,
+                contentNo : 1,
+
+                link: "https://youtu.be/wJWksPWDKOc"
+            });
+
+            UUID = response.node.uuid;
+        });
+
+        it("Should get content info", async () => {
+            const { body } = await request
+                .get(path + `/${UUID}/info`)
+                .expect(200);
+
+
+            for (const key in body.stats) {
+                expect(body.stats[key]).toBe(0);
+            }
+            expect(body.node).toHaveProperty("link", response.node.link);
+            expect(body.node).toHaveProperty("title", response.node.title);
+            expect(body.node).toHaveProperty("desc", response.node.desc);
+        });
+    });
+
+    describe("DELETE /:uuid/node", () => {
+        let UUID;
+        let response;
+
+        beforeAll(async () => {
+            const body = await makeDummySprint({
+                sprintNo : 1993,
+                title    : "The Backrooms",
+                desc     : "If you're not careful and you noclip out of reality in the wrong areas"
+            });
+
+            const result = await makeDummyDay({
+                desc       : "If you're not careful and you noclip out of reality in the wrong areas",
+                dayNo      : 1,
+                sprintUuid : body.node.uuid
+            });
+
+            response = await makeDummyContent({
+                label     : "Video",
+                exp       : 1994,
+                title     : "Mallsoft",
+                desc      : "Anemoia",
+                time      : "Forever",
+                dayUuid   : result.node.uuid,
+                contentNo : 1,
+
+                link: "https://youtu.be/wJWksPWDKOc"
+            });
+
+            UUID = response.node.uuid;
+        });
+
+        it("Should get content info", async () => {
+            const { body } = await request
+                .delete(path + `/${UUID}/node`)
+                .expect(200);
+
+            expect(body.stats).toHaveProperty("labelsAdded", 1);
+            expect(body.stats).toHaveProperty("nodesDeleted", 0);
+            expect(body.stats).toHaveProperty("nodesCreated", 0);
+            expect(body).toHaveProperty("node");
         });
     });
 
