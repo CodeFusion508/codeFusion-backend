@@ -12,7 +12,7 @@ module.exports = async () => {
             }
         );
 
-        if (!await driver.verifyAuthentication()) throw ({ message: "Auth neo4j error" });
+        if (!await driver.verifyAuthentication()) throw ({ message: "Authentication for Neo4J Failed" });
         const session = driver.session();
 
         const executeKeepAliveQuery = () => {
@@ -25,8 +25,9 @@ module.exports = async () => {
                 });
         };
 
-        // Schedule the keep alive query to run every hour
-        const keepAliveInterval = 60 * 60 * 1000; // 1 hour in milliseconds
+        // Schedule the keep alive query to run every 10 hours
+        const keepAliveInterval = 10 * 60 * 60 * 1000; // 10 hours in milliseconds
+
         setInterval(executeKeepAliveQuery, keepAliveInterval);
 
         const neo4j = { driver, session };

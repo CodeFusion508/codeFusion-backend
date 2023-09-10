@@ -43,7 +43,7 @@ const updateDayQuery = (body) => {
 };
 
 const getDayQuery = (params) => `
-    MATCH (d: Day {uuid: "${params.uuid}"}) 
+    MATCH (d:Day {uuid: "${params.uuid}"}) 
     WHERE NOT d:softDeleted 
     RETURN d;
 `;
@@ -56,9 +56,22 @@ const deleteDayQuery = (params) => `
 
 // Day Relationships
 const getDaysRelsQuery = (params) => `
-    MATCH (c)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})
+    MATCH (c:Content)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})
     WHERE NOT d:softDeleted AND NOT c:softDeleted
     RETURN c, r;
+`;
+
+// Delete Test Data
+const deleteTestRels = () => `
+    MATCH (c)-[r:BELONGS_TO]->(d:Day)
+    WHERE d.desc STARTS WITH "Test -"
+    DELETE r;
+`;
+
+const deleteTestDaysQuery = () => `
+    MATCH (d:Day)
+    WHERE d.desc STARTS WITH "Test -"
+    DELETE d;
 `;
 
 module.exports = {
@@ -68,5 +81,8 @@ module.exports = {
     getDayQuery,
     deleteDayQuery,
 
-    getDaysRelsQuery
+    getDaysRelsQuery,
+
+    deleteTestRels,
+    deleteTestDaysQuery
 };

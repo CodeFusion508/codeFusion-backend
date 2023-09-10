@@ -5,15 +5,15 @@ const createContentQuery = (uuid, body) => {
             exp   : ${body.exp},
             title : "${body.title}",
             desc  : "${body.desc}",
-            time  : ${body.time},
+            time  : "${body.time}",
 
             ${body.element ? `element : "${body.element}",` : ""}
             ${body.content ? `content : "${body.content}",` : ""}
-            ${body.language ? `language : "${body.language}",` : ""}
+            ${body.language ? `language : "${body.language}"` : ""}
 
-            ${body.path ? `path : "${body.path}",` : ""}
+            ${body.path ? `path : "${body.path}"` : ""}
 
-            ${body.link ? `link : "${body.link}",` : ""}
+            ${body.link ? `link : "${body.link}"` : ""}
         })
         WITH c
         MATCH (d:Day {uuid: "${body.dayUuid}"})
@@ -39,7 +39,7 @@ const updatedContentQuery = (body) => {
         propsToUpdate.push(`c.desc = "${body.desc}"`);
     }
     if (body.time) {
-        propsToUpdate.push(`c.time = ${body.time}`);
+        propsToUpdate.push(`c.time = "${body.time}"`);
     }
 
     // Video
@@ -84,9 +84,19 @@ const deletedContentQuery = (params) => `
     SET c:softDeleted;
 `;
 
+// Delete Test Data
+const deleteTestContentQuery = () => `
+    MATCH (c:Content) 
+    WHERE c.title STARTS WITH "Test -"
+    DELETE c;
+`;
+
+
 module.exports = {
     createContentQuery,
     updatedContentQuery,
     getContentQuery,
-    deletedContentQuery
+    deletedContentQuery,
+
+    deleteTestContentQuery
 };

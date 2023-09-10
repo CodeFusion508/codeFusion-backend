@@ -20,6 +20,6 @@ module.exports = async () => {
 
         return { client, service, authClient };
     } catch (err) {
-        throw new Error("Failed to establish connection to Google Services: " + err.message);
+        process.stdout.write("\x1b[31mFailed to establish connection to Google Services: " + err.message + "\x1b[0m\n");
     }
 };

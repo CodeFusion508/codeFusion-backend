@@ -24,7 +24,10 @@ module.exports = (deps) => {
 
         .put("/:label", endPoint(bodyAndParams, UPDATE_CONTENT, updateContent))
         .get("/:uuid/info", endPoint(params, GET_UUID, getContent))
-        .delete("/:uuid", endPoint(params, GET_UUID, deleteContent));
+        .delete("/:uuid/node", endPoint(params, GET_UUID, deleteContent))
+
+        // Internal Use Only
+        .delete("/bulk-test", endPoint(undefined, undefined, bulkDeleteTests));
 };
 
 
@@ -32,3 +35,5 @@ const createContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(r
 const updateContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.updateContent(data));
 const getContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.getContent(data));
 const deleteContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.deleteContent(data));
+
+const bulkDeleteTests = ({ ctrls }) => (_, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.bulkTestDelete());

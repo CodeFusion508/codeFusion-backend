@@ -13,7 +13,10 @@ const {
     getSprintQuery,
     deleteSprintQuery,
 
-    getSprintsRelsQuery
+    getSprintsRelsQuery,
+
+    deleteTestRels,
+    deleteTestSprints
 } = require("./sprints.query.js");
 
 
@@ -97,6 +100,19 @@ const getSprintRels = async ({ services }, params) => {
     return data;
 };
 
+// Delete Test Data
+const bulkTestDelete = async ({ services }) => {
+    // First we have to delete relationships
+    const query1 = deleteTestRels();
+    await services.neo4j.session.run(query1);
+
+    // Then we have to delete the test nodes
+    const query2 = deleteTestSprints();
+    let data = await services.neo4j.session.run(query2);
+    data = cleanNeo4j(data);
+
+    return data;
+};
 
 Object.assign(module.exports, {
     createSprint,
@@ -105,5 +121,7 @@ Object.assign(module.exports, {
     getSprint,
     deleteSprint,
 
-    getSprintRels
+    getSprintRels,
+
+    bulkTestDelete
 });

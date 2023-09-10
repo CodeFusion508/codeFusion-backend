@@ -37,7 +37,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         element  : "div",
         content  : "Gaming",
@@ -57,7 +57,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         element  : "div",
         content  : "Gaming",
@@ -81,7 +81,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         path: ""
       };
@@ -99,7 +99,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         path: "Camino al Cielo"
       };
@@ -121,7 +121,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         link: ""
       };
@@ -139,7 +139,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         link: "https://phind.com"
       };
@@ -161,7 +161,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009
+        time      : "2009 Hours"
       };
 
       const { error } = CREATE_TEXT.validate(body);
@@ -177,7 +177,7 @@ describe("Content Joi Tests", () => {
         desc      : "The creeper was a bug!",
         dayUuid   : "b994c88a-44b8-40a3-8f3e-788ccfdbb348",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         path: "Camino al Cielo"
       };
@@ -199,7 +199,7 @@ describe("Content Joi Tests", () => {
         title     : "Minecraft",
         desc      : "The creeper was a bug!",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         element  : "div",
         content  : "Gaming",
@@ -219,7 +219,7 @@ describe("Content Joi Tests", () => {
         title     : "Minecraft",
         desc      : "The creeper was a bug!",
         contentNo : 2009,
-        time      : 2009,
+        time      : "2009 Hours",
 
         element  : "div",
         content  : "Gaming",
