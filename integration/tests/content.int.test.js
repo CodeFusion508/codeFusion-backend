@@ -235,7 +235,6 @@ describe("Content Integration Tests", () => {
 
     describe("DELETE /:uuid/node", () => {
         let UUID;
-        let response;
 
         beforeAll(async () => {
             const body = await makeDummySprint({
@@ -250,7 +249,7 @@ describe("Content Integration Tests", () => {
                 sprintUuid : body.node.uuid
             });
 
-            response = await makeDummyContent({
+            const response = await makeDummyContent({
                 label     : "Video",
                 exp       : 1994,
                 title     : "Mallsoft",
@@ -265,7 +264,7 @@ describe("Content Integration Tests", () => {
             UUID = response.node.uuid;
         });
 
-        it("Should get content info", async () => {
+        it("Should delete content node", async () => {
             const { body } = await request
                 .delete(path + `/${UUID}/node`)
                 .expect(200);
