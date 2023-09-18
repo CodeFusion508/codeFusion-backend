@@ -26,7 +26,8 @@ describe("Google Joi Tests", () => {
         idToken  : "Super Secret Token"
       };
 
-      const { value } = CREATE_G_USER.validate(body);
+      const { error, value } = CREATE_G_USER.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("email", body.email);
       expect(value).toHaveProperty("userName", body.userName);
@@ -48,7 +49,8 @@ describe("Google Joi Tests", () => {
         idToken: "Super Secret Token"
       };
 
-      const { value } = LOGIN_G_USER.validate(body);
+      const { error, value } = LOGIN_G_USER.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("idToken", body.idToken);
     });
@@ -68,7 +70,8 @@ describe("Google Joi Tests", () => {
         sheet_id: "Sheet ID"
       };
 
-      const { value } = GET_ALL_ANSWERS.validate(body);
+      const { error, value } = GET_ALL_ANSWERS.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("sheet_id", body.sheet_id);
     });
@@ -92,7 +95,8 @@ describe("Google Joi Tests", () => {
         email    : "AsyncResearch@mail.org"
       };
 
-      const { value } = GET_ALL_ANSWERS.validate(body);
+      const { error, value } = GET_ALL_ANSWERS.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("sheet_id", body.sheet_id);
       expect(value).toHaveProperty("email", body.email);

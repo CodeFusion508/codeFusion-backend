@@ -22,7 +22,8 @@ describe("Content Joi Tests", () => {
         uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
       };
 
-      const { value } = GET_UUID.validate(params);
+      const { error, value } = GET_UUID.validate(params);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", params.uuid);
     });
@@ -39,9 +40,7 @@ describe("Content Joi Tests", () => {
         contentNo : 2009,
         time      : "2009 Hours",
 
-        element  : "div",
-        content  : "Gaming",
-        language : "Java"
+        language: "Java"
       };
 
       const { error } = CREATE_PROBLEM.validate(body);
@@ -59,15 +58,13 @@ describe("Content Joi Tests", () => {
         contentNo : 2009,
         time      : "2009 Hours",
 
-        element  : "div",
-        content  : "Gaming",
-        language : "Java"
+        language: "Java"
       };
 
-      const { value } = CREATE_PROBLEM.validate(body);
+      const { error, value } = CREATE_PROBLEM.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("desc", body.desc);
-      expect(value).toHaveProperty("element", body.element);
       expect(value).toHaveProperty("language", body.language);
     });
   });
@@ -104,7 +101,8 @@ describe("Content Joi Tests", () => {
         path: "Camino al Cielo"
       };
 
-      const { value } = CREATE_QUIZ.validate(body);
+      const { error, value } = CREATE_QUIZ.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("path", body.path);
       expect(value).toHaveProperty("title", body.title);
@@ -144,7 +142,8 @@ describe("Content Joi Tests", () => {
         link: "https://phind.com"
       };
 
-      const { value } = CREATE_VIDEO.validate(body);
+      const { error, value } = CREATE_VIDEO.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("link", body.link);
       expect(value).toHaveProperty("contentNo", body.contentNo);
@@ -182,7 +181,8 @@ describe("Content Joi Tests", () => {
         path: "Camino al Cielo"
       };
 
-      const { value } = CREATE_TEXT.validate(body);
+      const { error, value } = CREATE_TEXT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("path", body.path);
       expect(value).toHaveProperty("desc", body.desc);
@@ -201,9 +201,7 @@ describe("Content Joi Tests", () => {
         contentNo : 2009,
         time      : "2009 Hours",
 
-        element  : "div",
-        content  : "Gaming",
-        language : "Java"
+        language: "Java"
       };
 
       const { error } = UPDATE_CONTENT.validate(body);
@@ -213,22 +211,19 @@ describe("Content Joi Tests", () => {
 
     it("Give value when body is correct", () => {
       const body = {
-        uuid      : "f40eeba5-392d-464f-8c3f-f246d13658bd",
-        label     : "Problem",
-        exp       : 2009,
-        title     : "Minecraft",
-        desc      : "The creeper was a bug!",
-        contentNo : 2009,
-        time      : "2009 Hours",
+        uuid  : "f40eeba5-392d-464f-8c3f-f246d13658bd",
+        label : "Problem",
+        exp   : 2009,
+        title : "Minecraft",
+        desc  : "The creeper was a bug!",
+        time  : "2009 Hours",
 
-        element  : "div",
-        content  : "Gaming",
-        language : "Java"
+        language: "Java"
       };
 
-      const { value } = UPDATE_CONTENT.validate(body);
+      const { error, value } = UPDATE_CONTENT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
-      expect(value).toHaveProperty("element", body.element);
       expect(value).toHaveProperty("desc", body.desc);
       expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("label", body.label);
