@@ -26,9 +26,7 @@ module.exports = {
     }),
     CREATE_PROBLEM: Joi.object({
         ...baseSchema,
-        element  : Joi.string().required(),
-        content  : Joi.string().required(),
-        language : Joi.string().required()
+        language: Joi.string().required()
     }),
     CREATE_QUIZ: Joi.object({
         ...baseSchema,
