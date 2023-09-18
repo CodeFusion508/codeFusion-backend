@@ -48,7 +48,7 @@ describe("Sprints Joi Tests", () => {
         uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
       };
 
-      const { error, value } = CREATE_SPRINT.validate(params);
+      const { error, value } = GET_UUID.validate(params);
       if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", params.uuid);
@@ -79,7 +79,7 @@ describe("Sprints Joi Tests", () => {
         totalExp : 1993
       };
 
-      const { error, value } = CREATE_SPRINT.validate(body);
+      const { error, value } = UPDATE_SPRINT.validate(body);
       if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
