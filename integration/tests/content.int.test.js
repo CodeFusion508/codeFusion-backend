@@ -41,9 +41,7 @@ describe("Content Integration Tests", () => {
                 dayUuid   : UUID,
                 contentNo : 1,
 
-                element  : "H1",
-                content  : "GZDoom",
-                language : "C+++"
+                language: "C+++"
             };
 
             const { body } = await request
@@ -52,7 +50,7 @@ describe("Content Integration Tests", () => {
                 .expect(200);
 
             expect(body.stats).toHaveProperty("nodesCreated", 1);
-            expect(body.node).toHaveProperty("element", reqData.element);
+            expect(body.node).toHaveProperty("language", reqData.language);
             expect(body.node).toHaveProperty("title", reqData.title);
             expect(body.node).toHaveProperty("desc", reqData.desc);
         });
@@ -186,7 +184,7 @@ describe("Content Integration Tests", () => {
         });
     });
 
-    describe("GET /:uuid/info", () => {
+    describe("GET /node/:uuid", () => {
         let UUID;
         let response;
 
@@ -220,7 +218,7 @@ describe("Content Integration Tests", () => {
 
         it("Should get content info", async () => {
             const { body } = await request
-                .get(path + `/${UUID}/info`)
+                .get(path + `/node/${UUID}`)
                 .expect(200);
 
 
@@ -233,7 +231,7 @@ describe("Content Integration Tests", () => {
         });
     });
 
-    describe("DELETE /:uuid/node", () => {
+    describe("DELETE /node/:uuid", () => {
         let UUID;
 
         beforeAll(async () => {
@@ -266,7 +264,7 @@ describe("Content Integration Tests", () => {
 
         it("Should delete content node", async () => {
             const { body } = await request
-                .delete(path + `/${UUID}/node`)
+                .delete(path + `/node/${UUID}`)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);

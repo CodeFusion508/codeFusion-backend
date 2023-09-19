@@ -96,7 +96,7 @@ describe("Sprints Integration Tests", () => {
         });
     });
 
-    describe("GET /:uuid/info", () => {
+    describe("GET /node/:uuid", () => {
         let result;
 
         beforeAll(async () => {
@@ -115,7 +115,7 @@ describe("Sprints Integration Tests", () => {
 
         it("Should get specific day", async () => {
             const { body } = await request
-                .get(path + `/${result.node.uuid}/info`)
+                .get(path + `/node/${result.node.uuid}/`)
                 .expect(200);
 
             for (const key in body.stats) {
@@ -127,7 +127,7 @@ describe("Sprints Integration Tests", () => {
         });
     });
 
-    describe("DELETE /:uuid/node", () => {
+    describe("DELETE /node/:uuid", () => {
         let UUID;
 
         beforeAll(async () => {
@@ -148,7 +148,7 @@ describe("Sprints Integration Tests", () => {
 
         it("Should delete specific day", async () => {
             const { body } = await request
-                .delete(path + `/${UUID}/node`)
+                .delete(path + `/node/${UUID}`)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);
@@ -157,7 +157,7 @@ describe("Sprints Integration Tests", () => {
         });
     });
 
-    describe("GET /:uuid/rel", () => {
+    describe("GET /node/relationships/:uuid", () => {
         let UUID;
 
         beforeAll(async () => {
@@ -190,7 +190,7 @@ describe("Sprints Integration Tests", () => {
 
         it("Should get days and relationships of sprint node", async () => {
             const { body } = await request
-                .get(path + `/${UUID}/rel`)
+                .get(path + `/node/relationships/${UUID}`)
                 .expect(200);
 
             for (const key in body.stats) {
