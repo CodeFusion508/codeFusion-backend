@@ -17,10 +17,10 @@ module.exports = (deps) => {
         .post("/", endPoint(body, CREATE_SPRINT, createSprint))
         .get("/", endPoint(undefined, undefined, getAllSprints))
         .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
-        .get("/:uuid/info", endPoint(params, GET_UUID, getSprint))
-        .delete("/:uuid/node", endPoint(params, GET_UUID, deleteSprint))
+        .get("/node/:uuid", endPoint(params, GET_UUID, getSprint))
+        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteSprint))
         // Sprints Relationships
-        .get("/:uuid/rel", endPoint(params, GET_UUID, getSprintRels))
+        .get("/node/rels/:uuid", endPoint(params, GET_UUID, getSprintRels))
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };

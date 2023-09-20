@@ -25,7 +25,8 @@ describe("Sprints Joi Tests", () => {
         desc     : "If you're not careful and you noclip out of reality in the wrong areas"
       };
 
-      const { value } = CREATE_SPRINT.validate(body);
+      const { error, value } = CREATE_SPRINT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("sprintNo", body.sprintNo);
       expect(value).toHaveProperty("title", body.title);
@@ -47,7 +48,8 @@ describe("Sprints Joi Tests", () => {
         uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
       };
 
-      const { value } = CREATE_SPRINT.validate(params);
+      const { error, value } = GET_UUID.validate(params);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", params.uuid);
     });
@@ -77,7 +79,8 @@ describe("Sprints Joi Tests", () => {
         totalExp : 1993
       };
 
-      const { value } = CREATE_SPRINT.validate(body);
+      const { error, value } = UPDATE_SPRINT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("sprintNo", body.sprintNo);

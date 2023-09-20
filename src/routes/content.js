@@ -23,8 +23,8 @@ module.exports = (deps) => {
         .post("/text", endPoint(body, CREATE_TEXT, createContent))
 
         .put("/:label", endPoint(bodyAndParams, UPDATE_CONTENT, updateContent))
-        .get("/:uuid/info", endPoint(params, GET_UUID, getContent))
-        .delete("/:uuid/node", endPoint(params, GET_UUID, deleteContent))
+        .get("/node/:uuid", endPoint(params, GET_UUID, getContent))
+        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteContent))
 
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkDeleteTests));

@@ -26,7 +26,8 @@ describe("Google Joi Tests", () => {
         idToken  : "Super Secret Token"
       };
 
-      const { value } = CREATE_G_USER.validate(body);
+      const { error, value } = CREATE_G_USER.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("email", body.email);
       expect(value).toHaveProperty("userName", body.userName);
@@ -48,7 +49,8 @@ describe("Google Joi Tests", () => {
         idToken: "Super Secret Token"
       };
 
-      const { value } = LOGIN_G_USER.validate(body);
+      const { error, value } = LOGIN_G_USER.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("idToken", body.idToken);
     });
@@ -68,7 +70,8 @@ describe("Google Joi Tests", () => {
         sheet_id: "Sheet ID"
       };
 
-      const { value } = GET_ALL_ANSWERS.validate(body);
+      const { error, value } = GET_ALL_ANSWERS.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("sheet_id", body.sheet_id);
     });
@@ -77,8 +80,7 @@ describe("Google Joi Tests", () => {
   describe("GET_USER_ANSWERS Joi", () => {
     it("Throw error when sheet_id is a number", () => {
       const body = {
-        sheet_id : 1993,
-        email    : "AsyncResearch@mail.org"
+        sheet_id: 1993
       };
 
       const { error } = GET_USER_ANSWERS.validate(body);
@@ -88,14 +90,13 @@ describe("Google Joi Tests", () => {
 
     it("Give value when body is correct", () => {
       const body = {
-        sheet_id : "Sheet ID",
-        email    : "AsyncResearch@mail.org"
+        sheet_id: "Sheet ID"
       };
 
-      const { value } = GET_ALL_ANSWERS.validate(body);
+      const { error, value } = GET_ALL_ANSWERS.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("sheet_id", body.sheet_id);
-      expect(value).toHaveProperty("email", body.email);
     });
   });
 });

@@ -8,16 +8,12 @@ const verifyToken = (req, res, next) => {
             throw new Error("Encabezado de autorización no encontrado.");
         }
 
-        const token = authorization.split(" ")[1];
-
-        if (!token) {
-            throw new Error("Token no encontrado.");
-        }
-
-        const decodedToken = jwt.decode(token, process.env.SEED);
+        const decodedToken = jwt.decode(authorization, process.env.SEED);
 
         if (!decodedToken) {
             throw new Error("Token inválido.");
+        } else {
+           if (decodedToken.uuid !== req.body.uuid) throw new Error("Token no coincide con tu información.");
         }
 
         next();

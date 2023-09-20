@@ -19,7 +19,8 @@ describe("Days Joi Tests", () => {
         uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
       };
 
-      const { value } = GET_UUID.validate(params);
+      const { error, value } = GET_UUID.validate(params);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", params.uuid);
     });
@@ -45,7 +46,8 @@ describe("Days Joi Tests", () => {
         sprintUuid : "356a0665-e499-408b-95d9-93aec11a9544"
       };
 
-      const { value } = CREATE_DAY.validate(body);
+      const { error, value } = CREATE_DAY.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("dayNo", body.dayNo);
       expect(value).toHaveProperty("sprintUuid", body.sprintUuid);
@@ -72,7 +74,8 @@ describe("Days Joi Tests", () => {
         desc : "Hell on Earth"
       };
 
-      const { value } = UPDATE_DAY.validate(body);
+      const { error, value } = UPDATE_DAY.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("exp", body.exp);

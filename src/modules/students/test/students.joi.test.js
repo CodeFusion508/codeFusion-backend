@@ -32,7 +32,8 @@ describe("Students Joi Tests", () => {
         userName : "Async Research Institute"
       };
 
-      const { value } = CREATE_STUDENT.validate(body);
+      const { error, value } = CREATE_STUDENT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("email", body.email);
       expect(value).toHaveProperty("password", body.password);
@@ -62,7 +63,8 @@ describe("Students Joi Tests", () => {
         password  : "password"
       };
 
-      const { value } = UPDATE_STUDENT.validate(body);
+      const { error, value } = UPDATE_STUDENT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("totalExp", body.totalExp);
@@ -91,7 +93,8 @@ describe("Students Joi Tests", () => {
         password : "password"
       };
 
-      const { value } = LOGIN_STUDENT.validate(body);
+      const { error, value } = LOGIN_STUDENT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("email", body.email);
       expect(value).toHaveProperty("password", body.password);
@@ -112,7 +115,8 @@ describe("Students Joi Tests", () => {
         uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f"
       };
 
-      const { value } = GET_UUID.validate(body);
+      const { error, value } = GET_UUID.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
     });
@@ -137,7 +141,8 @@ describe("Students Joi Tests", () => {
         relation     : "FAILED"
       };
 
-      const { value } = CREATE_RELATION.validate(body);
+      const { error, value } = CREATE_RELATION.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("contentUuid", body.contentUuid);
@@ -165,7 +170,8 @@ describe("Students Joi Tests", () => {
         relation     : "FAILED"
       };
 
-      const { value } = DELETE_RELATION.validate(body);
+      const { error, value } = DELETE_RELATION.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("uuid", body.uuid);
       expect(value).toHaveProperty("contentUuid", body.contentUuid);
@@ -188,7 +194,8 @@ describe("Students Joi Tests", () => {
         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
       };
 
-      const { value } = CONFIRM_ACCOUNT.validate(body);
+      const { error, value } = CONFIRM_ACCOUNT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("token", body.token);
     });
@@ -210,7 +217,8 @@ describe("Students Joi Tests", () => {
         email: "AsyncResearch@mail.org",
       };
 
-      const { value } = RECOVERY_ACCOUNT.validate(body);
+      const { error, value } = RECOVERY_ACCOUNT.validate(body);
+      if (error) throw new Error(`${error.message}`);
 
       expect(value).toHaveProperty("email", body.email);
     });

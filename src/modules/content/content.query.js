@@ -7,8 +7,6 @@ const createContentQuery = (uuid, body) => {
             desc  : "${body.desc}",
             time  : "${body.time}",
 
-            ${body.element ? `element : "${body.element}",` : ""}
-            ${body.content ? `content : "${body.content}",` : ""}
             ${body.language ? `language : "${body.language}"` : ""}
 
             ${body.path ? `path : "${body.path}"` : ""}

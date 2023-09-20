@@ -13,10 +13,10 @@ module.exports = (deps) => {
         .post("/", endPoint(body, CREATE_DAY, createDay))
         .get("/", endPoint(undefined, undefined, getAllDays))
         .put("/", endPoint(body, UPDATE_DAY, updateDay))
-        .get("/:uuid/info", endPoint(params, GET_UUID, getDay))
-        .delete("/:uuid/node", endPoint(params, GET_UUID, deleteDay))
+        .get("/node/:uuid", endPoint(params, GET_UUID, getDay))
+        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteDay))
         // Day Relationships
-        .get("/:uuid/rel", endPoint(params, GET_UUID, getDayRels))
+        .get("/node/rels/:uuid", endPoint(params, GET_UUID, getDayRels))
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };

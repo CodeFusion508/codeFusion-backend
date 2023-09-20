@@ -21,9 +21,7 @@ const makeDummyContent = async (reqBody) => {
 
             break;
         case "Problem":
-            reqData.element = reqBody.element;
-            reqData.content = reqBody.content;
-            reqData.language = reqBody.languag;
+            reqData.language = reqBody.language;
 
             break;
         case "Quiz":
