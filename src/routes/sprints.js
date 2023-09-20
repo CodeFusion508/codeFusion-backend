@@ -20,7 +20,7 @@ module.exports = (deps) => {
         .get("/node/:uuid", endPoint(params, GET_UUID, getSprint))
         .delete("/node/:uuid", endPoint(params, GET_UUID, deleteSprint))
         // Sprints Relationships
-        .get("/node/relationships/:uuid", endPoint(params, GET_UUID, getSprintRels))
+        .get("/node/rels/:uuid", endPoint(params, GET_UUID, getSprintRels))
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };

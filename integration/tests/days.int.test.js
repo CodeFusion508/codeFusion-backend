@@ -157,7 +157,7 @@ describe("Sprints Integration Tests", () => {
         });
     });
 
-    describe("GET /node/relationships/:uuid", () => {
+    describe("GET /node/rels/:uuid", () => {
         let UUID;
 
         beforeAll(async () => {
@@ -190,7 +190,7 @@ describe("Sprints Integration Tests", () => {
 
         it("Should get days and relationships of sprint node", async () => {
             const { body } = await request
-                .get(path + `/node/relationships/${UUID}`)
+                .get(path + `/node/rels/${UUID}`)
                 .expect(200);
 
             for (const key in body.stats) {

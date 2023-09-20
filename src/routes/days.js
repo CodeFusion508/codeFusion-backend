@@ -16,7 +16,7 @@ module.exports = (deps) => {
         .get("/node/:uuid", endPoint(params, GET_UUID, getDay))
         .delete("/node/:uuid", endPoint(params, GET_UUID, deleteDay))
         // Day Relationships
-        .get("/node/relationships/:uuid", endPoint(params, GET_UUID, getDayRels))
+        .get("/node/rels/:uuid", endPoint(params, GET_UUID, getDayRels))
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };

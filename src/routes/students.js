@@ -28,12 +28,12 @@ module.exports = (deps) => {
         .put("/", auth.verifyToken, endPoint(body, UPDATE_STUDENT, updateStudent))
         .delete("/node/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteStudent))
         // Student Relationships
-        .post("/rel", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
-        .delete("/rel", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
+        .post("/node/rels", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
+        .delete("/node/rels", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         // Other Student Logic
         .post("/recovery/account", endPoint(body, RECOVERY_ACCOUNT, recoveryAccount))
         .post("/confirm-account", endPoint(body, CREATE_STUDENT, WaitingForAccountConfirmation))
-        .get("/confirm-account-token/:token", endPoint(params, CONFIRM_ACCOUNT, confirmAccount));
+        .get("/confirm-account/:token", endPoint(params, CONFIRM_ACCOUNT, confirmAccount));
 };
 
 
