@@ -15,12 +15,10 @@ const {
 } = require("../../utils/gFormsAnswers.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-  return {
-    ...acc,
-    [name]: method.bind(null, { ...module.exports, ...deps })
-  };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+  ...acc,
+  [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 const createGUser = async ({ services }, body) => {
   const uuid = v4();

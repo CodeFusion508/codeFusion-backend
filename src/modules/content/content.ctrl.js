@@ -18,12 +18,10 @@ const {
 } = require("./content.joi.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 
 // Content CRUD
@@ -102,7 +100,7 @@ const contentUpdateVerification = (bodyAndParam) => {
 
     switch (bodyAndParam.label) {
         case "Problem":
-           return UPDATE_PROBLEM.validate(bodyAndParam).value;
+            return UPDATE_PROBLEM.validate(bodyAndParam).value;
 
         case "Quiz":
             return UPDATE_QUIZ.validate(bodyAndParam).value;

@@ -4,7 +4,7 @@ const findRegisteredEmail = (body) => {
         RETURN u;
     `;
 
-    const queryParams = {email: body.email};
+    const queryParams = { email: body.email };
 
     return { query, queryParams };
 };

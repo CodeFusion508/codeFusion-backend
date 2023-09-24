@@ -79,7 +79,7 @@ const deleteDayQuery = (params) => {
 };
 
 // Day Relationships
-const getDaysRelsQuery = (params) =>{
+const getDaysRelsQuery = (params) => {
     const query = `
         MATCH (c:Content)-[r:BELONGS_TO]->(d:Day {uuid: $uuid})
         WHERE NOT d:softDeleted AND NOT c:softDeleted

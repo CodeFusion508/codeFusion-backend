@@ -41,7 +41,7 @@ module.exports = {
         path: Joi.string().required()
     }),
     UPDATE_CONTENT: Joi.object({
-       ...baseUpdateSchema,
+        ...baseUpdateSchema,
 
         // Problem
         element  : Joi.string().optional(),

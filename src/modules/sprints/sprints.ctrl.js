@@ -20,12 +20,10 @@ const {
 } = require("./sprints.query.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 
 // Sprint CURD

@@ -13,8 +13,7 @@ module.exports = {
     "rules"   : {
         "arrow-body-style": [
             "error",
-            "as-needed",
-            { "requireReturnForObjectLiteral": true }
+            "as-needed"
         ],
         "key-spacing": ["error", {
             "align": {

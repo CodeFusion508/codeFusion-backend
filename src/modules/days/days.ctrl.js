@@ -20,12 +20,10 @@ const {
 } = require("./days.query.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 
 // Day CRUD
@@ -89,7 +87,7 @@ const deleteDay = async ({ services }, params) => {
 
 // Day Relationships
 const getDaysRels = async ({ services }, params) => {
-    const { query, queryParams }= getDaysRelsQuery(params);
+    const { query, queryParams } = getDaysRelsQuery(params);
     let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "No existen relaciones para este nodo." };
