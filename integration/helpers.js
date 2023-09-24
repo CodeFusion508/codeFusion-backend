@@ -47,7 +47,11 @@ const bulkDeleteDummyContents = async () => {
 };
 
 // Day Helpers
-const makeDummyDay = async ({ dayNo, sprintUuid, desc }) => {
+const makeDummyDay = async ({
+    dayNo,
+    sprintUuid,
+    desc
+}) => {
     const reqData = {
         desc: "Test - " + desc,
         dayNo,
@@ -70,7 +74,11 @@ const bulkDeleteDummyDays = async () => {
 
 
 // Sprint Helpers
-const makeDummySprint = async ({ sprintNo, title, desc }) => {
+const makeDummySprint = async ({
+    sprintNo,
+    title,
+    desc
+}) => {
     const reqData = {
         sprintNo,
         title: "Test - " + title,

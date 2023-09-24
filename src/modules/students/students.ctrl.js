@@ -13,7 +13,11 @@ const {
   createRelQuery,
   deleteRelQuery
 } = require("./students.query.js");
-const { cleanNeo4j, cleanRecord, cleanRel } = require("../../utils/cleanData.js");
+const {
+  cleanNeo4j,
+  cleanRecord,
+  cleanRel
+} = require("../../utils/cleanData.js");
 const jwt = require("../../config/jwt.js");
 
 // Global Variables
@@ -44,7 +48,13 @@ const signUp = async ({ services }, body) => {
   cleanRecord(data);
 
   const { email, userName } = data.node;
-  return { data, token: jwt.createToken({ uuid, userName, email }) };
+  return {
+    data, token: jwt.createToken({
+      uuid,
+      userName,
+      email
+    })
+  };
 };
 
 const logIn = async ({ services }, body) => {
@@ -60,8 +70,17 @@ const logIn = async ({ services }, body) => {
 
   if (!bcrypt.compareSync(body.password, data.node.password)) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
-  const { email, userName, uuid } = data.node;
-  return { data, token: jwt.createToken({ userName, email, uuid }) };
+  const {
+    email,
+    userName,
+    uuid
+  } = data.node;
+  return {
+    data,
+    token: jwt.createToken({
+      userName, email, uuid
+    })
+  };
 };
 
 const getStudent = async ({ services }, params) => {
