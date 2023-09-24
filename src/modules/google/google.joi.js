@@ -6,9 +6,6 @@ module.exports = {
         email    : Joi.string().email().required(),
         idToken  : Joi.string().required()
     }),
-    LOGIN_G_USER: Joi.object({
-        idToken: Joi.string().required()
-    }),
     GET_ALL_ANSWERS: Joi.object({
         sheet_id: Joi.string().required()
     }),
