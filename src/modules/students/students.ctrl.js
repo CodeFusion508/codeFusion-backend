@@ -21,7 +21,7 @@ const {
 const jwt = require("../../config/jwt.js");
 
 // Global Variables
-const saltRounds = 10;
+const { saltRounds } = process.env;
 const saltScript = bcrypt.genSaltSync(saltRounds);
 const MapConfirmAccount = new Map();
 const MapRecoveryAccount = new Map();
@@ -32,18 +32,17 @@ module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, me
   [name]: method.bind(null, { ...module.exports, ...deps })
 }), {});
 
+
 // Student CRUD
 const signUp = async ({ services }, body) => {
-  const findStudent = findRegisteredEmailQuery(body);
-  const result = await services.neo4j.session.run(findStudent);
-
+  const result = await findUserByEmail(services, body);
   if (result.records.length !== 0) throw { err: 403, message: "Este correo electrónico ya ha sido registrado, utilice otro o inicie sesión." };
 
   body.password = bcrypt.hashSync(body.password, saltScript);
   const uuid = v4();
-  const query = signUpQuery(uuid, body);
+  const { query, queryParams } = signUpQuery(uuid, body);
 
-  let data = await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query, queryParams);
   data = cleanNeo4j(data);
   cleanRecord(data);
 
@@ -58,8 +57,8 @@ const signUp = async ({ services }, body) => {
 };
 
 const logIn = async ({ services }, body) => {
-  const query = logInQuery(body);
-  let data = await services.neo4j.session.run(query);
+  const { query, queryParams } = logInQuery(body);
+  let data = await services.neo4j.session.run(query, queryParams);
 
   if (data.records.length === 0) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
@@ -78,7 +77,9 @@ const logIn = async ({ services }, body) => {
   return {
     data,
     token: jwt.createToken({
-      userName, email, uuid
+      userName,
+      email,
+      uuid
     })
   };
 };
@@ -98,8 +99,7 @@ const getStudent = async ({ services }, params) => {
 const updateStudent = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
-  const findStudent = findRegisteredEmailQuery(body);
-  const result = await services.neo4j.session.run(findStudent);
+  const result = findUserByEmail(services, body);
 
   // This is to prevent people from updating their email to a different email address that is already in use
   if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) {
@@ -110,8 +110,8 @@ const updateStudent = async ({ services }, body) => {
     body.password = bcrypt.hashSync(body.password, saltScript);
   }
 
-  const query = updateStudentQuery(body);
-  let data = await services.neo4j.session.run(query);
+  const { query, queryParams } = updateStudentQuery(body);
+  let data = await services.neo4j.session.run(query, queryParams);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
@@ -122,9 +122,9 @@ const updateStudent = async ({ services }, body) => {
 };
 
 const deleteStudent = async ({ services }, params) => {
-  const query = deleteStudentQuery(params);
+  const { query, queryParams } = deleteStudentQuery(params);
 
-  let data = await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query, queryParams);
   data = cleanNeo4j(data);
 
   return data;
@@ -132,8 +132,8 @@ const deleteStudent = async ({ services }, params) => {
 
 // Student Relationships
 const createRel = async ({ services }, body) => {
-  const query = createRelQuery(body);
-  let data = await services.neo4j.session.run(query);
+  const { query, queryParams } = createRelQuery(body);
+  let data = await services.neo4j.session.run(query, queryParams);
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
@@ -144,9 +144,9 @@ const createRel = async ({ services }, body) => {
 };
 
 const deleteRel = async ({ services }, body) => {
-  const query = deleteRelQuery(body);
+  const { query, queryParams } = deleteRelQuery(body);
 
-  let data = await services.neo4j.session.run(query);
+  let data = await services.neo4j.session.run(query, queryParams);
   data = cleanNeo4j(data);
 
   return data;
@@ -189,13 +189,13 @@ const recoveryAccount = async ({ services }, body) => {
   return { message: "Se ha enviado un mensaje al correo " + body.email + " para recuperar tu cuenta" };
 };
 
-const confirmAccount = async ({ services }, params) => {
+const confirmAccount = async (deps, params) => {
   const token = jwt.decodeToken(params.token);
   const body = MapConfirmAccount.get(token.email);
 
   if (body === undefined) throw ({ err: 404, message: "El token no existe" });
 
-  await signUp({ services }, body);
+  await signUp(deps, body);
 
   return {
     title   : "Confirmación de Cuenta",
@@ -218,3 +218,12 @@ Object.assign(module.exports, {
   recoveryAccount,
   confirmAccount
 });
+
+// Helpers
+
+const findUserByEmail = async ({ neo4j }, body) => {
+  const query = findRegisteredEmailQuery(body);
+  const result = await neo4j.session.run(query);
+
+  return result;
+};
