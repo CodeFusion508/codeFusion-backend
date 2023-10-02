@@ -43,15 +43,10 @@ module.exports = {
     UPDATE_CONTENT: Joi.object({
         ...baseUpdateSchema,
 
-        // Problem
-        element  : Joi.string().optional(),
-        content  : Joi.string().optional(),
-        language : Joi.string().optional(),
+        language: Joi.string().optional(),
 
-        // Quiz and Text
         path: Joi.string().optional(),
 
-        // Video
         link: Joi.string().optional()
     }),
 
@@ -59,10 +54,7 @@ module.exports = {
     // For controller verification
     UPDATE_PROBLEM: Joi.object({
         ...baseUpdateSchema,
-
-        element  : Joi.string().optional(),
-        content  : Joi.string().optional(),
-        language : Joi.string().optional()
+        language: Joi.string().optional()
     }),
     UPDATE_QUIZ: Joi.object({
         ...baseUpdateSchema,

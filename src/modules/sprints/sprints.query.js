@@ -16,7 +16,6 @@ const createSprintQuery = (uuid, body) => {
         sprintNo : body.sprintNo,
         title    : body.title,
         desc     : body.desc
-
     };
 
     return { query, queryParams };
