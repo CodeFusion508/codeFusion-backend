@@ -57,7 +57,7 @@ const findDeletedStudentQuery = (body) => {
 
 const getStudentQuery = (params) => {
     const query = `
-        MATCH (u:Student {uuid: "$uuid}) 
+        MATCH (u:Student {uuid: $uuid}) 
         WHERE NOT u:softDeleted 
         RETURN u;
     `;
@@ -124,7 +124,7 @@ const createRelQuery = (body) => {
 
     const queryParams = {
         uuid     : body.uuid,
-        uuid2    : body.uuid,
+        uuid2    : body.contentUuid,
         label    : body.contentLabel,
         relation : body.relation
     };
@@ -144,7 +144,7 @@ const deleteRelQuery = (body) => {
 
     const queryParams = {
         uuid     : body.uuid,
-        uuid2    : body.uuid,
+        uuid2    : body.contentUuid,
         label    : body.contentLabel,
         relation : body.relation
     };

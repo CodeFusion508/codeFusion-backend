@@ -17,12 +17,12 @@ describe("Day Query Tests", () => {
         };
         const uuid = "e1fa1541-a533-4936-bcbd-19221ad5da9e";
 
-        const query = createDayQuery(uuid, body);
+        const { query, queryParams } = createDayQuery(uuid, body);
 
-        expect(query).toContain(`CREATE (d:Day`);
-        expect(query).toContain(`"${uuid}"`);
-        expect(query).toContain(`"${body.sprintUuid}"`);
-        expect(query).toContain(`CREATE (d)-[:BELONGS_TO {dayNo: ${body.dayNo}}]->(s)`);
+        expect(query).toContain("CREATE (d:Day {");
+        expect(query).toContain("MATCH (s:Sprint {uuid: $sprintUuid})");
+        expect(query).toContain("CREATE (d)-[:BELONGS_TO {dayNo: $dayNo}]->(s)");
+        expect(queryParams).toHaveProperty("sprintUuid", body.sprintUuid);
     });
 
     it("getAllDaysQuery should have proper query", () => {
@@ -40,12 +40,12 @@ describe("Day Query Tests", () => {
             desc : "Hell on Earth"
         };
 
-        const query = updateDayQuery(body);
+        const { query, queryParams } = updateDayQuery(body);
 
-        expect(query).toContain(`MATCH (d:Day {uuid: "${body.uuid}"})`);
-        expect(query).toContain("SET");
-        expect(query).toContain(`d.exp = ${body.exp}`);
-        expect(query).toContain(`d.desc = "${body.desc}"`);
+        expect(query).toContain("MATCH (d:Day {uuid: $uuid})");
+        expect(query).toContain("SET d.exp = $exp, d.desc = $desc");
+        expect(query).toContain("RETURN d;");
+        expect(queryParams).toHaveProperty("uuid", body.uuid);
     });
 
     it("getDayQuery should have proper query", () => {
@@ -53,11 +53,12 @@ describe("Day Query Tests", () => {
             uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
 
-        const query = getDayQuery(params);
+        const { query, queryParams } = getDayQuery(params);
 
-        expect(query).toContain(`MATCH (d:Day {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (d:Day {uuid: $uuid})");
         expect(query).toContain("WHERE NOT d:softDeleted");
         expect(query).toContain("RETURN d;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("deleteDayQuery should have proper query", () => {
@@ -65,10 +66,11 @@ describe("Day Query Tests", () => {
             uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
 
-        const query = deleteDayQuery(params);
+        const { query, queryParams } = deleteDayQuery(params);
 
-        expect(query).toContain(`MATCH (d: Day {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (d:Day {uuid: $uuid})");
         expect(query).toContain("SET d:softDeleted;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("getDaysRelsQuery should have proper query", () => {
@@ -76,10 +78,11 @@ describe("Day Query Tests", () => {
             uuid: "e1fa1541-a533-4936-bcbd-19221ad5da9e"
         };
 
-        const query = getDaysRelsQuery(params);
+        const { query, queryParams } = getDaysRelsQuery(params);
 
-        expect(query).toContain(`MATCH (c:Content)-[r:BELONGS_TO]->(d:Day {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (c:Content)-[r:BELONGS_TO]->(d:Day {uuid: $uuid})");
         expect(query).toContain("WHERE NOT d:softDeleted AND NOT c:softDeleted");
         expect(query).toContain("RETURN c, r;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 });
