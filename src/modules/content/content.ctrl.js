@@ -9,7 +9,6 @@ const {
 
     deleteTestContentQuery
 } = require("./content.query.js");
-
 const {
     UPDATE_PROBLEM,
     UPDATE_QUIZ,
@@ -30,7 +29,7 @@ const createContent = async ({ services }, body) => {
     const { query, queryParams } = createContentQuery(uuid, body);
 
     let data = await services.neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -45,7 +44,7 @@ const updateContent = async ({ services }, bodyAndParam) => {
 
     if (data.records.length === 0) throw { err: 404, message: "Este contenido no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -58,7 +57,7 @@ const getContent = async ({ services }, params) => {
 
     if (data.records.length === 0) throw { err: 404, message: "Este contenido no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -68,7 +67,7 @@ const deleteContent = async ({ services }, params) => {
     const { query, queryParams } = deletedContentQuery(params);
 
     let data = await services.neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
 
     return data;
 };
@@ -78,11 +77,10 @@ const bulkTestDelete = async ({ services }) => {
     const query = deleteTestContentQuery();
 
     let data = await services.neo4j.session.run(query);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
 
     return data;
 };
-
 
 
 Object.assign(module.exports, {
@@ -93,6 +91,7 @@ Object.assign(module.exports, {
 
     bulkTestDelete
 });
+
 
 // Helper Functions
 const contentUpdateVerification = async (bodyAndParam) => {

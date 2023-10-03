@@ -90,9 +90,7 @@ const getContentQuery = (params) => {
         RETURN c;
     `;
 
-    const queryParams = {
-        uuid: params.uuid
-    };
+    const queryParams = { uuid: params.uuid };
 
     return { query, queryParams };
 };
@@ -103,9 +101,7 @@ const deletedContentQuery = (params) => {
         SET c:softDeleted;
     `;
 
-    const queryParams = {
-        uuid: params.uuid
-    };
+    const queryParams = { uuid: params.uuid };
 
     return { query, queryParams };
 };
