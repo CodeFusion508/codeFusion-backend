@@ -48,7 +48,8 @@ const signUp = async ({ services }, body) => {
 
   const { email, userName } = data.node;
   return {
-    data, token: jwt.createToken({
+    data,
+    token: jwt.createToken({
       uuid,
       userName,
       email
@@ -99,7 +100,7 @@ const getStudent = async ({ services }, params) => {
 const updateStudent = async ({ services }, body) => {
   if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
-  const result = findUserByEmail(services, body);
+  const result = await findUserByEmail(services, body);
 
   // This is to prevent people from updating their email to a different email address that is already in use
   if (result.records[0]._fields[0].properties.uuid !== body.uuid && result.records[0]._fields[0].properties.email === body.email) {
