@@ -38,7 +38,6 @@ const updateDayQuery = (body) => {
         propsToUpdate.push("d.exp = $exp");
         queryParams.exp = body.exp;
     }
-
     if (body.desc) {
         propsToUpdate.push("d.desc = $desc");
         queryParams.desc = body.desc;

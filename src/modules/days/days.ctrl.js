@@ -32,7 +32,7 @@ const createDay = async ({ services }, body) => {
     const { query, queryParams } = createDayQuery(uuid, body);
 
     let data = await services.neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -44,7 +44,7 @@ const getAllDays = async ({ services }) => {
 
     if (data.records.length === 0) throw { err: 404, message: "No hay resultados para su búsqueda." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecords(data);
 
     return data;
@@ -58,7 +58,7 @@ const updateDay = async ({ services }, body) => {
 
     if (data.records.length === 0) throw { err: 404, message: "Este día no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -70,7 +70,7 @@ const getDay = async ({ services }, params) => {
 
     if (data.records.length === 0) throw { err: 404, message: "Este día no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -80,7 +80,7 @@ const deleteDay = async ({ services }, params) => {
     const { query, queryParams } = deleteDayQuery(params);
 
     let data = await services.neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
 
     return data;
 };
@@ -92,7 +92,7 @@ const getDaysRels = async ({ services }, params) => {
 
     if (data.records.length === 0) throw { err: 404, message: "No existen relaciones para este nodo." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRels(data);
 
     return data;
@@ -107,7 +107,7 @@ const bulkTestDelete = async ({ services }) => {
     // Then we have to delete the test nodes
     const query2 = deleteTestDaysQuery();
     let data = await services.neo4j.session.run(query2);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
 
     return data;
 };

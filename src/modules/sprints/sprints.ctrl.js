@@ -32,7 +32,7 @@ const createSprint = async ({ services }, body) => {
     const { query, queryParams } = createSprintQuery(uuid, body);
 
     let data = await services.neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -44,7 +44,7 @@ const getAllSprints = async ({ services }) => {
 
     if (data.records.length === 0) throw { err: 404, message: "No existen sprints" };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecords(data);
 
     return data;
@@ -58,7 +58,7 @@ const updateSprint = async ({ services }, body) => {
 
     if (data.records.length === 0) throw { err: 404, message: "Este sprint no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -70,7 +70,7 @@ const getSprint = async ({ services }, params) => {
 
     if (data.records.length === 0) throw { err: 404, message: "Este sprint no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRecord(data);
 
     return data;
@@ -80,19 +80,19 @@ const deleteSprint = async ({ services }, params) => {
     const { query, queryParams } = deleteSprintQuery(params);
 
     let data = await services.neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
 
     return data;
 };
 
 // Sprint Relationships
 const getSprintRels = async ({ services }, params) => {
-    const  { query, queryParams } = getSprintsRelsQuery(params);
+    const { query, queryParams } = getSprintsRelsQuery(params);
     let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "Este sprint no existe, verifique si tiene un uuid válido." };
 
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
     cleanRels(data);
 
     return data;
@@ -107,7 +107,7 @@ const bulkTestDelete = async ({ services }) => {
     // Then we have to delete the test nodes
     const query2 = deleteTestSprints();
     let data = await services.neo4j.session.run(query2);
-    data = cleanNeo4j(data);
+    cleanNeo4j(data);
 
     return data;
 };
