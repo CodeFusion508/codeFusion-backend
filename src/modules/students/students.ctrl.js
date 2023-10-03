@@ -43,7 +43,7 @@ const signUp = async ({ services }, body) => {
   const { query, queryParams } = signUpQuery(uuid, body);
 
   let data = await services.neo4j.session.run(query, queryParams);
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
   cleanRecord(data);
 
   const { email, userName } = data.node;
@@ -62,7 +62,7 @@ const logIn = async ({ services }, body) => {
 
   if (data.records.length === 0) throw { err: 403, message: "Este correo electrónico o contraseña es incorrecto, inténtalo de nuevo." };
 
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
   cleanRecord(data);
 
   if (!Object.prototype.hasOwnProperty.call(data.node, "password")) throw { err: 400, message: "El correo electrónico de la cuenta fue registrado mediante google" };
@@ -90,7 +90,7 @@ const getStudent = async ({ services }, params) => {
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
   cleanRecord(data);
 
   return data;
@@ -115,7 +115,7 @@ const updateStudent = async ({ services }, body) => {
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
   cleanRecord(data);
 
   return data;
@@ -125,7 +125,7 @@ const deleteStudent = async ({ services }, params) => {
   const { query, queryParams } = deleteStudentQuery(params);
 
   let data = await services.neo4j.session.run(query, queryParams);
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
 
   return data;
 };
@@ -137,7 +137,7 @@ const createRel = async ({ services }, body) => {
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe, verifique si tiene el uuid válido." };
 
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
   cleanRel(data);
 
   return data;
@@ -147,7 +147,7 @@ const deleteRel = async ({ services }, body) => {
   const { query, queryParams } = deleteRelQuery(body);
 
   let data = await services.neo4j.session.run(query, queryParams);
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
 
   return data;
 };
@@ -173,7 +173,7 @@ const recoveryAccount = async ({ services }, body) => {
 
   if (data.records.length === 0) throw { err: 404, message: "Este usuario no existe o ya esta registrado" };
 
-  cleanNeo4j(data);
+  data = cleanNeo4j(data);
   cleanRecord(data);
 
   const token = jwt.createToken({ uuid: data.node.uuid });
