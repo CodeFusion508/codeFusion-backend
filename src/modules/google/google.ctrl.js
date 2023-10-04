@@ -20,6 +20,7 @@ module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, me
   [name]: method.bind(null, { ...module.exports, ...deps })
 }), {});
 
+
 const createGUser = async ({ services }, body) => {
   const uuid = v4();
   const { query, queryParams } = googleSignUpQuery(uuid, body);
@@ -62,15 +63,15 @@ const loginGUser = async ({ services }, body, result) => {
   };
 };
 
-const authGoogleUser = async ({ services }, body) => {
+const gAuthentication = async ({ services }, body) => {
   const { query, queryParams } = findRegisteredEmail(body);
   let result = await services.neo4j.session.run(query, queryParams);
 
   if (result.records.length !== 0) {
-    loginGUser(body, result);
-  } else {
-    createGUser(body);
+    return loginGUser({ services }, body, result);
   }
+
+  return createGUser({ services }, body);
 };
 
 const getUserAnswers = async ({ services }, body) => {
@@ -87,7 +88,7 @@ const getEvaluation = async ({ services }, body) => {
 
 
 Object.assign(module.exports, {
-  authGoogleUser,
+  gAuthentication,
   getUserAnswers,
   getEvaluation
 });
