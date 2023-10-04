@@ -21,8 +21,8 @@ const {
 const jwt = require("../../config/jwt.js");
 
 // Global Variables
-const { saltRounds } = process.env;
-const saltScript = bcrypt.genSaltSync(saltRounds);
+const { SALT_ROUNDS } = process.env;
+const saltScript = bcrypt.genSaltSync(SALT_ROUNDS);
 const MapConfirmAccount = new Map();
 const MapRecoveryAccount = new Map();
 
@@ -47,6 +47,7 @@ const signUp = async ({ services }, body) => {
   cleanRecord(data);
 
   const { email, userName } = data.node;
+
   return {
     data,
     token: jwt.createToken({
@@ -75,6 +76,7 @@ const logIn = async ({ services }, body) => {
     userName,
     uuid
   } = data.node;
+
   return {
     data,
     token: jwt.createToken({

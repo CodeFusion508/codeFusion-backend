@@ -30,6 +30,7 @@ const createGUser = async ({ services }, body) => {
   cleanRecord(result);
 
   const { email, userName } = result.node;
+
   return {
     data  : result,
     token : jwt.createToken({
@@ -53,6 +54,7 @@ const loginGUser = async ({ services }, body, result) => {
     userName,
     uuid
   } = result.node;
+
   return {
     token: jwt.createToken({
       userName,

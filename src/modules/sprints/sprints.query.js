@@ -91,6 +91,7 @@ const getSprintsRelsQuery = (params) => {
     `;
 
     const queryParams = { uuid: params.uuid };
+
     return { query, queryParams };
 };
 

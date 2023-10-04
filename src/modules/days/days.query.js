@@ -23,7 +23,6 @@ const createDayQuery = (uuid, body) => {
     return { query, queryParams };
 };
 
-
 const getAllDaysQuery = () => `
     MATCH (d:Day) 
     WHERE NOT d:softDeleted
@@ -64,7 +63,6 @@ const getDayQuery = (params) => {
 
     return { query, queryParams };
 };
-
 
 const deleteDayQuery = (params) => {
     const query = `
