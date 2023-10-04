@@ -103,9 +103,9 @@ describe("Student Query Tests", () => {
 
         const { query, queryParams } = createRelQuery(body);
 
-        expect(query).toContain("MATCH (u:Student {uuid: $uuid}), (c:$label {uuid: $uuid2})");
+        expect(query).toContain(`MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})`);
         expect(query).toContain("WHERE NOT u:softDeleted AND NOT c:softDeleted");
-        expect(query).toContain("CREATE (u)-[r:$relation]->(c)");
+        expect(query).toContain(`CREATE (u)-[r:${body.relation}]->(c)`);
         expect(queryParams).toHaveProperty("uuid", body.uuid);
         expect(queryParams).toHaveProperty("uuid2", body.contentUuid);
     });
@@ -120,9 +120,9 @@ describe("Student Query Tests", () => {
 
         const  { query, queryParams } = deleteRelQuery(body);
 
-        expect(query).toContain("MATCH (u:Student {uuid: $uuid}), (c:$label {uuid: $uuid2})");
+        expect(query).toContain(`MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})`);
         expect(query).toContain("WHERE NOT u:softDeleted AND NOT c:softDeleted");
-        expect(query).toContain("MATCH (u)-[r:$relation]->(c)");
+        expect(query).toContain(`MATCH (u)-[r:${body.relation}]->(c)`);
         expect(queryParams).toHaveProperty("uuid", body.uuid);
         expect(queryParams).toHaveProperty("uuid2", body.contentUuid);
     });

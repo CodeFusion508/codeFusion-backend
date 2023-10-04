@@ -22,10 +22,10 @@ describe("Content Query Tests", () => {
 
         const { query, queryParams } = createContentQuery(uuid, body);
 
-        expect(query).toContain("CREATE (c:Content:$label {");
+        expect(query).toContain(`CREATE (c:Content:${body.label} {`);
         expect(query).toContain("MATCH (d:Day {uuid: $dayUuid})");
         expect(query).toContain("CREATE (c)-[:BELONGS_TO {contentNo: $contentNo}]->(d)");
-        expect(queryParams).toHaveProperty("label", body.label);
+        expect(queryParams).toHaveProperty("dayUuid", body.dayUuid);
     });
 
     it("getContentQuery should have proper query", () => {
@@ -56,7 +56,7 @@ describe("Content Query Tests", () => {
 
         const { query, queryParams } = updatedContentQuery(body);
 
-        expect(query).toContain("MATCH (c:Content:$label {uuid: $uuid})");
+        expect(query).toContain(`MATCH (c:Content:${body.label} {uuid: $uuid})`);
         expect(query).toContain("SET c.exp = $exp, c.title = $title,");
         expect(query).toContain("RETURN c;");
         expect(queryParams).toHaveProperty("uuid", body.uuid);
