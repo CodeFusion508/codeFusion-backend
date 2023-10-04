@@ -116,17 +116,15 @@ const deleteStudentQuery = (params) => {
 // Relation Queries
 const createRelQuery = (body) => {
     const query = `
-        MATCH (u:Student {uuid: $uuid}), (c:$label {uuid: $uuid2})
+        MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})
         WHERE NOT u:softDeleted AND NOT c:softDeleted
-        CREATE (u)-[r:$relation]->(c)
+        CREATE (u)-[r:${body.relation}]->(c)
         RETURN r;
     `;
 
     const queryParams = {
-        uuid     : body.uuid,
-        uuid2    : body.contentUuid,
-        label    : body.contentLabel,
-        relation : body.relation
+        uuid  : body.uuid,
+        uuid2 : body.contentUuid
     };
 
     return { query, queryParams };
@@ -135,18 +133,16 @@ const createRelQuery = (body) => {
 
 const deleteRelQuery = (body) => {
     const query = `
-        MATCH (u:Student {uuid: $uuid}), (c:$label {uuid: $uuid2})
+        MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})
         WHERE NOT u:softDeleted AND NOT c:softDeleted
         WITH u, c
-        MATCH (u)-[r:$relation]->(c)
+        MATCH (u)-[r:${body.relation}]->(c)
         DELETE r;
     `;
 
     const queryParams = {
-        uuid     : body.uuid,
-        uuid2    : body.contentUuid,
-        label    : body.contentLabel,
-        relation : body.relation
+        uuid  : body.uuid,
+        uuid2 : body.contentUuid
     };
 
     return { query, queryParams };

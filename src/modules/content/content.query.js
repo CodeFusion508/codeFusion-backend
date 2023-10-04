@@ -1,6 +1,6 @@
 const createContentQuery = (uuid, body) => {
     const query = `
-        CREATE (c:Content:$label {
+        CREATE (c:Content:${body.label} {
             uuid  : $uuid,
             exp   : $exp,
             title : $title,
@@ -19,7 +19,6 @@ const createContentQuery = (uuid, body) => {
     `;
 
     const queryParams = {
-        label     : body.label,
         uuid,
         exp       : body.exp,
         title     : body.title,
@@ -37,10 +36,7 @@ const createContentQuery = (uuid, body) => {
 
 const updatedContentQuery = (body) => {
     const propsToUpdate = [];
-    const queryParams = {
-        uuid  : body.uuid,
-        label : body.label
-    };
+    const queryParams = { uuid: body.uuid };
 
     // Common Properties
     if (body.exp) {
@@ -74,7 +70,7 @@ const updatedContentQuery = (body) => {
     }
 
     const query = `
-        MATCH (c:Content:$label {uuid: $uuid})
+        MATCH (c:Content:${body.label} {uuid: $uuid})
         WHERE NOT c:softDeleted
         SET ${propsToUpdate.join(", ")}
         RETURN c;
