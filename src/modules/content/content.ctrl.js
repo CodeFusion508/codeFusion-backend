@@ -36,7 +36,7 @@ const createContent = async ({ services }, body) => {
 };
 
 const updateContent = async ({ services }, bodyAndParam) => {
-    const cleanData = contentUpdateVerification(bodyAndParam);
+    const cleanData = await contentUpdateVerification(bodyAndParam);
 
     const { query, queryParams } = updatedContentQuery(cleanData);
 
