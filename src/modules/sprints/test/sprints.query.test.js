@@ -17,14 +17,12 @@ describe("Sprints Query Tests", () => {
         };
         const uuid = "997bb6d3-b309-492e-a19d-f9cbc1af7fbf";
 
-        const query = createSprintQuery(uuid, body);
+        const { query, queryParams } = createSprintQuery(uuid, body);
 
-        expect(query).toContain(`CREATE (s:Sprint`);
-        expect(query).toContain(`"${uuid}"`);
-        expect(query).toContain(`${body.sprintNo}`);
-        expect(query).toContain(`"${body.title}"`);
-        expect(query).toContain(`"${body.desc}"`);
-        expect(query).toContain("RETURN s;");
+        expect(query).toContain("CREATE (s:Sprint {");
+        expect(query).toContain("uuid     : $uuid");
+        expect(query).toContain("sprintNo : $sprintNo");
+        expect(queryParams).toHaveProperty("sprintNo", body.sprintNo);
     });
 
     it("getAllSprintsQuery should have proper query", () => {
@@ -44,15 +42,13 @@ describe("Sprints Query Tests", () => {
             totalExp : 1993
         };
 
-        const query = updateSprintQuery(body);
+        const { query, queryParams } = updateSprintQuery(body);
 
-        expect(query).toContain(`MATCH (s:Sprint {uuid: "${body.uuid}"})`);
-        expect(query).toContain("WHERE NOT s:softDeleted");
-        expect(query).toContain("SET");
-        expect(query).toContain(`s.sprintNo = ${body.sprintNo}`);
-        expect(query).toContain(`s.title = "${body.title}"`);
-        expect(query).toContain(`s.desc = "${body.desc}"`);
-        expect(query).toContain(`s.totalExp = ${body.totalExp}`);
+        expect(query).toContain("MATCH (s:Sprint {uuid: $uuid})");
+        expect(query).toContain("SET s.sprintNo = $sprintNo, s.title = $title,");
+        expect(query).toContain("RETURN s;");
+        expect(queryParams).toHaveProperty("uuid", body.uuid);
+        expect(queryParams).toHaveProperty("sprintNo", body.sprintNo);
     });
 
     it("getSprintQuery should have proper query", () => {
@@ -60,11 +56,12 @@ describe("Sprints Query Tests", () => {
             uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
         };
 
-        const query = getSprintQuery(params);
+        const { query, queryParams } = getSprintQuery(params);
 
-        expect(query).toContain(`MATCH (s:Sprint {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (s:Sprint {uuid: $uuid})");
         expect(query).toContain("WHERE NOT s:softDeleted");
         expect(query).toContain("RETURN s;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("deleteSprintQuery should have proper query", () => {
@@ -72,10 +69,11 @@ describe("Sprints Query Tests", () => {
             uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
         };
 
-        const query = deleteSprintQuery(params);
+        const { query, queryParams } = deleteSprintQuery(params);
 
-        expect(query).toContain(`MATCH (s:Sprint {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (s:Sprint {uuid: $uuid})");
         expect(query).toContain("SET s:softDeleted;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("getSprintsRelsQuery should have proper query", () => {
@@ -83,10 +81,11 @@ describe("Sprints Query Tests", () => {
             uuid: "997bb6d3-b309-492e-a19d-f9cbc1af7fbf"
         };
 
-        const query = getSprintsRelsQuery(params);
+        const { query, queryParams } = getSprintsRelsQuery(params);
 
-        expect(query).toContain(`MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: $uuid})");
         expect(query).toContain("WHERE NOT s:softDeleted AND NOT d:softDeleted");
         expect(query).toContain("RETURN d, r;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 });

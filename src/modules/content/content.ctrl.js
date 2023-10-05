@@ -9,7 +9,6 @@ const {
 
     deleteTestContentQuery
 } = require("./content.query.js");
-
 const {
     UPDATE_PROBLEM,
     UPDATE_QUIZ,
@@ -18,20 +17,18 @@ const {
 } = require("./content.joi.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 
 // Content CRUD
 const createContent = async ({ services }, body) => {
     const uuid = v4();
-    const query = createContentQuery(uuid, body);
+    const { query, queryParams } = createContentQuery(uuid, body);
 
-    let data = await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query, queryParams);
     data = cleanNeo4j(data);
     cleanRecord(data);
 
@@ -39,11 +36,11 @@ const createContent = async ({ services }, body) => {
 };
 
 const updateContent = async ({ services }, bodyAndParam) => {
-    const cleanData = contentUpdateVerification(bodyAndParam);
+    const cleanData = await contentUpdateVerification(bodyAndParam);
 
-    const query = updatedContentQuery(cleanData);
+    const { query, queryParams } = updatedContentQuery(cleanData);
 
-    let data = await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "Este contenido no existe, verifique si tiene un uuid válido." };
 
@@ -54,9 +51,9 @@ const updateContent = async ({ services }, bodyAndParam) => {
 };
 
 const getContent = async ({ services }, params) => {
-    const query = getContentQuery(params);
+    const { query, queryParams } = getContentQuery(params);
 
-    let data = await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "Este contenido no existe, verifique si tiene un uuid válido." };
 
@@ -67,9 +64,9 @@ const getContent = async ({ services }, params) => {
 };
 
 const deleteContent = async ({ services }, params) => {
-    const query = deletedContentQuery(params);
+    const { query, queryParams } = deletedContentQuery(params);
 
-    let data = await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query, queryParams);
     data = cleanNeo4j(data);
 
     return data;
@@ -86,7 +83,6 @@ const bulkTestDelete = async ({ services }) => {
 };
 
 
-
 Object.assign(module.exports, {
     createContent,
     updateContent,
@@ -96,22 +92,23 @@ Object.assign(module.exports, {
     bulkTestDelete
 });
 
+
 // Helper Functions
-const contentUpdateVerification = (bodyAndParam) => {
+const contentUpdateVerification = async (bodyAndParam) => {
     if (Object.keys(bodyAndParam).length < 3) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
     switch (bodyAndParam.label) {
         case "Problem":
-           return UPDATE_PROBLEM.validate(bodyAndParam).value;
+            return await UPDATE_PROBLEM.validate(bodyAndParam).value;
 
         case "Quiz":
-            return UPDATE_QUIZ.validate(bodyAndParam).value;
+            return await UPDATE_QUIZ.validate(bodyAndParam).value;
 
         case "Text":
-            return UPDATE_TEXT.validate(bodyAndParam).value;
+            return await UPDATE_TEXT.validate(bodyAndParam).value;
 
         case "Video":
-            return UPDATE_VIDEO.validate(bodyAndParam).value;
+            return await UPDATE_VIDEO.validate(bodyAndParam).value;
 
         default:
             throw { err: 400, message: "No tiene el label correcto." };

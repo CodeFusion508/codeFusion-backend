@@ -1,6 +1,5 @@
 const {
-    createGUser,
-    loginGUser,
+    gAuthentication,
     getUserAnswers,
     getEvaluation
 } = require("../google.ctrl.js");
@@ -37,76 +36,49 @@ describe("Google Controller Tests", () => {
         jest.spyOn(jwt, "createToken").mockReturnValue("mockedToken");
     });
 
-    describe("createGUser Controller", () => {
-        it("createGUser should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
+    describe("gAuthentication Controller", () => {
+        describe("createGUser", () => {
+            it("createGUser should return formatted result", async () => {
+                deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
 
-            const body = {
-                email    : "AsyncResearch@mail.org",
-                userName : "Async Research Institute",
-            };
+                const body = {
+                    email    : "AsyncResearch@mail.org",
+                    userName : "Async Research Institute",
+                };
 
-            const result = await createGUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
+                const result = await gAuthentication(deps, body)
+                    .then((res) => res)
+                    .catch((err) => err);
 
-
-            expect(result).toHaveProperty("err");
-            expect(result).toHaveProperty("message");
-        });
-
-        it("createGUser should return formatted result", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockEmptyRecords).mockResolvedValue(mockValue);
-
-            const body = {
-                email    : "AsyncResearch@mail.org",
-                userName : "Async Research Institute",
-            };
-
-            const result = await createGUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("token", "mockedToken");
-            expect(result.data.node).toHaveProperty("email");
-            expect(result.data.node).toHaveProperty("userName");
-            expect(result.data.node).toHaveProperty("uuid");
-        });
-    });
-
-    describe("loginGUser Controller", () => {
-        it("loginGUser should throw an error if token fails", async () => {
-            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue({
-                getPayload: jest.fn().mockReturnValue(undefined)
+                expect(result).toHaveProperty("token", "mockedToken");
+                expect(result.data.node).toHaveProperty("email");
+                expect(result.data.node).toHaveProperty("userName");
+                expect(result.data.node).toHaveProperty("uuid");
             });
-
-            const body = {
-                token: "Super Secret Token"
-            };
-
-            const result = await loginGUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("err");
-            expect(result).toHaveProperty("message");
         });
 
-        it("loginGUser should return formatted result", async () => {
-            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue({
-                getPayload: jest.fn().mockReturnValue(true)
+        describe("loginGUser", () => {
+            it("loginGUser should return formatted result", async () => {
+                deps.services.neo4j.session.run = jest.fn().mockResolvedValueOnce(mockValue).mockResolvedValue(mockValue);
+
+                deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue({
+                    getPayload: jest.fn().mockReturnValue(true)
+                });
+
+                const body = {
+                    email : "AsyncResearch@mail.org",
+                    token : "Super Secret Token"
+                };
+
+                const result = await gAuthentication(deps, body)
+                    .then((res) => res)
+                    .catch((err) => err);
+
+                expect(result).toHaveProperty("token");
+                expect(result.data.node).toHaveProperty("email");
+                expect(result.data.node).toHaveProperty("userName");
+                expect(result.data.node).toHaveProperty("uuid");
             });
-
-            const body = {
-                token: "Super Secret Token"
-            };
-
-            const result = await loginGUser(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toBe(true);
         });
     });
 

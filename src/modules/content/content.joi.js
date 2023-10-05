@@ -8,7 +8,7 @@ const baseSchema = {
     time  : Joi.string().required(),
 
     dayUuid   : Joi.string().uuid().required(),
-    contentNo : Joi.number().required(),
+    contentNo : Joi.number().required()
 };
 const baseUpdateSchema = {
     label : Joi.string().valid("Problem", "Quiz", "Text", "Video").required(),
@@ -16,7 +16,7 @@ const baseUpdateSchema = {
     exp   : Joi.number().optional(),
     title : Joi.string().optional(),
     desc  : Joi.string().optional(),
-    time  : Joi.string().optional(),
+    time  : Joi.string().optional()
 };
 
 
@@ -26,32 +26,31 @@ module.exports = {
     }),
     CREATE_PROBLEM: Joi.object({
         ...baseSchema,
+
         language: Joi.string().required()
     }),
     CREATE_QUIZ: Joi.object({
         ...baseSchema,
+
         path: Joi.string().required()
     }),
     CREATE_VIDEO: Joi.object({
         ...baseSchema,
+
         link: Joi.string().required()
     }),
     CREATE_TEXT: Joi.object({
         ...baseSchema,
+
         path: Joi.string().required()
     }),
     UPDATE_CONTENT: Joi.object({
-       ...baseUpdateSchema,
+        ...baseUpdateSchema,
 
-        // Problem
-        element  : Joi.string().optional(),
-        content  : Joi.string().optional(),
-        language : Joi.string().optional(),
+        language: Joi.string().optional(),
 
-        // Quiz and Text
         path: Joi.string().optional(),
 
-        // Video
         link: Joi.string().optional()
     }),
 
@@ -60,9 +59,7 @@ module.exports = {
     UPDATE_PROBLEM: Joi.object({
         ...baseUpdateSchema,
 
-        element  : Joi.string().optional(),
-        content  : Joi.string().optional(),
-        language : Joi.string().optional()
+        language: Joi.string().optional()
     }),
     UPDATE_QUIZ: Joi.object({
         ...baseUpdateSchema,

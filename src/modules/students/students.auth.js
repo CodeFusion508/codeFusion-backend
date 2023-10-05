@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
         if (!decodedToken) {
             throw new Error("Token inválido.");
         } else {
-           if (decodedToken.uuid !== req.body.uuid) throw new Error("Token no coincide con tu información.");
+            if (decodedToken.uuid !== req.body.uuid) throw new Error("Token no coincide con tu información.");
         }
 
         next();

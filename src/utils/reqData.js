@@ -1,9 +1,9 @@
 const params = ({ params }) => params;
-const paramsAndQuery = ({ params, query }) => { return { ...params, ...query }; };
+const paramsAndQuery = ({ params, query }) => ({ ...params, ...query });
 
 const body = ({ body }) => body;
-const bodyAndParams = ({ params, body }) => { return { ...params, ...body }; };
-const bodyAndQuery = ({ query, body }) => { return { ...query, ...body }; };
+const bodyAndParams = ({ params, body }) => ({ ...params, ...body });
+const bodyAndQuery = ({ query, body }) => ({ ...query, ...body });
 
 const query = ({ query }) => query;
 

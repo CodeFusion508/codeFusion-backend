@@ -15,52 +15,65 @@ const {
 } = require("../../utils/gFormsAnswers.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-  return {
-    ...acc,
-    [name]: method.bind(null, { ...module.exports, ...deps })
-  };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+  ...acc,
+  [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 
 const createGUser = async ({ services }, body) => {
-  const findUser = findRegisteredEmail(body);
-  let result = await services.neo4j.session.run(findUser);
-
-  if (result.records.length !== 0) {
-    const responseToken = await services.google.client.verifyIdToken({ idToken: body.idToken });
-
-    if (responseToken === undefined) throw { err: 403, message: "Autenticación de Google falló" };
-
-    result = cleanNeo4j(result);
-    cleanRecord(result);
-
-    const { email, userName, uuid } = result.node;
-    return {
-      token : jwt.createToken({ userName, email, uuid }),
-      data  : result
-    };
-  }
-
   const uuid = v4();
-  const query = googleSignUpQuery(uuid, body);
+  const { query, queryParams } = googleSignUpQuery(uuid, body);
 
-  let data = await services.neo4j.session.run(query);
-  data = cleanNeo4j(data);
-  cleanRecord(data);
+  let result = await services.neo4j.session.run(query, queryParams);
+  result = cleanNeo4j(result);
+  cleanRecord(result);
 
-  const { email, userName } = data.node;
-  return { data, token: jwt.createToken({ userName, email, uuid }) };
+  const { email, userName } = result.node;
+
+  return {
+    data  : result,
+    token : jwt.createToken({
+      userName,
+      email,
+      uuid
+    })
+  };
 };
 
-const loginGUser = async ({ services }, body) => {
-  const ticket = await services.google.client.verifyIdToken({ idToken: body.idToken });
+const loginGUser = async ({ services }, body, result) => {
+  const responseToken = await services.google.client.verifyIdToken({ idToken: body.idToken });
 
-  const payload = ticket.getPayload();
+  if (responseToken === undefined) throw { err: 403, message: "Autenticación de Google falló" };
 
-  if (payload) return true;
+  result = cleanNeo4j(result);
+  cleanRecord(result);
 
-  throw { err: 400, message: "Token Invalido" };
+  const {
+    email,
+    userName,
+    uuid
+  } = result.node;
+
+  return {
+    token: jwt.createToken({
+      userName,
+      email,
+      uuid
+    }),
+    data: result
+  };
+};
+
+const gAuthentication = async ({ services }, body) => {
+  const { query, queryParams } = findRegisteredEmail(body);
+  let result = await services.neo4j.session.run(query, queryParams);
+
+  if (result.records.length !== 0) {
+    return loginGUser({ services }, body, result);
+  }
+
+  return createGUser({ services }, body);
 };
 
 const getUserAnswers = async ({ services }, body) => {
@@ -77,8 +90,7 @@ const getEvaluation = async ({ services }, body) => {
 
 
 Object.assign(module.exports, {
-  createGUser,
-  loginGUser,
+  gAuthentication,
   getUserAnswers,
   getEvaluation
 });

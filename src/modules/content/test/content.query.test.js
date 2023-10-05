@@ -20,12 +20,12 @@ describe("Content Query Tests", () => {
         };
         const uuid = "f40eeba5-392d-464f-8c3f-f246d13658bd";
 
-        const query = createContentQuery(uuid, body);
+        const { query, queryParams } = createContentQuery(uuid, body);
 
-        expect(query).toContain(`CREATE (c:Content:${body.label}`);
-        expect(query).toContain(`"${uuid}"`);
-        expect(query).toContain(`"${body.title}"`);
-        expect(query).toContain(`CREATE (c)-[:BELONGS_TO {contentNo: ${body.contentNo}}]->(d)`);
+        expect(query).toContain(`CREATE (c:Content:${body.label} {`);
+        expect(query).toContain("MATCH (d:Day {uuid: $dayUuid})");
+        expect(query).toContain("CREATE (c)-[:BELONGS_TO {contentNo: $contentNo}]->(d)");
+        expect(queryParams).toHaveProperty("dayUuid", body.dayUuid);
     });
 
     it("getContentQuery should have proper query", () => {
@@ -33,11 +33,12 @@ describe("Content Query Tests", () => {
             uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd"
         };
 
-        const query = getContentQuery(params);
+        const { query, queryParams } = getContentQuery(params);
 
-        expect(query).toContain(`MATCH (c:Content {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (c:Content {uuid: $uuid})");
         expect(query).toContain("WHERE NOT c:softDeleted");
         expect(query).toContain("RETURN c;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("updatedContentQuery should have proper query", () => {
@@ -53,13 +54,12 @@ describe("Content Query Tests", () => {
             language: "Java"
         };
 
-        const query = updatedContentQuery(body);
+        const { query, queryParams } = updatedContentQuery(body);
 
-        expect(query).toContain(`MATCH (c:Content:${body.label} {uuid: "${body.uuid}"})`);
-        expect(query).toContain(`c.title = "${body.title}"`);
-        expect(query).toContain(`c.desc = "${body.desc}"`);
-        expect(query).toContain("SET");
+        expect(query).toContain(`MATCH (c:Content:${body.label} {uuid: $uuid})`);
+        expect(query).toContain("SET c.exp = $exp, c.title = $title,");
         expect(query).toContain("RETURN c;");
+        expect(queryParams).toHaveProperty("uuid", body.uuid);
     });
 
     it("deletedContentQuery should have proper query", () => {
@@ -67,9 +67,10 @@ describe("Content Query Tests", () => {
             uuid: "f40eeba5-392d-464f-8c3f-f246d13658bd",
         };
 
-        const query = deletedContentQuery(params);
+        const { query, queryParams } = deletedContentQuery(params);
 
-        expect(query).toContain(`MATCH (c:Content {uuid: "${params.uuid}"})`);
+        expect(query).toContain("MATCH (c:Content {uuid: $uuid})");
         expect(query).toContain("SET c:softDeleted;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 });

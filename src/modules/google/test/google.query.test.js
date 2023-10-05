@@ -11,12 +11,13 @@ describe("Google Query Tests", () => {
         };
         const uuid = "9e35cf4f-3caf-41e6-bd7e-ed4efa5c031c";
 
-        const query = googleSignUpQuery(uuid, body);
+        const { query, queryParams } = googleSignUpQuery(uuid, body);
 
-        expect(query).toContain("CREATE (u:Student:User");
-        expect(query).toContain(`"${uuid}"`);
-        expect(query).toContain(`"${body.email}"`);
-        expect(query).toContain(`"${body.userName}"`);
+        expect(query).toContain("CREATE (u:Student:User {");
+        expect(query).toContain("uuid      : $uuid,");
+        expect(query).toContain("email     : $email,");
+        expect(query).toContain("userName  : $userName,");
+        expect(queryParams).toHaveProperty("uuid", uuid);
     });
 
     it("findRegisteredEmail should have proper query", () => {
@@ -24,8 +25,10 @@ describe("Google Query Tests", () => {
             email: "AsyncResearch@mail.org",
         };
 
-        const query = findRegisteredEmail(body);
+        const { query, queryParams } = findRegisteredEmail(body);
 
-        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"}) RETURN u;`);
+        expect(query).toContain("MATCH (u:Student {email: $email})");
+        expect(query).toContain("RETURN u;");
+        expect(queryParams).toHaveProperty("email", body.email);
     });
 });

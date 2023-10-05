@@ -2,16 +2,23 @@
 const createSprintQuery = (uuid, body) => {
     const query = `
         CREATE (s:Sprint {
-            uuid     : "${uuid}",
-            sprintNo : ${body.sprintNo},
-            title    : "${body.title}",
-            desc     : "${body.desc}",
+            uuid     : $uuid,
+            sprintNo : $sprintNo,
+            title    : $title,
+            desc     : $desc,
             totalExp : 0
         })
         RETURN s;
     `;
 
-    return query;
+    const queryParams = {
+        uuid,
+        sprintNo : body.sprintNo,
+        title    : body.title,
+        desc     : body.desc
+    };
+
+    return { query, queryParams };
 };
 
 
@@ -23,47 +30,70 @@ const getAllSprintsQuery = () => `
 
 const updateSprintQuery = (body) => {
     let propsToUpdate = [];
+    const queryParams = { uuid: body.uuid };
 
     if (body.sprintNo) {
-        propsToUpdate.push(`s.sprintNo = ${body.sprintNo}`);
+        propsToUpdate.push("s.sprintNo = $sprintNo");
+        queryParams.sprintNo = body.sprintNo;
     }
     if (body.title) {
-        propsToUpdate.push(`s.title = "${body.title}"`);
+        propsToUpdate.push("s.title = $title");
+        queryParams.title = body.title;
     }
     if (body.desc) {
-        propsToUpdate.push(`s.desc = "${body.desc}"`);
+        propsToUpdate.push("s.desc = $desc");
+        queryParams.desc = body.desc;
     }
     if (body.totalExp) {
-        propsToUpdate.push(`s.totalExp = ${body.totalExp}`);
+        propsToUpdate.push("s.totalExp = $totalExp");
+        queryParams.totalExp = body.totalExp;
     }
 
-    const updateQuery = `
-        MATCH (s:Sprint {uuid: "${body.uuid}"})
+    const query = `
+        MATCH (s:Sprint {uuid: $uuid})
         WHERE NOT s:softDeleted
         SET ${propsToUpdate.join(", ")}
         RETURN s;
     `;
 
-    return updateQuery;
+    return { query, queryParams };
 };
 
-const getSprintQuery = (params) => `
-    MATCH (s:Sprint {uuid: "${params.uuid}"}) 
-    WHERE NOT s:softDeleted 
-    RETURN s;
-`;
+const getSprintQuery = (params) => {
+    const query = `
+        MATCH (s:Sprint {uuid: $uuid}) 
+        WHERE NOT s:softDeleted 
+        RETURN s;
+    `;
 
-const deleteSprintQuery = (params) => `
-    MATCH (s:Sprint {uuid: "${params.uuid}"})
-    SET s:softDeleted;
-`;
+    const queryParams = { uuid: params.uuid };
+
+    return { query, queryParams };
+};
+
+const deleteSprintQuery = (params) => {
+    const query = `
+        MATCH (s:Sprint {uuid: $uuid})
+        SET s:softDeleted;
+    `;
+
+    const queryParams = { uuid: params.uuid };
+
+    return { query, queryParams };
+};
 
 // Sprint Relationships
-const getSprintsRelsQuery = (params) => `
-    MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: "${params.uuid}"})
-    WHERE NOT s:softDeleted AND NOT d:softDeleted
-    RETURN d, r;
-`;
+const getSprintsRelsQuery = (params) => {
+    const query = `
+        MATCH (d)-[r:BELONGS_TO]->(s:Sprint {uuid: $uuid})
+        WHERE NOT s:softDeleted AND NOT d:softDeleted
+        RETURN d, r;
+    `;
+
+    const queryParams = { uuid: params.uuid };
+
+    return { query, queryParams };
+};
 
 // Delete Test Data
 const deleteTestRels = () => `

@@ -20,13 +20,12 @@ describe("Student Query Tests", () => {
         };
         const uuid = "1c12d3x-123d1232c13";
 
-        const query = signUpQuery(uuid, body);
+        const { query, queryParams } = signUpQuery(uuid, body);
 
-        expect(query).toContain("CREATE (u:Student:User");
-        expect(query).toContain(`"${uuid}"`);
-        expect(query).toContain(`"${body.email}"`);
-        expect(query).toContain(`"${body.password}"`);
-        expect(query).toContain(`"${body.userName}"`);
+        expect(query).toContain("CREATE (u:Student:User {");
+        expect(query).toContain("uuid      : $uuid,");
+        expect(query).toContain("password  : $password");
+        expect(queryParams).toHaveProperty("uuid", uuid);
     });
 
     it("logInQuery should have proper query", () => {
@@ -34,10 +33,12 @@ describe("Student Query Tests", () => {
             email: "AsyncResearch@mail.org"
         };
 
-        const query = logInQuery(body);
+        const { query, queryParams } = logInQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"})`);
-        expect(query).toContain(`WHERE NOT u:softDeleted`);
+        expect(query).toContain("MATCH (u:Student {email: $email})");
+        expect(query).toContain("WHERE NOT u:softDeleted");
+        expect(query).toContain("RETURN u;");
+        expect(queryParams).toHaveProperty("email", body.email);
     });
 
     it("findRegisteredEmailQuery should have proper query", () => {
@@ -45,9 +46,10 @@ describe("Student Query Tests", () => {
             email: "AsyncResearch@mail.org"
         };
 
-        const query = findRegisteredEmailQuery(body);
+        const { query, queryParams } = findRegisteredEmailQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"}) RETURN u;`);
+        expect(query).toContain("MATCH (u:Student {email: $email}) RETURN u;");
+        expect(queryParams).toHaveProperty("email", body.email);
     });
 
     it("getStudentQuery should have proper query", () => {
@@ -55,10 +57,12 @@ describe("Student Query Tests", () => {
             uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f"
         };
 
-        const query = getStudentQuery(params);
+        const { query, queryParams } = getStudentQuery(params);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${params.uuid}"})`);
-        expect(query).toContain(`WHERE NOT u:softDeleted`);
+        expect(query).toContain("MATCH (u:Student {uuid: $uuid})");
+        expect(query).toContain("WHERE NOT u:softDeleted");
+        expect(query).toContain("RETURN u;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("updateStudentQuery should have proper query", () => {
@@ -69,13 +73,12 @@ describe("Student Query Tests", () => {
             userName : "Async Research Institute"
         };
 
-        const query = updateStudentQuery(body);
+        const { query, queryParams } = updateStudentQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"})`);
-        expect(query).toContain(`SET`);
-        expect(query).toContain(`u.email = "${body.email}"`);
-        expect(query).toContain(`u.password = "${body.password}"`);
-        expect(query).toContain(`u.userName = "${body.userName}"`);
+        expect(query).toContain("MATCH (u:Student {uuid: $uuid})");
+        expect(query).toContain("SET u.userName = $userName, u.email = $email,");
+        expect(query).toContain("RETURN u;");
+        expect(queryParams).toHaveProperty("uuid", body.uuid);
     });
 
     it("deleteStudentQuery should have proper query", () => {
@@ -83,10 +86,11 @@ describe("Student Query Tests", () => {
             uuid: "245710fd-67d0-45d4-a7a2-9e963aa45e7f",
         };
 
-        const query = deleteStudentQuery(params);
+        const { query, queryParams } = deleteStudentQuery(params);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${params.uuid}"})`);
-        expect(query).toContain(`SET u:softDeleted;`);
+        expect(query).toContain("MATCH (u:Student {uuid: $uuid})");
+        expect(query).toContain("SET u:softDeleted;");
+        expect(queryParams).toHaveProperty("uuid", params.uuid);
     });
 
     it("createRelQuery should have proper query", () => {
@@ -97,11 +101,13 @@ describe("Student Query Tests", () => {
             relation    : "COMPLETED"
         };
 
-        const query = createRelQuery(body);
+        const { query, queryParams } = createRelQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.contentLabel} {uuid: "${body.contentUuid}"})`);
-        expect(query).toContain(`WHERE NOT u:softDeleted AND NOT c:softDeleted`);
+        expect(query).toContain(`MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})`);
+        expect(query).toContain("WHERE NOT u:softDeleted AND NOT c:softDeleted");
         expect(query).toContain(`CREATE (u)-[r:${body.relation}]->(c)`);
+        expect(queryParams).toHaveProperty("uuid", body.uuid);
+        expect(queryParams).toHaveProperty("uuid2", body.contentUuid);
     });
 
     it("deleteRelQuery should have proper query", () => {
@@ -112,12 +118,13 @@ describe("Student Query Tests", () => {
             relation    : "COMPLETED",
         };
 
-        const query = deleteRelQuery(body);
+        const  { query, queryParams } = deleteRelQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {uuid: "${body.uuid}"}), (c:${body.contentLabel} {uuid: "${body.contentUuid}"})`);
-        expect(query).toContain(`WHERE NOT u:softDeleted AND NOT c:softDeleted`);
-        expect(query).toContain(`WITH u, c`);
+        expect(query).toContain(`MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})`);
+        expect(query).toContain("WHERE NOT u:softDeleted AND NOT c:softDeleted");
         expect(query).toContain(`MATCH (u)-[r:${body.relation}]->(c)`);
+        expect(queryParams).toHaveProperty("uuid", body.uuid);
+        expect(queryParams).toHaveProperty("uuid2", body.contentUuid);
     });
 
     it("findDeletedStudentQuery should have proper query", () => {
@@ -125,10 +132,11 @@ describe("Student Query Tests", () => {
             email: "AsyncResearch@mail.org"
         };
 
-        const query = findDeletedStudentQuery(body);
+        const { query, queryParams } = findDeletedStudentQuery(body);
 
-        expect(query).toContain(`MATCH (u:Student {email: "${body.email}"})`);
-        expect(query).toContain(`WHERE  u:softDeleted`);
-        expect(query).toContain(`RETURN u;`);
+        expect(query).toContain("MATCH (u:Student {email: $email})");
+        expect(query).toContain("WHERE  u:softDeleted");
+        expect(query).toContain("RETURN u;");
+        expect(queryParams).toHaveProperty("email", body.email);
     });
 });

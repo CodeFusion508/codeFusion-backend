@@ -1,7 +1,11 @@
 const { Router } = require("express");
 
 const { endpointMethods, endpointResponse } = require("../utils/endpointUtil.js");
-const { params, body, bodyAndParams } = require("../utils/reqData.js");
+const {
+    params,
+    body,
+    bodyAndParams
+} = require("../utils/reqData.js");
 const {
     GET_UUID,
     CREATE_PROBLEM,

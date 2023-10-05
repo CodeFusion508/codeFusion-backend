@@ -1,9 +1,7 @@
-const cleanNeo4j = (data) => {
-    return {
-        stats : data.summary.counters._stats,
-        node  : data.records
-    };
-};
+const cleanNeo4j = (data) => ({
+    stats : data.summary.counters._stats,
+    node  : data.records
+});
 
 const cleanRecord = (data) => {
     const { labels, properties } = data.node[0]._fields[0];

@@ -20,20 +20,18 @@ const {
 } = require("./sprints.query.js");
 
 
-module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => {
-    return {
-        ...acc,
-        [name]: method.bind(null, { ...module.exports, ...deps })
-    };
-}, {});
+module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
+    ...acc,
+    [name]: method.bind(null, { ...module.exports, ...deps })
+}), {});
 
 
 // Sprint CURD
 const createSprint = async ({ services }, body) => {
     const uuid = v4();
-    const query = createSprintQuery(uuid, body);
+    const { query, queryParams } = createSprintQuery(uuid, body);
 
-    let data = await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query, queryParams);
     data = cleanNeo4j(data);
     cleanRecord(data);
 
@@ -55,8 +53,8 @@ const getAllSprints = async ({ services }) => {
 const updateSprint = async ({ services }, body) => {
     if (Object.keys(body).length < 2) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
-    const query = updateSprintQuery(body);
-    let data = await services.neo4j.session.run(query);
+    const { query, queryParams } = updateSprintQuery(body);
+    let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "Este sprint no existe, verifique si tiene un uuid válido." };
 
@@ -67,8 +65,8 @@ const updateSprint = async ({ services }, body) => {
 };
 
 const getSprint = async ({ services }, params) => {
-    const query = getSprintQuery(params);
-    let data = await services.neo4j.session.run(query);
+    const { query, queryParams } = getSprintQuery(params);
+    let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "Este sprint no existe, verifique si tiene un uuid válido." };
 
@@ -79,9 +77,9 @@ const getSprint = async ({ services }, params) => {
 };
 
 const deleteSprint = async ({ services }, params) => {
-    const query = deleteSprintQuery(params);
+    const { query, queryParams } = deleteSprintQuery(params);
 
-    let data = await services.neo4j.session.run(query);
+    let data = await services.neo4j.session.run(query, queryParams);
     data = cleanNeo4j(data);
 
     return data;
@@ -89,8 +87,8 @@ const deleteSprint = async ({ services }, params) => {
 
 // Sprint Relationships
 const getSprintRels = async ({ services }, params) => {
-    const query = getSprintsRelsQuery(params);
-    let data = await services.neo4j.session.run(query);
+    const { query, queryParams } = getSprintsRelsQuery(params);
+    let data = await services.neo4j.session.run(query, queryParams);
 
     if (data.records.length === 0) throw { err: 404, message: "Este sprint no existe, verifique si tiene un uuid válido." };
 
