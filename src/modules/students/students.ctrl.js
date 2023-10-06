@@ -21,8 +21,8 @@ const {
 const jwt = require("../../config/jwt.js");
 
 // Global Variables
-const { SALT_ROUNDS } = process.env;
-const saltScript = bcrypt.genSaltSync(SALT_ROUNDS);
+const saltRounds = Number(process.env.SALT_ROUNDS);
+const saltScript = bcrypt.genSaltSync(saltRounds);
 const MapConfirmAccount = new Map();
 const MapRecoveryAccount = new Map();
 
