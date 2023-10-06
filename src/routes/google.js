@@ -7,6 +7,7 @@ const {
     GET_USER_ANSWERS,
     AUTH_G_USER
 } = require("../modules/google/google.joi");
+const { verifyToken } = require("../utils/auth.js");
 
 
 module.exports = (deps) => {
@@ -14,8 +15,8 @@ module.exports = (deps) => {
 
     return Router()
         .post("/users/", endPoint(body, AUTH_G_USER, gAuthentication))
-        .get("/sheets/all", endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
-        .get("/sheets/evaluation", endPoint(body, GET_USER_ANSWERS, getEvaluation));
+        .get("/sheets/all", verifyToken, endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
+        .get("/sheets/evaluation", verifyToken, endPoint(body, GET_USER_ANSWERS, getEvaluation));
 };
 
 

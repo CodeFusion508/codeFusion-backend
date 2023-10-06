@@ -7,6 +7,7 @@ const {
     CREATE_DAY,
     UPDATE_DAY
 } = require("../modules/days/days.joi.js");
+const { verifyToken } = require("../utils/auth.js");
 
 
 module.exports = (deps) => {
@@ -14,11 +15,10 @@ module.exports = (deps) => {
 
     return Router()
         // Day CRUD
-        .post("/", endPoint(body, CREATE_DAY, createDay))
-        .get("/", endPoint(undefined, undefined, getAllDays))
-        .put("/", endPoint(body, UPDATE_DAY, updateDay))
+        .post("/", verifyToken, endPoint(body, CREATE_DAY, createDay))
+        .put("/", verifyToken, endPoint(body, UPDATE_DAY, updateDay))
         .get("/node/:uuid", endPoint(params, GET_UUID, getDay))
-        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteDay))
+        .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteDay))
         // Day Relationships
         .get("/node/rels/:uuid", endPoint(params, GET_UUID, getDayRels))
         // Internal Use Only
@@ -27,7 +27,6 @@ module.exports = (deps) => {
 
 
 const createDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.createDay(data));
-const getAllDays = ({ ctrls }) => (_, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getAllDays());
 const updateDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.updateDay(data));
 const getDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.getDay(data));
 const deleteDay = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.daysCtrl.deleteDay(data));

@@ -7,6 +7,7 @@ const {
     CREATE_SPRINT,
     UPDATE_SPRINT
 } = require("../modules/sprints/sprints.joi.js");
+const { verifyToken } = require("../utils/auth.js");
 
 
 module.exports = (deps) => {
@@ -14,11 +15,11 @@ module.exports = (deps) => {
 
     return Router()
         // Sprints CRUD
-        .post("/", endPoint(body, CREATE_SPRINT, createSprint))
+        .post("/", verifyToken, endPoint(body, CREATE_SPRINT, createSprint))
         .get("/", endPoint(undefined, undefined, getAllSprints))
-        .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
+        .put("/", verifyToken, endPoint(body, UPDATE_SPRINT, updateSprint))
         .get("/node/:uuid", endPoint(params, GET_UUID, getSprint))
-        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteSprint))
+        .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteSprint))
         // Sprints Relationships
         .get("/node/rels/:uuid", endPoint(params, GET_UUID, getSprintRels))
         // Internal Use Only

@@ -14,7 +14,7 @@ const {
     CONFIRM_ACCOUNT,
     RECOVERY_ACCOUNT
 } = require("../modules/students/students.joi.js");
-const auth = require("../modules/students/students.auth.js");
+const { verifyToken } = require("../modules/students/students.auth.js");
 
 
 module.exports = (deps) => {
@@ -24,12 +24,12 @@ module.exports = (deps) => {
         // Student CRUD
         .post("/", endPoint(body, CREATE_STUDENT, signUp))
         .post("/login", endPoint(body, LOGIN_STUDENT, logIn))
-        .get("/node/:uuid", auth.verifyToken, endPoint(params, GET_UUID, getStudent))
-        .put("/", auth.verifyToken, endPoint(body, UPDATE_STUDENT, updateStudent))
-        .delete("/node/:uuid", auth.verifyToken, endPoint(params, GET_UUID, deleteStudent))
+        .get("/node/:uuid", verifyToken, endPoint(params, GET_UUID, getStudent))
+        .put("/", verifyToken, endPoint(body, UPDATE_STUDENT, updateStudent))
+        .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteStudent))
         // Student Relationships
-        .post("/node/rels", auth.verifyToken, endPoint(body, CREATE_RELATION, createRel))
-        .delete("/node/rels", auth.verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
+        .post("/node/rels", verifyToken, endPoint(body, CREATE_RELATION, createRel))
+        .delete("/node/rels", verifyToken, endPoint(body, DELETE_RELATION, deleteRel))
         // Other Student Logic
         .post("/recovery/account", endPoint(body, RECOVERY_ACCOUNT, recoveryAccount))
         .post("/confirm-account", endPoint(body, CREATE_STUDENT, WaitingForAccountConfirmation))
