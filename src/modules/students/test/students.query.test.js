@@ -118,7 +118,7 @@ describe("Student Query Tests", () => {
             relation    : "COMPLETED",
         };
 
-        const  { query, queryParams } = deleteRelQuery(body);
+        const { query, queryParams } = deleteRelQuery(body);
 
         expect(query).toContain(`MATCH (u:Student {uuid: $uuid}), (c:${body.label} {uuid: $uuid2})`);
         expect(query).toContain("WHERE NOT u:softDeleted AND NOT c:softDeleted");
