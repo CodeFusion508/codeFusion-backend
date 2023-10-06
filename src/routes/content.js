@@ -14,6 +14,7 @@ const {
     CREATE_TEXT,
     UPDATE_CONTENT
 } = require("../modules/content/content.joi.js");
+const { verifyToken } = require("../utils/auth.js");
 
 
 module.exports = (deps) => {
@@ -21,14 +22,14 @@ module.exports = (deps) => {
 
     return Router()
         // Content Creation
-        .post("/problem", endPoint(body, CREATE_PROBLEM, createContent))
-        .post("/quiz", endPoint(body, CREATE_QUIZ, createContent))
-        .post("/video", endPoint(body, CREATE_VIDEO, createContent))
-        .post("/text", endPoint(body, CREATE_TEXT, createContent))
+        .post("/problem", verifyToken, endPoint(body, CREATE_PROBLEM, createContent))
+        .post("/quiz", verifyToken, endPoint(body, CREATE_QUIZ, createContent))
+        .post("/video", verifyToken, endPoint(body, CREATE_VIDEO, createContent))
+        .post("/text", verifyToken, endPoint(body, CREATE_TEXT, createContent))
 
-        .put("/:label", endPoint(bodyAndParams, UPDATE_CONTENT, updateContent))
+        .put("/:label", verifyToken, endPoint(bodyAndParams, UPDATE_CONTENT, updateContent))
         .get("/node/:uuid", endPoint(params, GET_UUID, getContent))
-        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteContent))
+        .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteContent))
 
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkDeleteTests));
