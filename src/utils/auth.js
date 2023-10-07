@@ -1,13 +1,13 @@
 const verifyToken = (req, res, next) => {
-    const { adminHash } = req.headers;
+    const { adminKey } = req.headers;
 
     try {
-        if (!adminHash) {
-            throw new Error("No tienes la autorización de modificar esta ruta.");
+        if (!adminKey) {
+            throw new Error("You don't have permission to access this route.");
         }
 
-        if (adminHash !== process.env.ADMIN_HASH) {
-            throw new Error("Hash inválido.");
+        if (adminKey !== process.env.ADMIN_KEY) {
+            throw new Error("Incorrect Key");
         }
 
         next();
