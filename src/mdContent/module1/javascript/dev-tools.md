@@ -2,15 +2,15 @@
 
 Las Herramientas de Desarrollo (DevTools) en la web son como una caja de herramientas digital para quienes crean y mantienen sitios web. Proporcionan una ventana hacia el funcionamiento interno de una página web, permitiendo inspeccionar, modificar y depurar el código en tiempo real. En esta guía, exploraremos qué son las DevTools y cómo puedes comenzar a usarlas.
 
-## ¿Qué son las DevTools?
+## ¿Qué son los DevTools?
 
-Las DevTools son un conjunto de herramientas incorporadas en la mayoría de los navegadores modernos como Chrome, Firefox y Edge. Permiten examinar el código HTML, CSS y JavaScript de una página, además de proporcionar funciones para analizar el rendimiento, administrar almacenamiento en el navegador y mucho más.
+Los DevTools son un conjunto de herramientas incorporadas en la mayoría de los navegadores modernos como Chrome, Firefox y Edge. Permiten examinar el código HTML, CSS y JavaScript de una página, además de proporcionar funciones para analizar el rendimiento, administrar almacenamiento en el navegador y mucho más.
 
-### Acceso a las DevTools
+### Acceso a los DevTools
 
-Para acceder a las DevTools, simplemente haz clic derecho en cualquier parte de una página web y selecciona "Inspeccionar" (o "Inspect" en inglés) en el menú que aparece. También puedes presionar `Ctrl + Shift + I` (o `Cmd + Opt + I` en Mac) como atajo de teclado.
+Para acceder a los DevTools, simplemente haz clic derecho en cualquier parte de una página web y selecciona "Inspeccionar" (o "Inspect" en inglés) en el menú que aparece. También puedes presionar `Ctrl + Shift + I` (o `Cmd + Opt + I` en Mac) como atajo de teclado.
 
-## Explorando las Pestañas de las DevTools
+## Explorando las Pestañas de los DevTools 
 
 Las DevTools tienen varias pestañas, cada una con su propio conjunto de herramientas y características.
 
