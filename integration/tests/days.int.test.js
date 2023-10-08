@@ -34,6 +34,7 @@ describe("Sprints Integration Tests", () => {
 
             const { body } = await request
                 .post(path)
+                .auth("adminKey", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -86,6 +87,7 @@ describe("Sprints Integration Tests", () => {
 
             const { body } = await request
                 .put(path)
+                .auth("adminKey", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -149,6 +151,7 @@ describe("Sprints Integration Tests", () => {
         it("Should delete specific day", async () => {
             const { body } = await request
                 .delete(path + `/node/${UUID}`)
+                .auth("adminKey", process.env.ADMIN_KEY)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);

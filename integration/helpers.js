@@ -31,9 +31,11 @@ const makeDummyContent = async (reqBody) => {
         default:
             throw new Error("Did not provide a label!");
     }
+    console.log(process.env.ADMIN_KEY, "<------------------------------------------------------------------------------------");
 
     const { body } = await request
         .post("/contents/" + reqBody.label.toLowerCase())
+        .auth("adminKey", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 
@@ -60,6 +62,7 @@ const makeDummyDay = async ({
 
     const { body } = await request
         .post("/days")
+        .auth("adminKey", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 
@@ -87,6 +90,7 @@ const makeDummySprint = async ({
 
     const { body } = await request
         .post("/sprints")
+        .auth("adminKey", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 
