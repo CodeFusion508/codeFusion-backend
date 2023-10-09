@@ -46,6 +46,7 @@ describe("Content Integration Tests", () => {
 
             const { body } = await request
                 .post(path + "/problem")
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -70,6 +71,7 @@ describe("Content Integration Tests", () => {
 
             const { body } = await request
                 .post(path + "/quiz")
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -94,6 +96,7 @@ describe("Content Integration Tests", () => {
 
             const { body } = await request
                 .post(path + "/video")
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -118,6 +121,7 @@ describe("Content Integration Tests", () => {
 
             const { body } = await request
                 .post(path + "/text")
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -173,6 +177,7 @@ describe("Content Integration Tests", () => {
 
             const { body } = await request
                 .put(path + "/Video")
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -265,6 +270,7 @@ describe("Content Integration Tests", () => {
         it("Should delete content node", async () => {
             const { body } = await request
                 .delete(path + `/node/${UUID}`)
+                .set("admin", process.env.ADMIN_KEY)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);

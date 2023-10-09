@@ -33,6 +33,7 @@ describe("Sprints Integration Tests", () => {
 
             const { body } = await request
                 .post(path)
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -67,6 +68,7 @@ describe("Sprints Integration Tests", () => {
 
             const { body } = await request
                 .put(path)
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -123,6 +125,7 @@ describe("Sprints Integration Tests", () => {
         it("Should get delete a sprint node", async () => {
             const { body } = await request
                 .delete(path + `/node/${UUID}`)
+                .set("admin", process.env.ADMIN_KEY)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);

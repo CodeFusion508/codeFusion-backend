@@ -23,12 +23,6 @@ const createDayQuery = (uuid, body) => {
     return { query, queryParams };
 };
 
-const getAllDaysQuery = () => `
-    MATCH (d:Day) 
-    WHERE NOT d:softDeleted
-    RETURN d;
-`;
-
 const updateDayQuery = (body) => {
     const propsToUpdate = [];
     const queryParams = { uuid: body.uuid };
@@ -103,7 +97,6 @@ const deleteTestDaysQuery = () => `
 
 module.exports = {
     createDayQuery,
-    getAllDaysQuery,
     updateDayQuery,
     getDayQuery,
     deleteDayQuery,

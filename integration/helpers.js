@@ -34,6 +34,7 @@ const makeDummyContent = async (reqBody) => {
 
     const { body } = await request
         .post("/contents/" + reqBody.label.toLowerCase())
+        .set("admin", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 
@@ -60,6 +61,7 @@ const makeDummyDay = async ({
 
     const { body } = await request
         .post("/days")
+        .set("admin", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 
@@ -87,6 +89,7 @@ const makeDummySprint = async ({
 
     const { body } = await request
         .post("/sprints")
+        .set("admin", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 

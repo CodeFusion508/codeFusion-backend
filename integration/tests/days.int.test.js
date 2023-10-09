@@ -9,7 +9,7 @@ const {
 } = require("../helpers.js");
 
 
-describe("Sprints Integration Tests", () => {
+describe("Days Integration Tests", () => {
     const path = "/days";
 
     describe("POST /", () => {
@@ -34,6 +34,7 @@ describe("Sprints Integration Tests", () => {
 
             const { body } = await request
                 .post(path)
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -42,19 +43,6 @@ describe("Sprints Integration Tests", () => {
             expect(body.stats).toHaveProperty("propertiesSet", 4);
             expect(body.node.uuid).not.toBe(UUID);
             expect(body.node).toHaveProperty("desc", reqData.desc);
-        });
-    });
-
-    describe("GET /", () => {
-        it("Should get all days", async () => {
-            const { body } = await request
-                .get(path)
-                .expect(200);
-
-            for (const key in body.stats) {
-                expect(body.stats[key]).toBe(0);
-            }
-            expect(body.node.length > 1).toBeTruthy();
         });
     });
 
@@ -86,6 +74,7 @@ describe("Sprints Integration Tests", () => {
 
             const { body } = await request
                 .put(path)
+                .set("admin", process.env.ADMIN_KEY)
                 .send(reqData)
                 .expect(200);
 
@@ -149,6 +138,7 @@ describe("Sprints Integration Tests", () => {
         it("Should delete specific day", async () => {
             const { body } = await request
                 .delete(path + `/node/${UUID}`)
+                .set("admin", process.env.ADMIN_KEY)
                 .expect(200);
 
             expect(body.stats).toHaveProperty("labelsAdded", 1);

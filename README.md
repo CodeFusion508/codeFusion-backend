@@ -2,7 +2,7 @@
 
 This is the project to our backend of our online school "Code Fusion 508", a school that help people learn about full-stack web development.
 
-Want to test it out? visit, <http://54.177.47.38/docs> for more information.
+Want to test it out? visit, <http://52.53.162.3/> for more information.
 
 ## Project Setup
 
