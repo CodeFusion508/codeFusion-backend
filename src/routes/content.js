@@ -21,14 +21,14 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        // Content Creation
+        .get("/node/:uuid", endPoint(params, GET_UUID, getContent))
+        // Admin Routes
         .post("/problem", verifyToken, endPoint(body, CREATE_PROBLEM, createContent))
         .post("/quiz", verifyToken, endPoint(body, CREATE_QUIZ, createContent))
         .post("/video", verifyToken, endPoint(body, CREATE_VIDEO, createContent))
         .post("/text", verifyToken, endPoint(body, CREATE_TEXT, createContent))
 
         .put("/:label", verifyToken, endPoint(bodyAndParams, UPDATE_CONTENT, updateContent))
-        .get("/node/:uuid", endPoint(params, GET_UUID, getContent))
         .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteContent))
 
         // Internal Use Only

@@ -15,6 +15,7 @@ module.exports = (deps) => {
 
     return Router()
         .post("/users/", endPoint(body, AUTH_G_USER, gAuthentication))
+        // Admin Routes
         .get("/sheets/all", verifyToken, endPoint(body, GET_ALL_ANSWERS, getAllAnswers))
         .get("/sheets/evaluation", verifyToken, endPoint(body, GET_USER_ANSWERS, getEvaluation));
 };

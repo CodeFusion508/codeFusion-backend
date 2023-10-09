@@ -14,13 +14,13 @@ module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        // Day CRUD
+        .get("/node/:uuid", endPoint(params, GET_UUID, getDay))
+        .get("/node/rels/:uuid", endPoint(params, GET_UUID, getDayRels))
+        // Admin Routes
         .post("/", verifyToken, endPoint(body, CREATE_DAY, createDay))
         .put("/", verifyToken, endPoint(body, UPDATE_DAY, updateDay))
-        .get("/node/:uuid", endPoint(params, GET_UUID, getDay))
         .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteDay))
-        // Day Relationships
-        .get("/node/rels/:uuid", endPoint(params, GET_UUID, getDayRels))
+
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };
