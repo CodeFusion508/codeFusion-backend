@@ -10,7 +10,7 @@ Los DevTools son un conjunto de herramientas incorporadas en la mayoría de los 
 
 Para acceder a los DevTools, simplemente haz clic derecho en cualquier parte de una página web y selecciona "Inspeccionar" (o "Inspect" en inglés) en el menú que aparece. También puedes presionar `Ctrl + Shift + I` (o `Cmd + Opt + I` en Mac) como atajo de teclado.
 
-## Explorando las Pestañas de los DevTools 
+## Explorando las Pestañas de los DevTools
 
 Las DevTools tienen varias pestañas, cada una con su propio conjunto de herramientas y características.
 
