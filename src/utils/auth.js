@@ -1,12 +1,12 @@
 const verifyToken = (req, res, next) => {
-    const { adminKey } = req.headers;
+    const { admin } = req.headers;
 
     try {
-        if (!adminKey) {
+        if (!admin) {
             throw new Error("You don't have permission to access this route.");
         }
 
-        if (adminKey !== process.env.ADMIN_KEY) {
+        if (admin !== process.env.ADMIN_KEY) {
             throw new Error("Incorrect Key");
         }
 
