@@ -34,7 +34,7 @@ const makeDummyContent = async (reqBody) => {
 
     const { body } = await request
         .post("/contents/" + reqBody.label.toLowerCase())
-        .set("admin", process.env.ADMIN_KEY_KEY)
+        .set("admin", process.env.ADMIN_KEY)
         .send(reqData)
         .expect(200);
 

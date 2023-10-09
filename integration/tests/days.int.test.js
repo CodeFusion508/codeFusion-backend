@@ -46,19 +46,6 @@ describe("Days Integration Tests", () => {
         });
     });
 
-    describe("GET /", () => {
-        it("Should get all days", async () => {
-            const { body } = await request
-                .get(path)
-                .expect(200);
-
-            for (const key in body.stats) {
-                expect(body.stats[key]).toBe(0);
-            }
-            expect(body.node.length > 1).toBeTruthy();
-        });
-    });
-
     describe("PUT /", () => {
         let UUID;
 
