@@ -9,10 +9,6 @@ const {
   cleanNeo4j,
   cleanRecord
 } = require("../../utils/cleanData.js");
-const {
-  getAllAnswersQuery,
-  getEvaluationQuery
-} = require("../../utils/gFormsAnswers.js");
 
 
 module.exports = (deps) => Object.entries(module.exports).reduce((acc, [name, method]) => ({
@@ -76,21 +72,6 @@ const gAuthentication = async ({ services }, body) => {
   return createGUser({ services }, body);
 };
 
-const getUserAnswers = async ({ services }, body) => {
-  const data = await getAllAnswersQuery(services.google, body.sheet_id);
-
-  return data;
-};
-
-const getEvaluation = async ({ services }, body) => {
-  const data = await getEvaluationQuery(services.google, body.sheet_id, body.email);
-
-  return data;
-};
-
-
 Object.assign(module.exports, {
-  gAuthentication,
-  getUserAnswers,
-  getEvaluation
+  gAuthentication
 });
