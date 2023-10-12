@@ -7,20 +7,21 @@ const {
     CREATE_SPRINT,
     UPDATE_SPRINT
 } = require("../modules/sprints/sprints.joi.js");
+const { verifyToken } = require("../utils/auth.js");
 
 
 module.exports = (deps) => {
     const endPoint = endpointMethods(deps);
 
     return Router()
-        // Sprints CRUD
-        .post("/", endPoint(body, CREATE_SPRINT, createSprint))
         .get("/", endPoint(undefined, undefined, getAllSprints))
-        .put("/", endPoint(body, UPDATE_SPRINT, updateSprint))
         .get("/node/:uuid", endPoint(params, GET_UUID, getSprint))
-        .delete("/node/:uuid", endPoint(params, GET_UUID, deleteSprint))
-        // Sprints Relationships
         .get("/node/rels/:uuid", endPoint(params, GET_UUID, getSprintRels))
+        // Admin Routes
+        .post("/", verifyToken, endPoint(body, CREATE_SPRINT, createSprint))
+        .put("/", verifyToken, endPoint(body, UPDATE_SPRINT, updateSprint))
+        .delete("/node/:uuid", verifyToken, endPoint(params, GET_UUID, deleteSprint))
+
         // Internal Use Only
         .delete("/bulk-test", endPoint(undefined, undefined, bulkTestDelete));
 };

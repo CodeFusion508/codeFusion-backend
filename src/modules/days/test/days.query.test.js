@@ -1,6 +1,5 @@
 const {
     createDayQuery,
-    getAllDaysQuery,
     updateDayQuery,
     getDayQuery,
     deleteDayQuery,
@@ -23,14 +22,6 @@ describe("Day Query Tests", () => {
         expect(query).toContain("MATCH (s:Sprint {uuid: $sprintUuid})");
         expect(query).toContain("CREATE (d)-[:BELONGS_TO {dayNo: $dayNo}]->(s)");
         expect(queryParams).toHaveProperty("sprintUuid", body.sprintUuid);
-    });
-
-    it("getAllDaysQuery should have proper query", () => {
-        const query = getAllDaysQuery();
-
-        expect(query).toContain("MATCH (d:Day)");
-        expect(query).toContain("WHERE NOT d:softDeleted");
-        expect(query).toContain("RETURN d;");
     });
 
     it("updateDayQuery should have proper query", () => {

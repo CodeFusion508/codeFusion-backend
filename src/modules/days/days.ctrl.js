@@ -3,7 +3,6 @@ const { v4 } = require("uuid");
 const {
     cleanNeo4j,
     cleanRecord,
-    cleanRecords,
     cleanRels
 } = require("../../utils/cleanData.js");
 const {
@@ -11,7 +10,6 @@ const {
     deleteDayQuery,
     getDayQuery,
     updateDayQuery,
-    getAllDaysQuery,
 
     getDaysRelsQuery,
 
@@ -34,18 +32,6 @@ const createDay = async ({ services }, body) => {
     let data = await services.neo4j.session.run(query, queryParams);
     data = cleanNeo4j(data);
     cleanRecord(data);
-
-    return data;
-};
-
-const getAllDays = async ({ services }) => {
-    const query = getAllDaysQuery();
-    let data = await services.neo4j.session.run(query);
-
-    if (data.records.length === 0) throw { err: 404, message: "No hay resultados para su búsqueda." };
-
-    data = cleanNeo4j(data);
-    cleanRecords(data);
 
     return data;
 };
@@ -114,7 +100,6 @@ const bulkTestDelete = async ({ services }) => {
 
 Object.assign(module.exports, {
     createDay,
-    getAllDays,
     updateDay,
     getDay,
     deleteDay,
