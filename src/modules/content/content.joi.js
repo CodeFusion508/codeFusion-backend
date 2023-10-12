@@ -19,6 +19,21 @@ const baseUpdateSchema = {
     time  : Joi.string().optional()
 };
 
+const answer = Joi.object({
+    text      : Joi.string().required(),
+    isCorrect : Joi.boolean().required()
+}).required();
+
+const question = Joi.object({
+    question : Joi.string().required(),
+    answers  : Joi.object({
+        a1 : answer,
+        a2 : answer,
+        a3 : answer,
+        a4 : answer,
+        a5 : answer
+    }).required()
+}).required();
 
 module.exports = {
     GET_UUID: Joi.object({
@@ -32,7 +47,18 @@ module.exports = {
     CREATE_QUIZ: Joi.object({
         ...baseSchema,
 
-        path: Joi.string().required()
+        questions: Joi.array([
+            question,
+            question,
+            question,
+            question,
+            question,
+            question,
+            question,
+            question,
+            question,
+            question
+        ]).required()
     }),
     CREATE_VIDEO: Joi.object({
         ...baseSchema,
