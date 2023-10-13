@@ -34,6 +34,28 @@ const createContentQuery = (uuid, body) => {
     return { query, queryParams };
 };
 
+const createQuizQuery = (uuid, quizUuid, body) => {
+    const query = `
+        CREATE (q:Question {
+            uuid  : $uuid,
+            text  : $text
+        })
+        WITH q
+        MATCH (d:Quiz {uuid: $quizUuid})
+        WHERE NOT d:softDeleted
+        CREATE (q)-[:QUESTION]->(d)
+        RETURN q;
+    `;
+
+    const queryParams = {
+        uuid,
+        quizUuid,
+        exp: body.exp,
+    };
+
+    return { query, queryParams };
+};
+
 const updatedContentQuery = (body) => {
     const propsToUpdate = [];
     const queryParams = { uuid: body.uuid };

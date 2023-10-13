@@ -35,6 +35,25 @@ const createContent = async ({ services }, body) => {
     return data;
 };
 
+const createQuiz = async ({ services }, body) => {
+    const result= await createContent({ services }, body);
+
+    
+};
+
+const getQuiz = async ({ services }, params) => {
+    const { query, queryParams } = getContentQuery(params);
+
+    let data = await services.neo4j.session.run(query, queryParams);
+
+    if (data.records.length === 0) throw { err: 404, message: "Este contenido no existe, verifique si tiene un uuid válido." };
+
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+
+    return data;
+};
+
 const updateContent = async ({ services }, bodyAndParam) => {
     const cleanData = await contentUpdateVerification(bodyAndParam);
 
