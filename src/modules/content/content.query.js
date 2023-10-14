@@ -5,8 +5,7 @@ const createContentQuery = (uuid, body) => {
             exp   : $exp,
             title : $title,
             desc  : $desc,
-            time  : $time,
-
+            time  : $time${body.label === "Quiz" ? "" : ","}
             ${body.language ? "language : $language" : ""}
             ${body.path ? "path : $path" : ""}
             ${body.link ? "link : $link" : ""}
@@ -34,23 +33,47 @@ const createContentQuery = (uuid, body) => {
     return { query, queryParams };
 };
 
-const createQuizQuery = (uuid, quizUuid, body) => {
+const createQuestionQuery = (uuid, contentUuid, questionBody) => {
     const query = `
         CREATE (q:Question {
             uuid  : $uuid,
             text  : $text
         })
         WITH q
-        MATCH (d:Quiz {uuid: $quizUuid})
-        WHERE NOT d:softDeleted
-        CREATE (q)-[:QUESTION]->(d)
+        MATCH (c:Content:Quiz {uuid: $contentUuid})
+        WHERE NOT c:softDeleted
+        CREATE (q)-[:QUESTION]->(c)
         RETURN q;
     `;
 
     const queryParams = {
         uuid,
-        quizUuid,
-        exp: body.exp,
+        contentUuid,
+        text: questionBody.question
+    };
+
+    return { query, queryParams };
+};
+
+const createAnswerQuery = (uuid, questionUuid, answerBody) => {
+    const query = `
+        CREATE (a:Answer {
+            uuid      : $uuid,
+            text      : $text,
+            isCorrect : $isCorrect
+        })
+        WITH a
+        MATCH (q:Question {uuid: $questionUuid})
+        WHERE NOT q:softDeleted
+        CREATE (a)-[:ANSWER]->(q)
+        RETURN a;
+    `;
+
+    const queryParams = {
+        uuid,
+        questionUuid,
+        text      : answerBody.question,
+        isCorrect : answerBody.isCorrect
     };
 
     return { query, queryParams };
@@ -134,6 +157,8 @@ const deleteTestContentQuery = () => `
 
 module.exports = {
     createContentQuery,
+    createQuestionQuery,
+    createAnswerQuery,
     updatedContentQuery,
     getContentQuery,
     deletedContentQuery,

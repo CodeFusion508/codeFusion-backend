@@ -3,6 +3,8 @@ const { v4 } = require("uuid");
 const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
 const {
     createContentQuery,
+    createQuestionQuery,
+    createAnswerQuery,
     updatedContentQuery,
     getContentQuery,
     deletedContentQuery,
@@ -36,22 +38,18 @@ const createContent = async ({ services }, body) => {
 };
 
 const createQuiz = async ({ services }, body) => {
-    const result= await createContent({ services }, body);
+    const result = await createContent({ services }, body);
+    const contentUuid = result.node.uuid;
 
-    
-};
+    for (const questionKey in body.questions) {
+        const questionUuid = await createQuestion(services, contentUuid, body.questions[questionKey]);
 
-const getQuiz = async ({ services }, params) => {
-    const { query, queryParams } = getContentQuery(params);
+        for (const answerKey in body.questions[questionKey].answers) {
+            await createAnswer(services, questionUuid, body.questions[questionKey].answers[answerKey]);
+        }
+    }
 
-    let data = await services.neo4j.session.run(query, queryParams);
-
-    if (data.records.length === 0) throw { err: 404, message: "Este contenido no existe, verifique si tiene un uuid válido." };
-
-    data = cleanNeo4j(data);
-    cleanRecord(data);
-
-    return data;
+    return result;
 };
 
 const updateContent = async ({ services }, bodyAndParam) => {
@@ -104,6 +102,7 @@ const bulkTestDelete = async ({ services }) => {
 
 Object.assign(module.exports, {
     createContent,
+    createQuiz,
     updateContent,
     getContent,
     deleteContent,
@@ -132,4 +131,24 @@ const contentUpdateVerification = async (bodyAndParam) => {
         default:
             throw { err: 400, message: "No tiene el label correcto." };
     }
+};
+
+const createQuestion = async ({ neo4j }, contentUuid, questionBody) => {
+    const uuid = v4();
+    const { query, queryParams } = createQuestionQuery(uuid, contentUuid, questionBody);
+
+    let data = await neo4j.session.run(query, queryParams);
+    data = cleanNeo4j(data);
+    cleanRecord(data);
+
+    return data.node.uuid;
+};
+
+const createAnswer = async ({ neo4j }, questionUuid, answerBody) => {
+    const uuid = v4();
+    const { query, queryParams } = createAnswerQuery(uuid, questionUuid, answerBody);
+
+    let data = await neo4j.session.run(query, queryParams);
+    data = cleanNeo4j(data);
+    cleanRecord(data);
 };

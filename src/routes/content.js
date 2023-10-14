@@ -24,7 +24,7 @@ module.exports = (deps) => {
         .get("/node/:uuid", endPoint(params, GET_UUID, getContent))
         // Admin Routes
         .post("/problem", verifyToken, endPoint(body, CREATE_PROBLEM, createContent))
-        .post("/quiz", verifyToken, endPoint(body, CREATE_QUIZ, createContent))
+        .post("/quiz", verifyToken, endPoint(body, CREATE_QUIZ, createQuiz))
         .post("/video", verifyToken, endPoint(body, CREATE_VIDEO, createContent))
         .post("/text", verifyToken, endPoint(body, CREATE_TEXT, createContent))
 
@@ -37,6 +37,7 @@ module.exports = (deps) => {
 
 
 const createContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.createContent(data));
+const createQuiz = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.createQuiz(data));
 const updateContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.updateContent(data));
 const getContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.getContent(data));
 const deleteContent = ({ ctrls }) => ({ data }, res, next) => endpointResponse(res, next)(ctrls.contentsCtrl.deleteContent(data));

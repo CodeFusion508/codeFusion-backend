@@ -47,18 +47,18 @@ module.exports = {
     CREATE_QUIZ: Joi.object({
         ...baseSchema,
 
-        questions: Joi.array([
-            question,
-            question,
-            question,
-            question,
-            question,
-            question,
-            question,
-            question,
-            question,
-            question
-        ]).required()
+        questions: Joi.object({
+            q1  : question,
+            q2  : question,
+            q3  : question,
+            q4  : question,
+            q5  : question,
+            q6  : question,
+            q7  : question,
+            q8  : question,
+            q9  : question,
+            q10 : question
+        }).required()
     }),
     CREATE_VIDEO: Joi.object({
         ...baseSchema,
