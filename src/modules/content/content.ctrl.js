@@ -37,21 +37,6 @@ const createContent = async ({ services }, body) => {
     return data;
 };
 
-const createQuiz = async ({ services }, body) => {
-    const result = await createContent({ services }, body);
-    const contentUuid = result.node.uuid;
-
-    for (const questionKey in body.questions) {
-        const questionUuid = await createQuestion(services, contentUuid, body.questions[questionKey]);
-
-        for (const answerKey in body.questions[questionKey].answers) {
-            await createAnswer(services, questionUuid, body.questions[questionKey].answers[answerKey]);
-        }
-    }
-
-    return result;
-};
-
 const updateContent = async ({ services }, bodyAndParam) => {
     const cleanData = await contentUpdateVerification(bodyAndParam);
 
@@ -102,7 +87,6 @@ const bulkTestDelete = async ({ services }) => {
 
 Object.assign(module.exports, {
     createContent,
-    createQuiz,
     updateContent,
     getContent,
     deleteContent,
@@ -131,24 +115,4 @@ const contentUpdateVerification = async (bodyAndParam) => {
         default:
             throw { err: 400, message: "No tiene el label correcto." };
     }
-};
-
-const createQuestion = async ({ neo4j }, contentUuid, questionBody) => {
-    const uuid = v4();
-    const { query, queryParams } = createQuestionQuery(uuid, contentUuid, questionBody);
-
-    let data = await neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
-    cleanRecord(data);
-
-    return data.node.uuid;
-};
-
-const createAnswer = async ({ neo4j }, questionUuid, answerBody) => {
-    const uuid = v4();
-    const { query, queryParams } = createAnswerQuery(uuid, questionUuid, answerBody);
-
-    let data = await neo4j.session.run(query, queryParams);
-    data = cleanNeo4j(data);
-    cleanRecord(data);
 };
