@@ -38,14 +38,18 @@ const createContent = async ({ services }, body) => {
 };
 
 const createQuiz = async ({ services }, body) => {
-    const result = await createContent({ services }, body);
+    const result = await createContent({ services }, body)
+        .catch((err) => { console.log(err, "<----------------------------- line 42"); });
     const contentUuid = result.node.uuid;
 
     for (const questionKey in body.questions) {
-        const questionUuid = await createQuestion(services, contentUuid, body.questions[questionKey]);
+        const questionUuid = await createQuestion(services, contentUuid, body.questions[questionKey])
+            .catch((err) => { console.log(err, "<----------------------------- line 47"); });
 
         for (const answerKey in body.questions[questionKey].answers) {
-            await createAnswer(services, questionUuid, body.questions[questionKey].answers[answerKey]);
+            await createAnswer(services, questionUuid, body.questions[questionKey].answers[answerKey])
+            .catch((err) => { console.log(err, "<----------------------------- line 51"); });
+
         }
     }
 

@@ -72,7 +72,7 @@ const createAnswerQuery = (uuid, questionUuid, answerBody) => {
     const queryParams = {
         uuid,
         questionUuid,
-        text      : answerBody.question,
+        text      : answerBody.text,
         isCorrect : answerBody.isCorrect
     };
 
