@@ -42,52 +42,6 @@ const createContentQuery = (uuid, body) => {
     return { query, queryParams };
 };
 
-const createQuestionQuery = (uuid, contentUuid, questionBody) => {
-    const query = `
-        CREATE (q:Question {
-            uuid  : $uuid,
-            text  : $text
-        })
-        WITH q
-        MATCH (c:Content:Quiz {uuid: $contentUuid})
-        WHERE NOT c:softDeleted
-        CREATE (q)-[:QUESTION]->(c)
-        RETURN q;
-    `;
-
-    const queryParams = {
-        uuid,
-        contentUuid,
-        text: questionBody.question
-    };
-
-    return { query, queryParams };
-};
-
-const createAnswerQuery = (uuid, questionUuid, answerBody) => {
-    const query = `
-        CREATE (a:Answer {
-            uuid      : $uuid,
-            text      : $text,
-            isCorrect : $isCorrect
-        })
-        WITH a
-        MATCH (q:Question {uuid: $questionUuid})
-        WHERE NOT q:softDeleted
-        CREATE (a)-[:ANSWER]->(q)
-        RETURN a;
-    `;
-
-    const queryParams = {
-        uuid,
-        questionUuid,
-        text      : answerBody.text,
-        isCorrect : answerBody.isCorrect
-    };
-
-    return { query, queryParams };
-};
-
 const updatedContentQuery = (body) => {
     const propsToUpdate = [];
     const queryParams = { uuid: body.uuid };
@@ -166,8 +120,6 @@ const deleteTestContentQuery = () => `
 
 module.exports = {
     createContentQuery,
-    createQuestionQuery,
-    createAnswerQuery,
     updatedContentQuery,
     getContentQuery,
     deletedContentQuery,

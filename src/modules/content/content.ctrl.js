@@ -3,8 +3,6 @@ const { v4 } = require("uuid");
 const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
 const {
     createContentQuery,
-    createQuestionQuery,
-    createAnswerQuery,
     updatedContentQuery,
     getContentQuery,
     deletedContentQuery,
