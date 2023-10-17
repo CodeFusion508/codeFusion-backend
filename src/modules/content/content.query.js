@@ -13,7 +13,7 @@ const createContentQuery = (uuid, body) => {
 
             ${body.link ? "link : $link" : ""}
 
-            ${body.questions ? "questions : $questions" : ","}
+            ${body.questions ? "questions : $questions" : ""}
         })
         WITH c
         MATCH (d:Day {uuid: $dayUuid})
