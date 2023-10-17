@@ -70,7 +70,7 @@ describe("Content Joi Tests", () => {
   });
 
   describe("CREATE_QUIZ Joi", () => {
-    it("Throw error when no path given", () => {
+    it("Throw error when no questions given", () => {
       const body = {
         label     : "Quiz",
         exp       : 2009,
@@ -80,12 +80,12 @@ describe("Content Joi Tests", () => {
         contentNo : 2009,
         time      : "2009 Hours",
 
-        path: ""
+        questions: {}
       };
 
       const { error } = CREATE_QUIZ.validate(body);
 
-      expect(error.details[0].message).toBe('"path" is not allowed to be empty');
+      expect(error.details[0].message).toBe('"questions.q1" is required');
     });
 
     it("Give value when body is correct", () => {
@@ -98,13 +98,13 @@ describe("Content Joi Tests", () => {
         contentNo : 2009,
         time      : "2009 Hours",
 
-        path: "Camino al Cielo"
+        questions: questions
       };
 
       const { error, value } = CREATE_QUIZ.validate(body);
       if (error) throw new Error(`${error.message}`);
 
-      expect(value).toHaveProperty("path", body.path);
+      expect(value).toHaveProperty("questions", questions);
       expect(value).toHaveProperty("title", body.title);
       expect(value).toHaveProperty("time", body.time);
     });
@@ -230,3 +230,256 @@ describe("Content Joi Tests", () => {
     });
   });
 });
+
+const questions = {
+  "q1": {
+    "question" : "question number one",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q2": {
+    "question" : "question number two",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q3": {
+    "question" : "question number three",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q4": {
+    "question" : "question number four",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q5": {
+    "question" : "question number five",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q6": {
+    "question" : "question number six",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q7": {
+    "question" : "question number seven",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q8": {
+    "question" : "question number eight",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q9": {
+    "question" : "question number nine",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  },
+  "q10": {
+    "question" : "question number ten",
+    "answers"  : {
+      "a1": {
+        "text"      : "answer number one",
+        "isCorrect" : true
+      },
+      "a2": {
+        "text"      : "answer number two",
+        "isCorrect" : false
+      },
+      "a3": {
+        "text"      : "answer number three",
+        "isCorrect" : false
+      },
+      "a4": {
+        "text"      : "answer number four",
+        "isCorrect" : false
+      },
+      "a5": {
+        "text"      : "answer number five",
+        "isCorrect" : false
+      }
+    }
+  }
+};
