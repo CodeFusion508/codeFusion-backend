@@ -30,8 +30,7 @@ const question = Joi.object({
         a1 : answer,
         a2 : answer,
         a3 : answer,
-        a4 : answer,
-        a5 : answer
+        a4 : answer
     }).required()
 }).required();
 
