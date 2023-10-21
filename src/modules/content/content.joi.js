@@ -19,19 +19,15 @@ const baseUpdateSchema = {
     time  : Joi.string().optional()
 };
 
-const answer = Joi.object({
-    text      : Joi.string().required(),
-    isCorrect : Joi.boolean().required()
-}).required();
-
 const question = Joi.object({
     question : Joi.string().required(),
     answers  : Joi.object({
-        a1 : answer,
-        a2 : answer,
-        a3 : answer,
-        a4 : answer
-    }).required()
+        a1 : Joi.string().required(),
+        a2 : Joi.string().required(),
+        a3 : Joi.string().required(),
+        a4 : Joi.string().required()
+    }).required(),
+    correctAnswer: Joi.string().valid("a1", "a2", "a3", "a4").required()
 }).required();
 
 module.exports = {
