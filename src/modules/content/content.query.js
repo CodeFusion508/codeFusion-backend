@@ -76,6 +76,12 @@ const updatedContentQuery = (body) => {
         propsToUpdate.push("c.language = $language");
         queryParams.language = body.language;
     }
+    if (body.questions) {
+        propsToUpdate.push("c.questions = $questions");
+
+        const questions = JSON.stringify(body.questions);
+        queryParams.questions = questions;
+    }
 
     const query = `
         MATCH (c:Content:${body.label} {uuid: $uuid})
