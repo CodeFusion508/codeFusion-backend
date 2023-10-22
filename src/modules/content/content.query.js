@@ -8,8 +8,12 @@ const createContentQuery = (uuid, body) => {
             time  : $time,
 
             ${body.language ? "language : $language" : ""}
+
             ${body.path ? "path : $path" : ""}
+
             ${body.link ? "link : $link" : ""}
+
+            ${body.questions ? "questions : $questions" : ""}
         })
         WITH c
         MATCH (d:Day {uuid: $dayUuid})
@@ -30,6 +34,10 @@ const createContentQuery = (uuid, body) => {
     if (body.language) queryParams.language = body.language;
     if (body.path) queryParams.path = body.path;
     if (body.link) queryParams.link = body.link;
+    if (body.questions){
+        const questions = JSON.stringify(body.questions);
+        queryParams.questions = questions;
+    }
 
     return { query, queryParams };
 };
@@ -67,6 +75,12 @@ const updatedContentQuery = (body) => {
     if (body.language) {
         propsToUpdate.push("c.language = $language");
         queryParams.language = body.language;
+    }
+    if (body.questions) {
+        propsToUpdate.push("c.questions = $questions");
+
+        const questions = JSON.stringify(body.questions);
+        queryParams.questions = questions;
     }
 
     const query = `

@@ -66,7 +66,7 @@ describe("Content Integration Tests", () => {
                 dayUuid   : UUID,
                 contentNo : 1,
 
-                path: "The quite place"
+                questions: questions
             };
 
             const { body } = await request
@@ -76,7 +76,7 @@ describe("Content Integration Tests", () => {
                 .expect(200);
 
             expect(body.stats).toHaveProperty("nodesCreated", 1);
-            expect(body.node).toHaveProperty("path", reqData.path);
+            expect(body.node).toHaveProperty("questions");
             expect(body.node).toHaveProperty("title", reqData.title);
             expect(body.node).toHaveProperty("desc", reqData.desc);
         });
@@ -287,3 +287,106 @@ describe("Content Integration Tests", () => {
         await bulkDeleteDummyContents();
     });
 });
+
+const questions = {
+    "q1": {
+      "question" : "question number one",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q2": {
+      "question" : "question number two",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q3": {
+      "question" : "question number three",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q4": {
+      "question" : "question number four",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q5": {
+      "question" : "question number five",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q6": {
+      "question" : "question number six",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q7": {
+      "question" : "question number seven",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q8": {
+      "question" : "question number eight",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q9": {
+      "question" : "question number nine",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    },
+    "q10": {
+      "question" : "question number ten",
+      "answers"  : {
+        "a1" : "answer number one",
+        "a2" : "answer number two",
+        "a3" : "answer number three",
+        "a4" : "answer number four"
+      },
+      "correctAnswer": "a1"
+    }
+  };

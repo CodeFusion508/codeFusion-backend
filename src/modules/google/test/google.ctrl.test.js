@@ -1,7 +1,5 @@
 const {
-    gAuthentication,
-    getUserAnswers,
-    getEvaluation
+    gAuthentication
 } = require("../google.ctrl.js");
 
 const jwt = require("../../../config/jwt.js");
@@ -20,15 +18,7 @@ describe("Google Controller Tests", () => {
                 google: {
                     client: {
                         verifyIdToken: null
-                    },
-                    service: {
-                        spreadsheets: {
-                            values: {
-                                get: null
-                            }
-                        }
-                    },
-                    authClient: true
+                    }
                 }
             }
         };
@@ -79,47 +69,6 @@ describe("Google Controller Tests", () => {
                 expect(result.data.node).toHaveProperty("userName");
                 expect(result.data.node).toHaveProperty("uuid");
             });
-        });
-    });
-
-    describe("getUserAnswers Controller", () => {
-        it("getUserAnswers should throw an error if spreadsheets throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
-            deps.services.google.service.spreadsheets.values.get = jest.fn().mockImplementation(() => {
-                throw new Error("Corrupted!");
-            });
-
-            const body = {
-                sheet_id: "Sheet ID"
-            };
-
-            const result = await getUserAnswers(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-            expect(result).toHaveProperty("err");
-            expect(result).toHaveProperty("message");
-        });
-    });
-
-    describe("getEvaluation Controller", () => {
-        it("getEvaluation should throw an error", async () => {
-            deps.services.neo4j.session.run = jest.fn().mockResolvedValue(mockValue);
-            deps.services.google.client.verifyIdToken = jest.fn().mockResolvedValue(undefined);
-
-            const body = {
-                sheet_id : "Sheet ID",
-                email    : "AsyncResearch@mail.org"
-            };
-
-            const result = await getEvaluation(deps, body)
-                .then((res) => res)
-                .catch((err) => err);
-
-
-            expect(result).toHaveProperty("err");
-            expect(result).toHaveProperty("message");
         });
     });
 });

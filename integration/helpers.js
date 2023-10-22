@@ -25,7 +25,7 @@ const makeDummyContent = async (reqBody) => {
 
             break;
         case "Quiz":
-            reqData.path = reqBody.path;
+            reqData.questions = reqBody.questions;
 
             break;
         default:
