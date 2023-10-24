@@ -18,5 +18,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm i
+      - run: npm i --omit=dev
       - run: pm2 restart /home/ubuntu/.pm2/module_conf.json
