@@ -1,4 +1,21 @@
 const { v4 } = require("uuid");
+const ivm = require("isolated-vm");
+
+const code = `++count;`;
+// setting rules for a new vm process
+const isolate = new ivm.Isolate({ memoryLimit: 50 /* MB */ });
+// probable parses the code to actually run it later
+const script = isolate.compileScriptSync(code);
+
+// Like the name implies this keeps the context of the code, almost like a mini vm instance
+// This would be really cool to provide more customization of testing of our code
+const context = isolate.createContextSync();
+// The "context code" before the actual code actually runs
+context.evalSync("let count = 0;");
+
+// script.runSync(context); actually executes the code and we get back the results
+console.log(script.runSync(context)); // Prints "1"
+console.log(script.runSync(context)); // Prints "2"
 
 const { cleanNeo4j, cleanRecord } = require("../../utils/cleanData.js");
 const {
@@ -98,17 +115,33 @@ const contentUpdateVerification = async (bodyAndParam) => {
     if (Object.keys(bodyAndParam).length < 3) throw { err: 400, message: "Debe indicar al menos un cambio." };
 
     switch (bodyAndParam.label) {
-        case "Problem":
-            return await UPDATE_PROBLEM.validate(bodyAndParam).value;
+        case "Problem": {
+            const { error, value } = UPDATE_PROBLEM.validate(bodyAndParam);
+            if (error) throw new Error(`${error.message}`);
 
-        case "Quiz":
-            return await UPDATE_QUIZ.validate(bodyAndParam).value;
+            return value;
+        }
 
-        case "Text":
-            return await UPDATE_TEXT.validate(bodyAndParam).value;
+        case "Quiz": {
+            const { error, value } = UPDATE_QUIZ.validate(bodyAndParam);
+            if (error) throw new Error(`${error.message}`);
 
-        case "Video":
-            return await UPDATE_VIDEO.validate(bodyAndParam).value;
+            return value;
+        }
+
+        case "Text": {
+            const { error, value } = UPDATE_TEXT.validate(bodyAndParam);
+            if (error) throw new Error(`${error.message}`);
+
+            return value;
+        }
+
+        case "Video": {
+            const { error, value } = UPDATE_VIDEO.validate(bodyAndParam);
+            if (error) throw new Error(`${error.message}`);
+
+            return value;
+        }
 
         default:
             throw { err: 400, message: "No tiene el label correcto." };

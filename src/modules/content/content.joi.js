@@ -80,21 +80,21 @@ module.exports = {
     UPDATE_PROBLEM: Joi.object({
         ...baseUpdateSchema,
 
-        language: Joi.string().optional()
+        language: Joi.string().required()
     }),
     UPDATE_QUIZ: Joi.object({
         ...baseUpdateSchema,
 
-        path: Joi.string().optional()
+        path: Joi.string().required()
     }),
     UPDATE_VIDEO: Joi.object({
         ...baseUpdateSchema,
 
-        link: Joi.string().optional()
+        link: Joi.string().required()
     }),
     UPDATE_TEXT: Joi.object({
         ...baseUpdateSchema,
 
-        path: Joi.string().optional()
+        path: Joi.string().required()
     })
 };
