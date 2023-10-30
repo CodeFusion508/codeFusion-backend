@@ -37,7 +37,7 @@ module.exports = {
     CREATE_PROBLEM: Joi.object({
         ...baseSchema,
 
-        language       : Joi.string().required(),
+        language       : Joi.string().valid("css", "javascript", "html").required(),
         preCode        : Joi.string().required(),
         expectedResult : Joi.string().required()
     }),

@@ -6,9 +6,8 @@ const createContentQuery = (uuid, body) => {
             title : $title,
             desc  : $desc,
             time  : $time,
-
-            ${body.language ? "language : $language" : ""}
-            ${body.preCode ? "preCode : $preCode" : ""}
+            ${body.language ? "language : $language," : ""}
+            ${body.preCode ? "preCode : $preCode," : ""}
             ${body.expectedResult ? "expectedResult : $expectedResult" : ""}
 
             ${body.path ? "path : $path" : ""}
