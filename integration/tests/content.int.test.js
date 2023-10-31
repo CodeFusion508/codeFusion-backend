@@ -41,7 +41,9 @@ describe("Content Integration Tests", () => {
                 dayUuid   : UUID,
                 contentNo : 1,
 
-                language: "C+++"
+                language       : "javascript",
+                preCode        : "Cool Code Here!",
+                expectedResult : "Cool Result Here!"
             };
 
             const { body } = await request
