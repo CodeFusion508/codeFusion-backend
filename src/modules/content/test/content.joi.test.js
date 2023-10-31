@@ -42,7 +42,7 @@ describe("Content Joi Tests", () => {
 
         language       : "javascript",
         preCode        : "Cool Code Here!",
-        expectedResult : "Cool Result Here!",
+        expectedResult : "Cool Result Here!"
       };
 
       const { error } = CREATE_PROBLEM.validate(body);
@@ -60,7 +60,9 @@ describe("Content Joi Tests", () => {
         contentNo : 2009,
         time      : "2009 Hours",
 
-        language: "Java"
+        language       : "javascript",
+        preCode        : "Cool Code Here!",
+        expectedResult : "Cool Result Here!"
       };
 
       const { error, value } = CREATE_PROBLEM.validate(body);
