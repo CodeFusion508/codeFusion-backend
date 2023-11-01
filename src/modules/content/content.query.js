@@ -6,8 +6,9 @@ const createContentQuery = (uuid, body) => {
             title : $title,
             desc  : $desc,
             time  : $time,
-
-            ${body.language ? "language : $language" : ""}
+            ${body.language ? "language : $language," : ""}
+            ${body.preCode ? "preCode : $preCode," : ""}
+            ${body.expectedResult ? "expectedResult : $expectedResult" : ""}
 
             ${body.path ? "path : $path" : ""}
 
@@ -32,8 +33,13 @@ const createContentQuery = (uuid, body) => {
         contentNo : body.contentNo
     };
     if (body.language) queryParams.language = body.language;
+    if (body.preCode) queryParams.preCode = body.preCode;
+    if (body.expectedResult) queryParams.expectedResult = body.expectedResult;
+
     if (body.path) queryParams.path = body.path;
+
     if (body.link) queryParams.link = body.link;
+
     if (body.questions){
         const questions = JSON.stringify(body.questions);
         queryParams.questions = questions;
